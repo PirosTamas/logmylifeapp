@@ -1,0 +1,30 @@
+package com.example.logmylifeapp.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.logmylifeapp.Graph
+import com.example.logmylifeapp.model.DailyLifeDataAnswer
+import com.example.logmylifeapp.model.DailyLifeDataQuestion
+import com.example.logmylifeapp.model.WorkoutPlan
+import com.example.logmylifeapp.repository.DailyLifeDataAnswerRepository
+import com.example.logmylifeapp.repository.DailyLifeDataQuestionRepository
+import com.example.logmylifeapp.repository.WorkoutPlanRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+
+class WorkoutHomeViewModel(private val workoutPlanRepository: WorkoutPlanRepository = Graph.workoutPlanRepository
+) : ViewModel() {
+
+    lateinit var workoutPlansForToday: Flow<List<WorkoutPlan>>
+
+
+    init {
+        viewModelScope.launch {
+            workoutPlansForToday = workoutPlanRepository.getWorkoutPlanForToday();
+        }
+    }
+
+
+
+}
