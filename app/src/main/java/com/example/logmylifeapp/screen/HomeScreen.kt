@@ -151,17 +151,6 @@ fun HomeScreen(
                 contentDescription = "Go to dailyLifeData"
             )
         }
-        FloatingActionButton(
-            onClick = { navigateToYearInPixels() },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 270.dp, end = 16.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_calendar_month_24),
-                contentDescription = "Year in pixels"
-            )
-        }
     }
 }
 

@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,43 +22,43 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.Screen
 import com.example.logmylifeapp.model.WorkoutExercise
+import com.example.logmylifeapp.model.WorkoutExerciseLog
 import com.example.logmylifeapp.screen.components.WorkoutPlanElement
 import com.example.logmylifeapp.viewmodel.DailyLifeDataViewModel
 import com.example.logmylifeapp.viewmodel.WorkoutHomeViewModel
 import com.example.logmylifeapp.viewmodel.WorkoutPreviewViewModel
 import com.example.logmylifeapp.viewmodel.WorkoutPreviewViewModelFactory
+import kotlinx.coroutines.launch
 
 @Composable
-fun WorkoutPreviewScreen(modifier: Modifier = Modifier, planId: Int) {
-//    val viewModel: WorkoutPreviewViewModel = viewModel(factory = WorkoutPreviewViewModelFactory(planId))
-//    val planWithExercises by
-//    viewModel.planWithExercises.collectAsState(initial = null)
+fun WorkoutPreviewScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    sessionId: Int,
+    workoutOrder: Int
+) {
+    val viewModel: WorkoutPreviewViewModel =
+        viewModel(factory = WorkoutPreviewViewModelFactory(sessionId, workoutOrder))
 
-    //val firstExercise = planWithExercises?.exercises?.minByOrNull { it.id }
-    val firstExercise = WorkoutExercise(
-        name = "Bench press",
-        description = "The bench press is a foundational compound strength exercise performed by lying supine on a bench and pressing a barbell or dumbbells upward from the chest. It primarily targets the pectoralis major, anterior deltoids, and triceps, while utilizing the back, core, and legs for stabilization. ",
-        equipmentNeeded = setOf("Bench", "Barbell", "Plates"),
-        predictedTimeInMinutes = 5,
-        illustrationResId = R.drawable.benchpress,
-        illustrationUri = "",
-        numberOfSets = 3
-    )
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 44.dp, start = 12.dp, bottom = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    val currentExercise by
+    viewModel.currentExercise.collectAsState(initial = null)
+    val coroutineScope = rememberCoroutineScope()
+    currentExercise?.let { exercise ->
         Column(
-            modifier = modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = 44.dp, start = 12.dp, bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            firstExercise?.let { exercise ->
+            Column(
+                modifier = modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+
                 Text(exercise.name, fontSize = 32.sp, fontWeight = FontWeight.SemiBold)
                 Text(exercise.description)
                 Row(
@@ -75,7 +76,6 @@ fun WorkoutPreviewScreen(modifier: Modifier = Modifier, planId: Int) {
 
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text("Number of sets: " + exercise.numberOfSets)
-                    Text(": " + exercise.numberOfSets)
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -99,11 +99,24 @@ fun WorkoutPreviewScreen(modifier: Modifier = Modifier, planId: Int) {
                 }
 
             }
+            Button(modifier = modifier.padding(bottom = 60.dp), onClick = {
+                coroutineScope.launch {
+                    val exerciseLogId = viewModel.addWorkoutExerciseLog(
+                        WorkoutExerciseLog(
+                            sessionId = sessionId,
+                            exerciseId = exercise.id
+                        )
+                    )
+                    navController.navigate(
+                        Screen.WorkoutSetScreen.createRoute(sessionId.toLong(), workoutOrder, exerciseLogId, 0)
+                    )
+                }
+            }) {
+                Text("Start")
+            }
 
         }
-        Button({} ) {
-            Text("Start")
-        }
+
     }
 }
 
@@ -111,5 +124,5 @@ fun WorkoutPreviewScreen(modifier: Modifier = Modifier, planId: Int) {
 @Preview(showBackground = true)
 @Composable
 fun WorkoutPreviewScreenPreview() {
-    WorkoutPreviewScreen(modifier = Modifier, 1)
+//    WorkoutPreviewScreen(modifier = Modifier, 1)
 }

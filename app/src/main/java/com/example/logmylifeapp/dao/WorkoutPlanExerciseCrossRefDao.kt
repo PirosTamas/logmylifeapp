@@ -26,8 +26,13 @@ interface WorkoutPlanExerciseCrossRefDao {
     @Delete
     suspend fun deleteWorkoutPlanExerciseCrossRef(question: WorkoutPlanExerciseCrossRef)
 
-    @Query("SELECT * FROM WorkoutPlanExerciseCrossRef")
+    @Query("SELECT * FROM workout_plan_exercise_cross_ref")
     fun getAllWorkoutPlanExerciseCrossRefs(): Flow<List<WorkoutPlanExerciseCrossRef>>
+
+    @Query("""
+        select count(*) from workout_plan_exercise_cross_ref ecr where planId = (select planId from workout_session where id = :sessionId);
+    """)
+    suspend fun getExerciseCountForWorkoutSession(sessionId: Long): Int
 
 
 }

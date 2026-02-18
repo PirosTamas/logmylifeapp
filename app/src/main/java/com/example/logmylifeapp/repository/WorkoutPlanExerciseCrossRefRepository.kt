@@ -1,5 +1,6 @@
 package com.example.logmylifeapp.repository
 
+import androidx.room.Query
 import com.example.logmylifeapp.dao.WorkoutPlanExerciseCrossRefDao
 import com.example.logmylifeapp.model.DailyLifeDataAnswer
 import com.example.logmylifeapp.model.DailyLifeDataQuestion
@@ -29,6 +30,9 @@ class WorkoutPlanExerciseCrossRefRepository(
 
     fun getAllWorkoutPlanExerciseCrossRefs(): Flow<List<WorkoutPlanExerciseCrossRef>> =
         dao.getAllWorkoutPlanExerciseCrossRefs()
+
+   suspend fun getExerciseCountForWorkoutSession(sessionId: Long): Int =
+       dao.getExerciseCountForWorkoutSession(sessionId)
 
 
     

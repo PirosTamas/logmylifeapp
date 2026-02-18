@@ -13,95 +13,157 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.logmylifeapp.R
+import androidx.navigation.NavHostController
 import com.example.logmylifeapp.Screen
-import com.example.logmylifeapp.model.WorkoutExercise
-import com.example.logmylifeapp.screen.components.WorkoutPlanElement
-import com.example.logmylifeapp.viewmodel.DailyLifeDataViewModel
-import com.example.logmylifeapp.viewmodel.WorkoutHomeViewModel
-import com.example.logmylifeapp.viewmodel.WorkoutPreviewViewModel
-import com.example.logmylifeapp.viewmodel.WorkoutPreviewViewModelFactory
+import com.example.logmylifeapp.model.WorkoutExerciseSetLog
+import com.example.logmylifeapp.viewmodel.WorkoutSetViewModel
+import com.example.logmylifeapp.viewmodel.WorkoutSetViewModelFactory
+import kotlinx.coroutines.launch
 
 @Composable
-fun WorkoutSetScreen(modifier: Modifier = Modifier, planId: Int) {
-//    val viewModel: WorkoutPreviewViewModel = viewModel(factory = WorkoutPreviewViewModelFactory(planId))
-//    val planWithExercises by
-//    viewModel.planWithExercises.collectAsState(initial = null)
+fun WorkoutSetScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    sessionId: Long,
+    exerciseIndex: Int,
+    exerciseLogId: Int,
+    setIndex: Int
+) {
+    val viewModel: WorkoutSetViewModel =
+        viewModel(
+            factory = WorkoutSetViewModelFactory(
+                sessionId = sessionId,
+                exerciseLogId = exerciseLogId,
+                setIndex = setIndex
+            )
+        )
 
-    //val firstExercise = planWithExercises?.exercises?.minByOrNull { it.id }
-    val firstExercise = WorkoutExercise(
-        name = "Bench press",
-        description = "The bench press is a foundational compound strength exercise performed by lying supine on a bench and pressing a barbell or dumbbells upward from the chest. It primarily targets the pectoralis major, anterior deltoids, and triceps, while utilizing the back, core, and legs for stabilization. ",
-        equipmentNeeded = setOf("Bench", "Barbell", "Plates"),
-        predictedTimeInMinutes = 5,
-        illustrationResId = R.drawable.benchpress,
-        illustrationUri = "",
-        numberOfSets = 3
-    )
+    val currentWorkout by
+    viewModel.currentWorkout.collectAsState(initial = null)
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 44.dp, start = 12.dp, bottom = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+
+
+    val coroutineScope = rememberCoroutineScope()
+
+    if (currentWorkout == null) {
+        Text(
+            text = "Loading workout...",
+            modifier = Modifier.padding(16.dp)
+        )
+    } else {
+        val workout = currentWorkout!!
+
         Column(
-            modifier = modifier.weight(1f).fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = 44.dp, start = 12.dp, bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            firstExercise?.let { exercise ->
-                Text(exercise.name, fontSize = 32.sp, fontWeight = FontWeight.SemiBold)
+            Column(
+                modifier = modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+
+                Text(
+                    workout.exerciseName,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    exercise.illustrationResId?.let { resId ->
-                        Image(
-                            painter = painterResource(resId),
-                            contentDescription = exercise.name,
-                            modifier = Modifier.fillMaxWidth(0.8f)
-                        )
-                    }
+//                exercise.illustrationResId?.let { resId ->
+//                    Image(
+//                        painter = painterResource(resId),
+//                        contentDescription = exercise.name,
+//                        modifier = Modifier.fillMaxWidth(0.8f)
+//                    )
+//                }
                 }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("Round: " + 1)
+                    Text("Round: " + (setIndex + 1))
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Recommended weight:")
-                    Text("60kg" + " x " + "10")
+                    Text(workout.weight.toString() + " x " + workout.targetReps)
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Last week's weight:")
-                    Text("58kg" + " x " + "10")
+                    Text(workout.weight.toString() + " x " + workout.completedReps)
                 }
 
             }
 
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)){
-            Button({} ) {
-                Text("Failure")
-            }
-            Button({} ) {
-                Text("Success")
-            }
-        }
 
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Button(onClick = {
+                    navController.navigate(
+                        Screen.WorkoutFailureScreen.createRoute(
+                            sessionId,
+                            exerciseIndex,
+                            exerciseLogId.toLong(),
+                            setIndex
+                        )
+                    )
+                }) {
+                    Text("Failure")
+                }
+                Button({
+                    coroutineScope.launch {
+                        viewModel.addWorkoutExerciseSetLog(
+                            WorkoutExerciseSetLog(
+                                exerciseLogId = exerciseLogId,
+                                order = setIndex,
+                                targetReps = workout.targetReps,
+                                completedReps = workout.targetReps,
+                                weight = workout.weight,
+                                success = true,
+                                description = "SUCCESS"
+                            )
+                        )
+                        if(setIndex < workout.numberOfSets - 1){
+                        navController.navigate(
+                            Screen.WorkoutSetScreen.createRoute(
+                                sessionId,
+                                exerciseIndex,
+                                exerciseLogId.toLong(),
+                                setIndex + 1
+                            )
+                        )}
+//                        else if(exerciseIndex < )
+                        else{
+                            navController.navigate(
+                                Screen.WorkoutPreviewScreen.createRoute(
+                                    sessionId,
+                                    exerciseIndex + 1
+                                )
+                            )
+                        }
+                    }
+                }) {
+                    Text("Success")
+                }
+            }
+
+        }
     }
 }
 
@@ -109,5 +171,5 @@ fun WorkoutSetScreen(modifier: Modifier = Modifier, planId: Int) {
 @Preview(showBackground = true)
 @Composable
 fun WorkoutSetScreenPreview() {
-    WorkoutSetScreen(modifier = Modifier, 1)
+//    WorkoutSetScreen(modifier = Modifier, , 1)
 }

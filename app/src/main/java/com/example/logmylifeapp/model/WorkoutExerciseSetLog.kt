@@ -22,5 +22,6 @@ data class WorkoutExerciseSetLog(
     val targetReps: Int,
     val completedReps: Int,
     val weight: Float?,
-    val success: Boolean
+    val success: Boolean,
+    val description: String
 )

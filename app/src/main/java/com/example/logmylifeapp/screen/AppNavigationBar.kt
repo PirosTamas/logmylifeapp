@@ -24,6 +24,7 @@ fun AppNavigationBar(navController: NavController){
     val selectedIndex = when (currentRoute){
         Screen.HomeScreen.route -> 0
         Screen.WorkoutHomeScreen.route -> 1
+        Screen.YearInPixelsScreen.route -> 2
         else -> 0
     }
 
@@ -33,7 +34,7 @@ fun AppNavigationBar(navController: NavController){
         SegmentedButton(
             shape = SegmentedButtonDefaults.itemShape(
                     index = 0,
-                    count = 2
+                    count = 3
            ),
             selected = selectedIndex == 0,
             onClick = {
@@ -46,7 +47,7 @@ fun AppNavigationBar(navController: NavController){
         SegmentedButton(
             shape = SegmentedButtonDefaults.itemShape(
                 index = 1,
-                count = 2
+                count = 3
             ),
             selected = selectedIndex == 1,
             onClick = {
@@ -55,6 +56,19 @@ fun AppNavigationBar(navController: NavController){
                 }
             },
             label = { Icon(painterResource(R.drawable.outline_exercise_24), null) }
+        )
+        SegmentedButton(
+            shape = SegmentedButtonDefaults.itemShape(
+                index = 2,
+                count = 3
+            ),
+            selected = selectedIndex == 2,
+            onClick = {
+                navController.navigate(Screen.YearInPixelsScreen.route) {
+                    launchSingleTop = true
+                }
+            },
+            label = { Icon(painterResource(R.drawable.outline_calendar_view_month_24), null) }
         )
     }
 

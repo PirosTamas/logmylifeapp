@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.logmylifeapp.dao.AchievementProgressDao
+import com.example.logmylifeapp.dao.CurrentWorkoutExerciseDao
 import com.example.logmylifeapp.model.DailyLifeDataAnswer
 import com.example.logmylifeapp.dao.DailyLifeDataAnswerDao
 import com.example.logmylifeapp.model.DailyLifeDataQuestion
@@ -38,6 +39,7 @@ abstract class LogMyLifeDatabase : RoomDatabase() {
     abstract fun workoutSessionDao(): WorkoutSessionDao
     abstract fun workoutExerciseLogDao(): WorkoutExerciseLogDao
     abstract fun workoutExerciseSetLogDao(): WorkoutExerciseSetLogDao
+    abstract  fun currentWorkoutExerciseDao(): CurrentWorkoutExerciseDao
 
 
 }

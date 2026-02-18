@@ -8,12 +8,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.logmylifeapp.model.WorkoutExerciseLog
+import com.example.logmylifeapp.model.WorkoutExerciseSetLog
 import com.example.logmylifeapp.screen.AddDailyLifeDataQuestionScreen
 import com.example.logmylifeapp.screen.AddProgressScreen
 import com.example.logmylifeapp.screen.DailyLifeDataScreen
 import com.example.logmylifeapp.screen.HomeScreen
+import com.example.logmylifeapp.screen.WorkoutFailureScreen
 import com.example.logmylifeapp.screen.WorkoutHomeScreen
 import com.example.logmylifeapp.screen.WorkoutPreviewScreen
+import com.example.logmylifeapp.screen.WorkoutSetScreen
 import com.example.logmylifeapp.screen.YearInPixelsScreen
 
 @Composable
@@ -63,11 +67,39 @@ fun Navigation(
             WorkoutHomeScreen(navController = navController)
         }
         composable(route = Screen.WorkoutPreviewScreen.route, arguments = listOf(
-            navArgument("planId"){ type = NavType.IntType }
+            navArgument("sessionId"){ type = NavType.LongType },
+            navArgument("orderIndex"){ type = NavType.IntType }
         )) {
                 backStackEntry ->
-            val planId = backStackEntry.arguments?.getInt("planId") ?: return@composable
-            WorkoutPreviewScreen(planId = planId)
+            val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
+            val orderIndex = backStackEntry.arguments?.getInt("orderIndex") ?: return@composable
+            WorkoutPreviewScreen(sessionId = sessionId.toInt(), workoutOrder = orderIndex, navController = navController)
+        }
+        composable(route = Screen.WorkoutSetScreen.route, arguments = listOf(
+            navArgument("sessionId"){ type = NavType.LongType },
+            navArgument("exerciseIndex"){ type = NavType.IntType },
+            navArgument("exerciseLogId"){ type = NavType.LongType },
+            navArgument("setIndex"){ type = NavType.IntType }
+        )) {
+                backStackEntry ->
+            val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
+            val exerciseIndex = backStackEntry.arguments?.getInt("exerciseIndex") ?: return@composable
+            val exerciseLogId = backStackEntry.arguments?.getLong("exerciseLogId") ?: return@composable
+            val setIndex = backStackEntry.arguments?.getInt("setIndex") ?: return@composable
+            WorkoutSetScreen(sessionId = sessionId, exerciseIndex = exerciseIndex, exerciseLogId = exerciseLogId.toInt(), setIndex = setIndex, navController = navController)
+        }
+        composable(route = Screen.WorkoutFailureScreen.route, arguments = listOf(
+            navArgument("sessionId"){ type = NavType.LongType },
+            navArgument("exerciseIndex"){ type = NavType.IntType },
+            navArgument("exerciseLogId"){ type = NavType.LongType },
+            navArgument("setIndex"){ type = NavType.IntType }
+        )) {
+                backStackEntry ->
+            val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
+            val exerciseIndex = backStackEntry.arguments?.getInt("exerciseIndex") ?: return@composable
+            val exerciseLogId = backStackEntry.arguments?.getLong("exerciseLogId") ?: return@composable
+            val setIndex = backStackEntry.arguments?.getInt("setIndex") ?: return@composable
+            WorkoutFailureScreen(sessionId = sessionId, exerciseIndex = exerciseIndex,exerciseLogId = exerciseLogId.toInt(), setIndex = setIndex, navController = navController)
         }
     }
 

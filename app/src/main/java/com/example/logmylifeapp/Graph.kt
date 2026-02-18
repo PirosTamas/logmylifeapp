@@ -7,12 +7,17 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.logmylifeapp.repository.AchievementProgressRepository
 import com.example.logmylifeapp.data.LogMyLifeDatabase
 import com.example.logmylifeapp.model.WorkoutExerciseLog
+import com.example.logmylifeapp.model.WorkoutExerciseSetLog
 import com.example.logmylifeapp.model.WorkoutPlanExerciseCrossRef
+import com.example.logmylifeapp.repository.CurrentWorkoutExerciseRepository
 import com.example.logmylifeapp.repository.DailyLifeDataAnswerRepository
 import com.example.logmylifeapp.repository.DailyLifeDataQuestionRepository
 import com.example.logmylifeapp.repository.WorkoutExerciseRepository
+import com.example.logmylifeapp.repository.WorkoutExerciseSetLogRepository
 import com.example.logmylifeapp.repository.WorkoutPlanExerciseCrossRefRepository
 import com.example.logmylifeapp.repository.WorkoutPlanRepository
+import com.example.logmylifeapp.repository.WorkoutSessionRepository
+import com.example.logmylifeapp.repository.WorkoutExerciseLogRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,13 +39,29 @@ object Graph {
         WorkoutPlanRepository(dao = database.workoutPlanDao())
     }
 
+    val workoutSessionRepository by lazy {
+        WorkoutSessionRepository(dao = database.workoutSessionDao())
+    }
+
+    val workoutExerciseLogRepository by lazy {
+        WorkoutExerciseLogRepository(dao = database.workoutExerciseLogDao())
+    }
+
+    val workoutExerciseSetLogRepository by lazy {
+        WorkoutExerciseSetLogRepository(dao = database.workoutExerciseSetLogDao())
+    }
+
     val workoutExerciseRepository by lazy {
         WorkoutExerciseRepository(dao = database.workoutExerciseDao())
+    }
+    val currentWorkoutExerciseRepository by lazy {
+        CurrentWorkoutExerciseRepository(dao = database.currentWorkoutExerciseDao())
     }
 
     val workoutPlanExerciseCrossRefRepository by lazy {
         WorkoutPlanExerciseCrossRefRepository(dao = database.workoutPlanExerciseCrossRefDao())
     }
+
 
     fun provide(context: Context) {
         context.applicationContext.deleteDatabase("logmylife.db");
@@ -79,17 +100,55 @@ object Graph {
                                 WorkoutPlanExerciseCrossRef(
                                     planId = initialWorkoutPlanId,
                                     exerciseId = exerciseId.toInt(),
-                                    orderInWorkout = index + 1
+                                    orderInWorkout = index
                                 )
                             )
                         }
 
-                        val workoutSessionIds = workoutSessionDao.addWorkoutSessions(DummyData.workoutSessions(initialWorkoutPlanId))
-                        workoutSessionIds.forEach{ sessionId ->
-                            exerciseIds.forEach { exerciseId ->
-                                workoutExerciseLogDao.addWorkoutExerciseLog(WorkoutExerciseLog(sessionId = sessionId.toInt(), exerciseId = exerciseId.toInt()))
-                            }
+                        val workoutSessionId = workoutSessionDao.addWorkoutSessions(
+                            DummyData.workoutSessions(initialWorkoutPlanId)
+                        ).first()
 
+
+                        exerciseIds.forEach { exerciseId ->
+                            val workoutExerciseLogId =
+                                workoutExerciseLogDao.addWorkoutExerciseLog(
+                                    WorkoutExerciseLog(
+                                        sessionId = workoutSessionId.toInt(),
+                                        exerciseId = exerciseId.toInt()
+                                    )
+                                )
+                            workoutExerciseSetLogDao.addWorkoutExerciseSetLogs(
+                                listOf(
+                                    WorkoutExerciseSetLog(
+                                        exerciseLogId = workoutExerciseLogId.toInt(),
+                                        order = 0,
+                                        targetReps = 10,
+                                        completedReps = 10,
+                                        weight = 40f,
+                                        success = true,
+                                        description = "SUCCESS"
+                                    ),
+                                    WorkoutExerciseSetLog(
+                                        exerciseLogId = workoutExerciseLogId.toInt(),
+                                        order = 1,
+                                        targetReps = 10,
+                                        completedReps = 10,
+                                        weight = 50f,
+                                        success = true,
+                                        description = "SUCCESS"
+                                    ),
+                                    WorkoutExerciseSetLog(
+                                        exerciseLogId = workoutExerciseLogId.toInt(),
+                                        order = 2,
+                                        targetReps = 10,
+                                        completedReps = 8,
+                                        weight = 60f,
+                                        success = false,
+                                        description = "Nem ment"
+                                    )
+                                )
+                            )
                         }
 
                     }

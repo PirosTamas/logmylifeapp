@@ -10,16 +10,16 @@ import com.example.logmylifeapp.model.WorkoutExerciseSetLog
 @Dao
 interface WorkoutExerciseSetLogDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addWorkoutExerciseSetLog(question: WorkoutExerciseSetLog)
+    suspend fun addWorkoutExerciseSetLog(workoutExerciseSetLog: WorkoutExerciseSetLog)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addWorkoutExerciseSetLogs(answers: List<WorkoutExerciseSetLog>): List<Long>
+    suspend fun addWorkoutExerciseSetLogs(workoutExerciseSetLog: List<WorkoutExerciseSetLog>): List<Long>
 
     @Update
-    suspend fun updateWorkoutExerciseSetLog(question: WorkoutExerciseSetLog)
+    suspend fun updateWorkoutExerciseSetLog(workoutExerciseSetLog: WorkoutExerciseSetLog)
 
     @Delete
-    suspend fun deleteWorkoutExerciseSetLog(question: WorkoutExerciseSetLog)
+    suspend fun deleteWorkoutExerciseSetLog(workoutExerciseSetLog: WorkoutExerciseSetLog)
 
 
 

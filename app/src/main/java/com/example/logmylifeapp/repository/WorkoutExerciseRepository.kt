@@ -33,5 +33,8 @@ class WorkoutExerciseRepository(
     fun getWorkoutExerciseById(id: Int): Flow<WorkoutExercise?> =
         dao.getWorkoutExerciseById(id)
 
+    fun getWorkoutExerciseBySessionIdAndOrderInWorkout(sessionId: Int, orderInWorkout: Int) =
+        dao.getWorkoutExerciseBySessionIdAndOrderInWorkout(sessionId, orderInWorkout)
+
     
 }

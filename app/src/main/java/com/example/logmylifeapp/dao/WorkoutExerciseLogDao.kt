@@ -13,16 +13,16 @@ import java.time.LocalDate
 @Dao
 interface WorkoutExerciseLogDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addWorkoutExerciseLog(question: WorkoutExerciseLog): Long
+    suspend fun addWorkoutExerciseLog(workoutExerciseLog: WorkoutExerciseLog): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addWorkoutExerciseLogs(answers: List<WorkoutExerciseLog>): List<Long>
+    suspend fun addWorkoutExerciseLogs(workoutExerciseLog: List<WorkoutExerciseLog>): List<Long>
 
     @Update
-    suspend fun updateWorkoutExerciseLog(question: WorkoutExerciseLog)
+    suspend fun updateWorkoutExerciseLog(workoutExerciseLog: WorkoutExerciseLog)
 
     @Delete
-    suspend fun deleteWorkoutExerciseLog(question: WorkoutExerciseLog)
+    suspend fun deleteWorkoutExerciseLog(workoutExerciseLog: WorkoutExerciseLog)
 
     @Query("SELECT * FROM workout_exercise_log")
     fun getAllWorkoutExerciseLogs(): Flow<List<WorkoutExerciseLog>>

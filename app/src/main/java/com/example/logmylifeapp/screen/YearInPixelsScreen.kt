@@ -115,14 +115,6 @@ fun YearInPixelsScreen(
                 }
             }
         }
-        FloatingActionButton(
-            onClick = { navigateToHome() },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 60.dp, end = 16.dp)
-        ) {
-            Icon(Icons.Default.Home, contentDescription = "Add achievement")
-        }
     }
 }
 

@@ -17,5 +17,5 @@ data class WorkoutExercise(
     val illustrationResId: Int? = null,
     val illustrationUri: String? = null,
     val numberOfSets: Int,
-
-    )
+    val restTimeBetweenSets: Int
+)

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WorkoutSessionDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addWorkoutSession(question: WorkoutSession)
+    suspend fun addWorkoutSession(question: WorkoutSession): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addWorkoutSessions(answers: List<WorkoutSession>): List<Long>

@@ -87,18 +87,20 @@ object DummyData {
             description = "Leg exercise",
             equipmentNeeded = setOf("None"),
             predictedTimeInMinutes = 10,
-            illustrationResId = 0,
-            illustrationUri = "",
-            numberOfSets = 3
+            illustrationResId = R.drawable.squat,
+            illustrationUri = null,
+            numberOfSets = 3,
+            restTimeBetweenSets = 30
         ),
         WorkoutExercise(
             name = "Push-ups",
             description = "Upper body exercise",
             equipmentNeeded = setOf("None"),
             predictedTimeInMinutes = 5,
-            illustrationResId = 0,
-            illustrationUri = "",
-            numberOfSets = 3
+            illustrationResId = R.drawable.benchpress,
+            illustrationUri = null,
+            numberOfSets = 3,
+            restTimeBetweenSets = 30
         )
     )
 

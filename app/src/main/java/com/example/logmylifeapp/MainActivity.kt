@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.logmylifeapp.screen.AppNavigationBar
 import com.example.logmylifeapp.screen.DailyLifeDataScreen
@@ -41,16 +42,24 @@ class MainActivity : ComponentActivity() {
                 }
             }
             LogMyLifeAppTheme {
+                val navBackStackEntry = navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry.value?.destination?.route
+
+                val showBottomBar = currentRoute == Screen.HomeScreen.route ||
+                        currentRoute == Screen.WorkoutHomeScreen.route || currentRoute == Screen.YearInPixelsScreen.route
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 12.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            AppNavigationBar(navController)
+                        if (showBottomBar) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 12.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                AppNavigationBar(navController)
+                            }
                         }
                     }) { innerPadding ->
                     Navigation(paddingValues = innerPadding, navController = navController)
