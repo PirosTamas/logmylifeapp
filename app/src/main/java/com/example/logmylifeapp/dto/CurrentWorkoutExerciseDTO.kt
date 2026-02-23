@@ -10,5 +10,6 @@ data class CurrentWorkoutExerciseDTO (
     val weight: Float,
     val order: Int,
     val numberOfSets: Int,
+    val restTimeBetweenSets: Int,
     val date: LocalDate
 )

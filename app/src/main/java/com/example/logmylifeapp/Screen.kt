@@ -26,4 +26,9 @@ sealed class Screen(val route: String) {
         fun createRoute(sessionId: Long, exerciseIndex: Int, exerciseLogId: Long, setIndex: Int) =
             "workout_failure_screen/$sessionId/$exerciseIndex/$exerciseLogId/$setIndex"
     }
+    object WorkoutSummaryScreen :
+        Screen("workout_summary_screen/{sessionId}") {
+        fun createRoute(sessionId: Long) =
+            "workout_summary_screen/$sessionId"
+    }
 }

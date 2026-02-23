@@ -18,6 +18,7 @@ import com.example.logmylifeapp.repository.WorkoutPlanExerciseCrossRefRepository
 import com.example.logmylifeapp.repository.WorkoutPlanRepository
 import com.example.logmylifeapp.repository.WorkoutSessionRepository
 import com.example.logmylifeapp.repository.WorkoutExerciseLogRepository
+import com.example.logmylifeapp.repository.WorkoutSummaryRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,6 +61,10 @@ object Graph {
 
     val workoutPlanExerciseCrossRefRepository by lazy {
         WorkoutPlanExerciseCrossRefRepository(dao = database.workoutPlanExerciseCrossRefDao())
+    }
+
+    val workoutSummaryRepository by lazy {
+        WorkoutSummaryRepository(dao = database.workoutSummaryDao())
     }
 
 

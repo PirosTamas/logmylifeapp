@@ -49,6 +49,8 @@ fun WorkoutSetScreen(
     val currentWorkout by
     viewModel.currentWorkout.collectAsState(initial = null)
 
+    val exerciseCount by viewModel.exerciseCount.collectAsState()
+
 
 
     val coroutineScope = rememberCoroutineScope()
@@ -148,7 +150,9 @@ fun WorkoutSetScreen(
                                 setIndex + 1
                             )
                         )}
-//                        else if(exerciseIndex < )
+                        else if(exerciseIndex >= exerciseCount - 1){
+                            navController.navigate(Screen.WorkoutSummaryScreen.createRoute(sessionId))
+                        }
                         else{
                             navController.navigate(
                                 Screen.WorkoutPreviewScreen.createRoute(

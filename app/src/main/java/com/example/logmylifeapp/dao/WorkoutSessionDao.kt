@@ -29,6 +29,7 @@ interface WorkoutSessionDao {
     @Query("SELECT * FROM workout_session WHERE id = :id")
     fun getWorkoutSessionById(id: Int): Flow<WorkoutSession?>
 
-
+    @Query("UPDATE workout_session SET completed = 1 WHERE id = :sessionId")
+    suspend fun setSessionCompleted(sessionId: Long)
 
 }

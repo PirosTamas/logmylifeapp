@@ -15,6 +15,7 @@ import com.example.logmylifeapp.dao.WorkoutExerciseSetLogDao
 import com.example.logmylifeapp.dao.WorkoutPlanDao
 import com.example.logmylifeapp.dao.WorkoutPlanExerciseCrossRefDao
 import com.example.logmylifeapp.dao.WorkoutSessionDao
+import com.example.logmylifeapp.dao.WorkoutSummaryDao
 import com.example.logmylifeapp.model.AchievementProgress
 import com.example.logmylifeapp.model.WorkoutExercise
 import com.example.logmylifeapp.model.WorkoutExerciseLog
@@ -40,6 +41,7 @@ abstract class LogMyLifeDatabase : RoomDatabase() {
     abstract fun workoutExerciseLogDao(): WorkoutExerciseLogDao
     abstract fun workoutExerciseSetLogDao(): WorkoutExerciseSetLogDao
     abstract  fun currentWorkoutExerciseDao(): CurrentWorkoutExerciseDao
+    abstract  fun workoutSummaryDao(): WorkoutSummaryDao
 
 
 }

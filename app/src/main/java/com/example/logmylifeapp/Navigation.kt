@@ -18,6 +18,7 @@ import com.example.logmylifeapp.screen.WorkoutFailureScreen
 import com.example.logmylifeapp.screen.WorkoutHomeScreen
 import com.example.logmylifeapp.screen.WorkoutPreviewScreen
 import com.example.logmylifeapp.screen.WorkoutSetScreen
+import com.example.logmylifeapp.screen.WorkoutSummaryScreen
 import com.example.logmylifeapp.screen.YearInPixelsScreen
 
 @Composable
@@ -100,6 +101,13 @@ fun Navigation(
             val exerciseLogId = backStackEntry.arguments?.getLong("exerciseLogId") ?: return@composable
             val setIndex = backStackEntry.arguments?.getInt("setIndex") ?: return@composable
             WorkoutFailureScreen(sessionId = sessionId, exerciseIndex = exerciseIndex,exerciseLogId = exerciseLogId.toInt(), setIndex = setIndex, navController = navController)
+        }
+        composable(route = Screen.WorkoutSummaryScreen.route, arguments = listOf(
+            navArgument("sessionId"){ type = NavType.LongType },
+        )) {
+                backStackEntry ->
+            val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
+            WorkoutSummaryScreen(sessionId = sessionId,  navController = navController)
         }
     }
 

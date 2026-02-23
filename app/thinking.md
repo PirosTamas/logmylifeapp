@@ -1,14 +1,7 @@
-What was your breakfast?
-What was your lunch?
-What was your afternoon snack?
-What was you dinner?
-How was your sleep last night?
-Did you do that task?
+TODO list
+-new screen for WorkoutRest
+    - data: workoutRestTime
+- Workout equipment list
+- Workout selected list
 
-{
-    "id": Int,
-    "text": String
-    ""
-}
 
--> Question{id, text, predefinedAnswers } -> Answer{id, questionId, answer}

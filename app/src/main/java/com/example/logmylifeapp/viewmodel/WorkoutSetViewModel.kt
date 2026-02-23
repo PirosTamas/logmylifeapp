@@ -17,6 +17,7 @@ import com.example.logmylifeapp.repository.DailyLifeDataQuestionRepository
 import com.example.logmylifeapp.repository.WorkoutExerciseSetLogRepository
 import com.example.logmylifeapp.repository.WorkoutPlanExerciseCrossRefRepository
 import com.example.logmylifeapp.repository.WorkoutPlanRepository
+import com.example.logmylifeapp.repository.WorkoutSessionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,12 +30,14 @@ class WorkoutSetViewModel(
     private val setIndex: Int,
     private val currentWorkoutExerciseRepository: CurrentWorkoutExerciseRepository = Graph.currentWorkoutExerciseRepository,
     private val workoutExerciseSetLogRepository: WorkoutExerciseSetLogRepository = Graph.workoutExerciseSetLogRepository,
-    private val workoutPlanExerciseCrossRefRepository: WorkoutPlanExerciseCrossRefRepository = Graph.workoutPlanExerciseCrossRefRepository
+    private val workoutPlanExerciseCrossRefRepository: WorkoutPlanExerciseCrossRefRepository = Graph.workoutPlanExerciseCrossRefRepository,
+    private val workoutSessionRepository: WorkoutSessionRepository = Graph.workoutSessionRepository
 ) : ViewModel() {
     val currentWorkout: Flow<CurrentWorkoutExerciseDTO?> = currentWorkoutExerciseRepository.getWorkoutExerciseByWorkoutExerciseLogIdAndSetIndex(exerciseLogId, setIndex)
 
     private val _exerciseCount = MutableStateFlow(0)
     val exerciseCount: StateFlow<Int> = _exerciseCount
+
 
     init {
         viewModelScope.launch {
@@ -45,6 +48,12 @@ class WorkoutSetViewModel(
     fun addWorkoutExerciseSetLog(workoutExerciseSetLog: WorkoutExerciseSetLog) {
         viewModelScope.launch(Dispatchers.IO) {
             workoutExerciseSetLogRepository.addWorkoutExerciseSetLog(workoutExerciseSetLog)
+        }
+    }
+
+    fun setSessionCompleted(sessionId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            workoutSessionRepository.setSessionCompleted(sessionId)
         }
     }
 

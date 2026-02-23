@@ -28,10 +28,16 @@ class WorkoutSessionRepository(
         dao.deleteWorkoutSession(workoutPlan)
     }
 
+    suspend fun setSessionCompleted(sessionId: Long){
+        dao.setSessionCompleted(sessionId)
+    }
+
     fun getAllWorkoutSessions(): Flow<List<WorkoutSession>> =
         dao.getAllWorkoutSessions()
 
     fun getWorkoutSessionById(id: Int): Flow<WorkoutSession?> =
         dao.getWorkoutSessionById(id)
+
+
     
 }
