@@ -1,5 +1,6 @@
 package com.example.logmylifeapp
 
+import com.example.logmylifeapp.enums.WorkoutExerciseType
 import com.example.logmylifeapp.model.WorkoutExerciseLog
 
 sealed class Screen(val route: String) {
@@ -30,5 +31,13 @@ sealed class Screen(val route: String) {
         Screen("workout_summary_screen/{sessionId}") {
         fun createRoute(sessionId: Long) =
             "workout_summary_screen/$sessionId"
+    }
+    object AddWorkoutPlanScreen: Screen("add_workout_plan")
+    object SelectExerciseScreen : Screen(
+        "select_exercise/{exerciseType}"
+    ) {
+        fun createRoute(type: WorkoutExerciseType): String {
+            return "select_exercise/${type.name}"
+        }
     }
 }

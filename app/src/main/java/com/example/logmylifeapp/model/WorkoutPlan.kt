@@ -13,8 +13,6 @@ data class WorkoutPlan(
     var scheduledDays: Set<DayOfWeek>,
     var currentSession: Int,
     val numberOfSessions: Int,
-    val startDate: LocalDate,
-    val warmUpExercises: Set<String>,
-    val workoutExercises: Set<String>,
-    val stretchingExercises: Set<String>
+    val startDate: LocalDate
+    // TODO @low: Add warmup, stretches
 )

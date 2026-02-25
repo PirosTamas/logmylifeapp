@@ -2,24 +2,31 @@ package com.example.logmylifeapp
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.logmylifeapp.enums.WorkoutExerciseType
 import com.example.logmylifeapp.model.WorkoutExerciseLog
 import com.example.logmylifeapp.model.WorkoutExerciseSetLog
 import com.example.logmylifeapp.screen.AddDailyLifeDataQuestionScreen
 import com.example.logmylifeapp.screen.AddProgressScreen
+import com.example.logmylifeapp.screen.AddWorkoutPlanScreen
 import com.example.logmylifeapp.screen.DailyLifeDataScreen
 import com.example.logmylifeapp.screen.HomeScreen
+import com.example.logmylifeapp.screen.SelectExerciseScreen
 import com.example.logmylifeapp.screen.WorkoutFailureScreen
 import com.example.logmylifeapp.screen.WorkoutHomeScreen
 import com.example.logmylifeapp.screen.WorkoutPreviewScreen
 import com.example.logmylifeapp.screen.WorkoutSetScreen
 import com.example.logmylifeapp.screen.WorkoutSummaryScreen
 import com.example.logmylifeapp.screen.YearInPixelsScreen
+import com.example.logmylifeapp.viewmodel.AddWorkoutPlanViewModel
 
 @Composable
 fun Navigation(
@@ -28,17 +35,17 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.HomeScreen.route
+        startDestination = "add_workout_graph"
     ) {
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(
                 navigateToAddProgress = {
-                navController.navigate(Screen.AddProgressScreen.route)
-            }, navigateToAddQuestion = {
-                navController.navigate(Screen.AddDailyLifeDataQuestionScreen.route)
-            }, navigateToDailyLifeData = {
-                navController.navigate(Screen.DailyLifeDataScreen.route)
-            },
+                    navController.navigate(Screen.AddProgressScreen.route)
+                }, navigateToAddQuestion = {
+                    navController.navigate(Screen.AddDailyLifeDataQuestionScreen.route)
+                }, navigateToDailyLifeData = {
+                    navController.navigate(Screen.DailyLifeDataScreen.route)
+                },
                 navigateToYearInPixels = {
                     navController.navigate(Screen.YearInPixelsScreen.route)
                 })
@@ -67,47 +74,119 @@ fun Navigation(
         composable(route = Screen.WorkoutHomeScreen.route) {
             WorkoutHomeScreen(navController = navController)
         }
-        composable(route = Screen.WorkoutPreviewScreen.route, arguments = listOf(
-            navArgument("sessionId"){ type = NavType.LongType },
-            navArgument("orderIndex"){ type = NavType.IntType }
-        )) {
-                backStackEntry ->
+        composable(
+            route = Screen.WorkoutPreviewScreen.route, arguments = listOf(
+            navArgument("sessionId") { type = NavType.LongType },
+            navArgument("orderIndex") { type = NavType.IntType }
+        )) { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
             val orderIndex = backStackEntry.arguments?.getInt("orderIndex") ?: return@composable
-            WorkoutPreviewScreen(sessionId = sessionId.toInt(), workoutOrder = orderIndex, navController = navController)
+            WorkoutPreviewScreen(
+                sessionId = sessionId.toInt(),
+                workoutOrder = orderIndex,
+                navController = navController
+            )
         }
-        composable(route = Screen.WorkoutSetScreen.route, arguments = listOf(
-            navArgument("sessionId"){ type = NavType.LongType },
-            navArgument("exerciseIndex"){ type = NavType.IntType },
-            navArgument("exerciseLogId"){ type = NavType.LongType },
-            navArgument("setIndex"){ type = NavType.IntType }
-        )) {
-                backStackEntry ->
+        composable(
+            route = Screen.WorkoutSetScreen.route, arguments = listOf(
+            navArgument("sessionId") { type = NavType.LongType },
+            navArgument("exerciseIndex") { type = NavType.IntType },
+            navArgument("exerciseLogId") { type = NavType.LongType },
+            navArgument("setIndex") { type = NavType.IntType }
+        )) { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
-            val exerciseIndex = backStackEntry.arguments?.getInt("exerciseIndex") ?: return@composable
-            val exerciseLogId = backStackEntry.arguments?.getLong("exerciseLogId") ?: return@composable
+            val exerciseIndex =
+                backStackEntry.arguments?.getInt("exerciseIndex") ?: return@composable
+            val exerciseLogId =
+                backStackEntry.arguments?.getLong("exerciseLogId") ?: return@composable
             val setIndex = backStackEntry.arguments?.getInt("setIndex") ?: return@composable
-            WorkoutSetScreen(sessionId = sessionId, exerciseIndex = exerciseIndex, exerciseLogId = exerciseLogId.toInt(), setIndex = setIndex, navController = navController)
+            WorkoutSetScreen(
+                sessionId = sessionId,
+                exerciseIndex = exerciseIndex,
+                exerciseLogId = exerciseLogId.toInt(),
+                setIndex = setIndex,
+                navController = navController
+            )
         }
-        composable(route = Screen.WorkoutFailureScreen.route, arguments = listOf(
-            navArgument("sessionId"){ type = NavType.LongType },
-            navArgument("exerciseIndex"){ type = NavType.IntType },
-            navArgument("exerciseLogId"){ type = NavType.LongType },
-            navArgument("setIndex"){ type = NavType.IntType }
-        )) {
-                backStackEntry ->
+        composable(
+            route = Screen.WorkoutFailureScreen.route, arguments = listOf(
+            navArgument("sessionId") { type = NavType.LongType },
+            navArgument("exerciseIndex") { type = NavType.IntType },
+            navArgument("exerciseLogId") { type = NavType.LongType },
+            navArgument("setIndex") { type = NavType.IntType }
+        )) { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
-            val exerciseIndex = backStackEntry.arguments?.getInt("exerciseIndex") ?: return@composable
-            val exerciseLogId = backStackEntry.arguments?.getLong("exerciseLogId") ?: return@composable
+            val exerciseIndex =
+                backStackEntry.arguments?.getInt("exerciseIndex") ?: return@composable
+            val exerciseLogId =
+                backStackEntry.arguments?.getLong("exerciseLogId") ?: return@composable
             val setIndex = backStackEntry.arguments?.getInt("setIndex") ?: return@composable
-            WorkoutFailureScreen(sessionId = sessionId, exerciseIndex = exerciseIndex,exerciseLogId = exerciseLogId.toInt(), setIndex = setIndex, navController = navController)
+            WorkoutFailureScreen(
+                sessionId = sessionId,
+                exerciseIndex = exerciseIndex,
+                exerciseLogId = exerciseLogId.toInt(),
+                setIndex = setIndex,
+                navController = navController
+            )
         }
-        composable(route = Screen.WorkoutSummaryScreen.route, arguments = listOf(
-            navArgument("sessionId"){ type = NavType.LongType },
-        )) {
-                backStackEntry ->
+        composable(
+            route = Screen.WorkoutSummaryScreen.route, arguments = listOf(
+                navArgument("sessionId") { type = NavType.LongType },
+            )
+        ) { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
-            WorkoutSummaryScreen(sessionId = sessionId,  navController = navController)
+            WorkoutSummaryScreen(sessionId = sessionId, navController = navController)
+        }
+        navigation(
+            route = "add_workout_graph",
+            startDestination = Screen.AddWorkoutPlanScreen.route
+        ) {
+
+            composable(route = Screen.AddWorkoutPlanScreen.route) { backStackEntry ->
+
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry("add_workout_graph")
+                }
+
+                val viewModel: AddWorkoutPlanViewModel = viewModel(parentEntry)
+
+                AddWorkoutPlanScreen(
+                    viewModel = viewModel,
+                    navigateToHome = {
+                        navController.navigate(Screen.HomeScreen.route)
+                    },
+                    navigateToSelectExercise = { type ->
+                        navController.navigate(
+                            Screen.SelectExerciseScreen.createRoute(type)
+                        )
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.SelectExerciseScreen.route,
+                arguments = listOf(
+                    navArgument("exerciseType") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry("add_workout_graph")
+                }
+
+                val viewModel: AddWorkoutPlanViewModel = viewModel(parentEntry)
+
+                val typeString = backStackEntry.arguments?.getString("exerciseType")
+                val workoutExerciseType = WorkoutExerciseType.valueOf(typeString!!)
+
+                SelectExerciseScreen(
+                    viewModel = viewModel,
+                    workoutExerciseType = workoutExerciseType,
+                    navigateToAddWorkoutPlan = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
     }
 
