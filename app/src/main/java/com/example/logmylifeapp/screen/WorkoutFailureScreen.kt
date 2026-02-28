@@ -27,23 +27,26 @@ import com.example.logmylifeapp.model.WorkoutExerciseLog
 import com.example.logmylifeapp.model.WorkoutExerciseSetLog
 import com.example.logmylifeapp.screen.components.FormControl
 import com.example.logmylifeapp.screen.components.InputField
-import com.example.logmylifeapp.viewmodel.WorkoutSetViewModel
-import com.example.logmylifeapp.viewmodel.WorkoutSetViewModelFactory
+import com.example.logmylifeapp.viewmodel.WorkoutSessionViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @Composable
 fun WorkoutFailureScreen(
-    navController: NavHostController, sessionId: Long,
-    exerciseIndex: Int,
-    exerciseLogId: Int,
-    setIndex: Int
+    modifier: Modifier = Modifier,
+    viewModel: WorkoutSessionViewModel,
+    navigateToPreview: () -> Unit,
+    navigateToSet: () -> Unit,
+    navigateToSummary: () -> Unit
 ) {
-    val viewModel: WorkoutSetViewModel =
-        viewModel(factory = WorkoutSetViewModelFactory(sessionId = sessionId, exerciseLogId = exerciseLogId, setIndex = setIndex))
 
-    val currentWorkout by
-    viewModel.currentWorkout.collectAsState(initial = null)
+
+    val currentWorkoutNullable by
+    viewModel.currentWorkoutSet.collectAsState(initial = null)
+
+    val setIndexNullable by viewModel.setIndex.collectAsState(initial = null)
+    val exerciseIndexNullable by viewModel.setIndex.collectAsState(initial = null)
+    val exerciseNullable by viewModel.workoutExercise.collectAsState(initial = null)
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -55,13 +58,16 @@ fun WorkoutFailureScreen(
     )
 
 
-    if (currentWorkout == null) {
+    if (currentWorkoutNullable == null && setIndexNullable == null) {
         Text(
             text = "Loading workout...",
             modifier = Modifier.padding(16.dp)
         )
     } else {
-        val workout = currentWorkout!!
+        val workout = currentWorkoutNullable!!
+        val setIndex = setIndexNullable!!
+        val exerciseIndex = exerciseIndexNullable!!
+        val exercise = exerciseNullable!!
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -84,10 +90,11 @@ fun WorkoutFailureScreen(
                     val weight = (fields[1] as InputField.NumberField).value
                     val description = (fields[2] as InputField.TextField).value
 
-                    if (numberOfReps != null && weight != null) {
+                    val exerciseLogId = viewModel.currentExerciseLogId
+                    if (numberOfReps != null && weight != null && exerciseLogId != null) {
                         val workoutExerciseSetLog = WorkoutExerciseSetLog(
                             id = 0,
-                            exerciseLogId = exerciseLogId,
+                            exerciseLogId = exerciseLogId.toInt(),
                             order = setIndex,
                             targetReps = 10,
                             completedReps = numberOfReps,
@@ -99,21 +106,9 @@ fun WorkoutFailureScreen(
                         viewModel.addWorkoutExerciseSetLog(workoutExerciseSetLog)
 
                         if (setIndex < workout.numberOfSets - 1) {
-                            navController.navigate(
-                                Screen.WorkoutSetScreen.createRoute(
-                                    sessionId,
-                                    exerciseIndex,
-                                    exerciseLogId.toLong(),
-                                    setIndex + 1
-                                )
-                            )
+                            navigateToSet()
                         } else {
-                            navController.navigate(
-                                Screen.WorkoutPreviewScreen.createRoute(
-                                    sessionId,
-                                    exerciseIndex + 1
-                                )
-                            )
+                            navigateToPreview()
                         }
                     } else {
                         Toast.makeText(

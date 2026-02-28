@@ -41,4 +41,7 @@ interface WorkoutPlanDao {
     @Query("SELECT * FROM workout_plan WHERE id = :planId")
     fun getWorkoutPlanWithExercises(planId: Int): Flow<WorkoutPlanWithExercises>
 
+    @Query("select * from workout_plan where id = (select planId from workout_session where id = :sessionId)")
+    suspend fun getWorkoutPlanBySessionId(sessionId: Int): WorkoutPlan?
+
 }

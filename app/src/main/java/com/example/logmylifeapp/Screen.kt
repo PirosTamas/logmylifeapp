@@ -10,23 +10,12 @@ sealed class Screen(val route: String) {
     object DailyLifeDataScreen: Screen("daily_life_data_screen")
     object YearInPixelsScreen: Screen("year_in_pixels_screen")
     object WorkoutHomeScreen: Screen("workout_home_screen")
-    object WorkoutPreviewScreen :
-        Screen("workout_preview_screen/{sessionId}/{orderIndex}") {
-        fun createRoute(sessionId: Long, orderIndex: Int) =
-            "workout_preview_screen/$sessionId/$orderIndex"
-    }
+    object WorkoutPreviewScreen: Screen("workout_preview_screen")
 
-    object WorkoutSetScreen :
-        Screen("workout_set_screen/{sessionId}/{exerciseIndex}/{exerciseLogId}/{setIndex}") {
-        fun createRoute(sessionId: Long, exerciseIndex: Int, exerciseLogId: Long, setIndex: Int) =
-            "workout_set_screen/$sessionId/$exerciseIndex/$exerciseLogId/$setIndex"
-    }
+    object WorkoutSetScreen: Screen("workout_set_screen")
 
     object WorkoutFailureScreen :
-        Screen("workout_failure_screen/{sessionId}/{exerciseIndex}/{exerciseLogId}/{setIndex}") {
-        fun createRoute(sessionId: Long, exerciseIndex: Int, exerciseLogId: Long, setIndex: Int) =
-            "workout_failure_screen/$sessionId/$exerciseIndex/$exerciseLogId/$setIndex"
-    }
+        Screen("workout_failure_screen")
     object WorkoutSummaryScreen :
         Screen("workout_summary_screen/{sessionId}") {
         fun createRoute(sessionId: Long) =

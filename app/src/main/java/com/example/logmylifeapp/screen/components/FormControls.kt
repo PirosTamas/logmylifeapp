@@ -64,7 +64,7 @@ import kotlin.text.ifEmpty
 fun labelText(text: String){
     Text(
         text = text.uppercase(),
-        color = colorResource(R.color.grey_800),
+        color = colorResource(R.color.grey_300),
         fontWeight = FontWeight.SemiBold,
         lineHeight = 20.sp,
         fontSize = 14.sp

@@ -3,16 +3,14 @@ package com.example.logmylifeapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class WorkoutSetViewModelFactory (
+class WorkoutSessionViewModelFactory (
     private val sessionId: Long,
-    private val exerciseLogId: Int,
-    private val setIndex: Int
 ) : ViewModelProvider.Factory{
 
     @Suppress("UNCHECKED_CAST")
     override fun<T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(WorkoutSetViewModel::class.java)){
-            return WorkoutSetViewModel(sessionId = sessionId ,exerciseLogId = exerciseLogId, setIndex = setIndex) as T
+        if(modelClass.isAssignableFrom(WorkoutSessionViewModel::class.java)){
+            return WorkoutSessionViewModel(sessionId = sessionId.toInt()) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

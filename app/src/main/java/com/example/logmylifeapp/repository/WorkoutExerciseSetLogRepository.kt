@@ -27,5 +27,9 @@ class WorkoutExerciseSetLogRepository(
         dao.deleteWorkoutExerciseSetLog(workoutPlan)
     }
 
+    fun getCurrentSetIndexBySessionIdAndExerciseIndex(sessionId: Int, exerciseIndex: Int): Flow<Int>{
+        return dao.getCurrentSetIndexBySessionIdAndExerciseIndex(sessionId = sessionId,exerciseIndex)
+    }
+
     
 }

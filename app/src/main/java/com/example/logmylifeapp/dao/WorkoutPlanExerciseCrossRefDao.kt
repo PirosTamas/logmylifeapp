@@ -32,7 +32,7 @@ interface WorkoutPlanExerciseCrossRefDao {
     @Query("""
         select count(*) from workout_plan_exercise_cross_ref ecr where planId = (select planId from workout_session where id = :sessionId);
     """)
-    suspend fun getExerciseCountForWorkoutSession(sessionId: Long): Int
+    suspend fun getExerciseCountForWorkoutSession(sessionId: Int): Int
 
 
 }

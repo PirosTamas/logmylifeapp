@@ -8,8 +8,16 @@ class CurrentWorkoutExerciseRepository(
     private val dao: CurrentWorkoutExerciseDao,
 ) {
 
-    fun getWorkoutExerciseByWorkoutExerciseLogIdAndSetIndex(exerciseLogId: Int, setIndex: Int): Flow<CurrentWorkoutExerciseDTO?> =
-        dao.getWorkoutExerciseByWorkoutExerciseLogIdAndSetIndex(exerciseLogId,  setIndex);
+//    fun getWorkoutExerciseByWorkoutExerciseLogIdAndSetIndex(exerciseLogId: Int, setIndex: Int): Flow<CurrentWorkoutExerciseDTO?> =
+//        dao.getWorkoutExerciseByWorkoutExerciseLogIdAndSetIndex(exerciseLogId,  setIndex);
+
+    fun getWorkoutExerciseBySessionIdAndExerciseIdAndSetIndex(
+        sessionId: Int,
+        exerciseId: Int,
+        setIndex: Int
+    ): Flow<CurrentWorkoutExerciseDTO?>{
+        return dao.getWorkoutExerciseBySessionIdAndExerciseIdAndSetIndex(sessionId, exerciseId, setIndex)
+    }
 
 
     

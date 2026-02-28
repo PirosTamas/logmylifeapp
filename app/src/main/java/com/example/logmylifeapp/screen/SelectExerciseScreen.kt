@@ -209,7 +209,7 @@ fun SearchBar(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Search",
-                tint = colorResource(R.color.grey_800)
+                tint = colorResource(R.color.grey_300)
             )
         },
         trailingIcon = {

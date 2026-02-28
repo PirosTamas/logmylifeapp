@@ -65,19 +65,6 @@ object DummyData {
             currentSession = 6,
             numberOfSessions = 10,
             startDate = LocalDate.now().minusWeeks(2),
-            warmUpExercises = setOf(
-                "Jumping Jacks",
-                "High Knees"
-            ),
-            workoutExercises = setOf(
-                "Squats",
-                "Push-ups",
-                "Deadlifts"
-            ),
-            stretchingExercises = setOf(
-                "Hamstring Stretch",
-                "Quad Stretch"
-            )
         )
     )
 

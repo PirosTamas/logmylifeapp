@@ -102,7 +102,9 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
             )
             {
                 IconButton(
-                    onClick = { /* Handle back */ },
+                    onClick = {
+                        navigateToHome()
+                    },
                     modifier = Modifier.align(Alignment.CenterStart)
                 ) {
                     Icon(

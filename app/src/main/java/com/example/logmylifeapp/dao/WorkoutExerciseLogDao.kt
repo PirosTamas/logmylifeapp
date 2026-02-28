@@ -30,5 +30,8 @@ interface WorkoutExerciseLogDao {
     @Query("SELECT * FROM workout_exercise_log WHERE id = :id")
     fun getWorkoutExerciseLogById(id: Int): Flow<WorkoutExerciseLog?>
 
+    @Query("select count(*) from workout_exercise_log where sessionId = :sessionId")
+    fun getCurrentExerciseIndexBySessionId(sessionId: Int): Flow<Int>
+
 
 }

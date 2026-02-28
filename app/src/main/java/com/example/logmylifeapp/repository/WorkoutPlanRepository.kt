@@ -1,5 +1,6 @@
 package com.example.logmylifeapp.repository
 
+import androidx.room.Query
 import com.example.logmylifeapp.dao.WorkoutPlanDao
 import com.example.logmylifeapp.model.DailyLifeDataAnswer
 import com.example.logmylifeapp.model.DailyLifeDataQuestion
@@ -40,5 +41,10 @@ class WorkoutPlanRepository(
 
     fun getWorkoutPlanWithExercises(planId: Int) =
         dao.getWorkoutPlanWithExercises(planId)
+
+
+    suspend fun getWorkoutPlanBySessionId(sessionId: Int): WorkoutPlan?{
+        return dao.getWorkoutPlanBySessionId(sessionId)
+    }
     
 }

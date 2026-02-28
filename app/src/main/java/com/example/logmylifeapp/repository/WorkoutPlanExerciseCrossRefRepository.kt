@@ -31,7 +31,7 @@ class WorkoutPlanExerciseCrossRefRepository(
     fun getAllWorkoutPlanExerciseCrossRefs(): Flow<List<WorkoutPlanExerciseCrossRef>> =
         dao.getAllWorkoutPlanExerciseCrossRefs()
 
-   suspend fun getExerciseCountForWorkoutSession(sessionId: Long): Int =
+   suspend fun getExerciseCountForWorkoutSession(sessionId: Int): Int =
        dao.getExerciseCountForWorkoutSession(sessionId)
 
 

@@ -147,7 +147,7 @@ fun AddWorkoutPlanExercise(addMoreClick: () -> Unit, exercises: List<WorkoutExer
                 ){
                     Text(
                         text = emptyListMessage,
-                        color = colorResource(R.color.grey_800),
+                        color = colorResource(R.color.grey_300),
                         fontSize = 14.sp,
                         lineHeight = 20.sp,
                         fontWeight = FontWeight.Medium
