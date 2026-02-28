@@ -116,7 +116,7 @@ class WorkoutSessionViewModel(
             var exerciseLogId = currentExerciseLogId
 
 
-            if (exerciseLogId == null) {
+            if (exerciseLogId == null || _setIndex.value == 0) {
                 exerciseLogId = addWorkoutExerciseLog()
             }
 
@@ -127,13 +127,13 @@ class WorkoutSessionViewModel(
                     exerciseLogId = exerciseLogId.toInt(),
                     order = setIndex.value,
                     targetReps = workout.targetReps,
-                    completedReps = workout.targetReps,
+                    completedReps = workout.completedReps,
                     weight = workout.weight,
                     success = true,
                     description = "SUCCESS"
                 )
             )
-            if(_setIndex.value < exercise.numberOfSets -1){
+            if(_setIndex.value < exercise.numberOfSets - 1){
                 _setIndex.value++
                 return@launch
             }

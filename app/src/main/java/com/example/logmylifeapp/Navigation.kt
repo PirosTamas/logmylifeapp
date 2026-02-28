@@ -145,42 +145,28 @@ fun Navigation(
                         navigateToPreview = {
                             navController.navigate(Screen.WorkoutPreviewScreen.route)
                         },
-//                        navigateToFailure = {
-//                            navController.navigate(Screen.WorkoutFailureScreen.route)
-//                        },
                         navigateToSummary = {
-                            navController.navigate(Screen.WorkoutSummaryScreen.route)
+                            navController.navigate(Screen.WorkoutSummaryScreen.createRoute(sessionId))
                         }
                     )
                 }
-                composable(
-                    route = Screen.WorkoutFailureScreen.route,
-                ) { backStackEntry ->
-                    val parentEntry = remember(backStackEntry) {
-                        navController.getBackStackEntry("current_workout/{sessionId}")
-                    }
+            }
 
-                    val sessionId = parentEntry.arguments?.getLong("sessionId")
-                        ?: return@composable
-                    val viewModel: WorkoutSessionViewModel = viewModel(
-                        parentEntry,
-                        factory = WorkoutSessionViewModelFactory(sessionId)
-                    )
+            composable(
+                route = Screen.WorkoutSummaryScreen.route,
+                arguments = listOf(
+                    navArgument("sessionId") { type = NavType.LongType },
+                )
+            ) { backStackEntry ->
+                val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
 
-                    WorkoutFailureScreen(
-                        viewModel = viewModel,
-                        navigateToPreview = {
-                            navController.navigate(Screen.WorkoutPreviewScreen.route)
-                        },
-                        navigateToSet = {
-                            navController.navigate(Screen.WorkoutFailureScreen.route)
-                        },
-                        navigateToSummary = {
-                            navController.navigate(Screen.WorkoutSummaryScreen.route)
+                WorkoutSummaryScreen(
+                    sessionId = sessionId,
+                    navigateToHome = {
+                        navController.navigate(Screen.WorkoutHomeScreen.route) {
+                            popUpTo("workout") { inclusive = true }
                         }
-                    )
-                }
-
+                    })
             }
 
             navigation(
@@ -236,16 +222,6 @@ fun Navigation(
             }
         }
 
-
-
-        composable(
-            route = Screen.WorkoutSummaryScreen.route, arguments = listOf(
-                navArgument("sessionId") { type = NavType.LongType },
-            )
-        ) { backStackEntry ->
-            val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: return@composable
-            WorkoutSummaryScreen(sessionId = sessionId, navController = navController)
-        }
 
     }
 }

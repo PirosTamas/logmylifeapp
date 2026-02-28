@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,7 +56,7 @@ fun NumberPicker(
             )
         ) {
             Icon(
-                imageVector = Icons.Default.Delete,
+                painter = painterResource(R.drawable.outline_remove_24),
                 contentDescription = "Decrease"
             )
         }

@@ -122,7 +122,7 @@ fun WorkoutPreviewScreen(
                         .fillMaxSize()
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Box(modifier = Modifier.fillMaxWidth()) {
+                        Box(modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
                             Image(
                                 painter = painterResource(
                                     id = workoutExercise.illustrationResId ?: R.drawable.benchpress
