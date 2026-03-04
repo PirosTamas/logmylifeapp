@@ -32,8 +32,8 @@ class DailyLifeDataQuestionRepository(
     fun getQuestionById(id: Int): Flow<DailyLifeDataQuestion?> =
         dao.getQuestionById(id)
 
-    fun getUnansweredQuestionsForToday(): Flow<List<DailyLifeDataQuestion>> {
-        val today = java.time.LocalDate.now().dayOfWeek.name
+    suspend fun getUnansweredQuestionsForToday(): List<DailyLifeDataQuestion> {
+        val today = LocalDate.now().dayOfWeek.name
         return dao.getQuestionsForDay(today, LocalDate.now())
     }
 }

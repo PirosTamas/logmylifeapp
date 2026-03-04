@@ -41,37 +41,44 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.HomeScreen.route
+        startDestination = "progress"
     ) {
-        composable(route = Screen.HomeScreen.route) {
-            HomeScreen(
-                navigateToAddProgress = {
-                    navController.navigate(Screen.AddProgressScreen.route)
-                }, navigateToAddQuestion = {
-                    navController.navigate(Screen.AddDailyLifeDataQuestionScreen.route)
-                }, navigateToDailyLifeData = {
-                    navController.navigate(Screen.DailyLifeDataScreen.route)
-                },
-                navigateToYearInPixels = {
-                    navController.navigate(Screen.YearInPixelsScreen.route)
-                })
-        }
-        composable(route = Screen.AddProgressScreen.route) {
-            AddProgressScreen(navigateToHome = {
-                navController.navigate(Screen.HomeScreen.route)
+        navigation(
+            route = "progress",
+            startDestination = Screen.HomeScreen.route,
+
+            ) {
+            composable(route = Screen.HomeScreen.route) {
+                HomeScreen(
+                    navigateToAddProgress = {
+                        navController.navigate(Screen.AddProgressScreen.route)
+                    }, navigateToAddQuestion = {
+                        navController.navigate(Screen.AddDailyLifeDataQuestionScreen.route)
+                    }, navigateToDailyLifeData = {
+                        navController.navigate(Screen.DailyLifeDataScreen.route)
+                    })
             }
-            )
+
+            composable(route = Screen.AddProgressScreen.route) {
+                AddProgressScreen(navigateToHome = {
+                    navController.popBackStack()
+                }
+                )
+            }
+            composable(route = Screen.AddDailyLifeDataQuestionScreen.route) {
+                AddDailyLifeDataQuestionScreen(navigateToHome = {
+                    navController.popBackStack()
+                })
+            }
+            composable(route = Screen.DailyLifeDataScreen.route) {
+                DailyLifeDataScreen(navigateToHome = {
+                    navController.popBackStack()
+                })
+            }
+
         }
-        composable(route = Screen.AddDailyLifeDataQuestionScreen.route) {
-            AddDailyLifeDataQuestionScreen(navigateToHome = {
-                navController.navigate(Screen.HomeScreen.route)
-            })
-        }
-        composable(route = Screen.DailyLifeDataScreen.route) {
-            DailyLifeDataScreen(navigateToHome = {
-                navController.navigate(Screen.HomeScreen.route)
-            })
-        }
+
+
         composable(route = Screen.YearInPixelsScreen.route) {
             YearInPixelsScreen(navigateToHome = {
                 navController.navigate(Screen.HomeScreen.route)

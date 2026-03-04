@@ -11,7 +11,7 @@ object InitialData {
         DailyLifeDataQuestion(
             question = "How was your day?",
             predefinedAnswers = setOf("1", "2", "3", "4", "5"),
-            scheduledDays = setOf(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY),
+            scheduledDays = setOf(DayOfWeek.TUESDAY,DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY),
             startDate = LocalDate.now(),
             customAnswerAllowed = false
         )

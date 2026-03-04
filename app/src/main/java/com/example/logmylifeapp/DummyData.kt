@@ -15,6 +15,7 @@ object DummyData {
             question = "How was your day?",
             predefinedAnswers = setOf("Great", "Okay", "Bad"),
             scheduledDays = setOf(
+                DayOfWeek.TUESDAY,
                 DayOfWeek.WEDNESDAY,
                 DayOfWeek.THURSDAY,
                 DayOfWeek.FRIDAY,
@@ -27,6 +28,7 @@ object DummyData {
             question = "How was your sleep?",
             predefinedAnswers = setOf("Good", "Average", "Poor"),
             scheduledDays = setOf(
+                DayOfWeek.TUESDAY,
                 DayOfWeek.WEDNESDAY,
                 DayOfWeek.THURSDAY,
                 DayOfWeek.FRIDAY,
@@ -39,6 +41,7 @@ object DummyData {
             question = "How stressed are you?",
             predefinedAnswers = setOf("Low", "Medium", "High"),
             scheduledDays = setOf(
+                DayOfWeek.TUESDAY,
                 DayOfWeek.WEDNESDAY,
                 DayOfWeek.THURSDAY,
                 DayOfWeek.FRIDAY,

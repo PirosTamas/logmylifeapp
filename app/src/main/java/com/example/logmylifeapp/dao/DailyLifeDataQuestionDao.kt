@@ -38,5 +38,5 @@ interface DailyLifeDataQuestionDao {
         WHERE createdAt = :day
         )
         """)
-    fun getQuestionsForDay(dayOfWeek: String, day: LocalDate): Flow<List<DailyLifeDataQuestion>>
+    suspend fun getQuestionsForDay(dayOfWeek: String, day: LocalDate): List<DailyLifeDataQuestion>
 }
