@@ -20,6 +20,7 @@ sealed class Screen(val route: String) {
         fun createRoute(sessionId: Long) =
             "workout_summary_screen/$sessionId"
     }
+    object SettingsHomeScreen: Screen("settings_home_screen")
     object AddWorkoutPlanScreen: Screen("add_workout_plan")
     object SelectExerciseScreen : Screen(
         "select_exercise/{exerciseType}"

@@ -24,6 +24,7 @@ import com.example.logmylifeapp.screen.AddWorkoutPlanScreen
 import com.example.logmylifeapp.screen.DailyLifeDataScreen
 import com.example.logmylifeapp.screen.HomeScreen
 import com.example.logmylifeapp.screen.SelectExerciseScreen
+import com.example.logmylifeapp.screen.SettingsHomeScreen
 import com.example.logmylifeapp.screen.WorkoutFailureScreen
 import com.example.logmylifeapp.screen.WorkoutHomeScreen
 import com.example.logmylifeapp.screen.WorkoutPreviewScreen
@@ -83,6 +84,10 @@ fun Navigation(
             YearInPixelsScreen(navigateToHome = {
                 navController.navigate(Screen.HomeScreen.route)
             })
+        }
+
+        composable(route = Screen.SettingsHomeScreen.route) {
+            SettingsHomeScreen()
         }
         navigation(
             route = "workout",

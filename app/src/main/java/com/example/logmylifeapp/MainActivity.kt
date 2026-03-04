@@ -24,7 +24,9 @@ import com.example.logmylifeapp.ui.theme.LogMyLifeAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     //    @OptIn(ExperimentalPermissionsApi::class)
@@ -46,7 +48,9 @@ class MainActivity : ComponentActivity() {
                 val currentRoute = navBackStackEntry.value?.destination?.route
 
                 val showBottomBar = currentRoute == Screen.HomeScreen.route ||
-                        currentRoute == Screen.WorkoutHomeScreen.route || currentRoute == Screen.YearInPixelsScreen.route
+                        currentRoute == Screen.WorkoutHomeScreen.route ||
+                        currentRoute == Screen.YearInPixelsScreen.route ||
+                        currentRoute == Screen.SettingsHomeScreen.route
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),

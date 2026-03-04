@@ -3,8 +3,9 @@ package com.example.logmylifeapp
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import dagger.hilt.android.HiltAndroidApp
 
-
+@HiltAndroidApp
 class LogMyLifeApp : Application() {
     override fun onCreate() {
         super.onCreate()

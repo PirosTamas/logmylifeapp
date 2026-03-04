@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,10 +24,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
@@ -48,8 +46,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -161,65 +157,76 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
 
             is InputField.DropdownField -> {
                 labelText(text = inputField.label)
-                var expanded by remember { mutableStateOf(true/*false*/) }
+                var expanded by remember { mutableStateOf(false) }
                 var selectedText by remember { mutableStateOf(inputField.selected ?: "") }
 
-                var buttonWidth by remember { mutableStateOf(0.dp) }
-                val density = LocalDensity.current
+                // Chevron rotates from 0° (down) to 180° (up) when expanded
+                val arrowRotation by animateFloatAsState(
+                    targetValue = if (expanded) 180f else 0f,
+                    animationSpec = tween(durationMillis = 200, easing = LinearOutSlowInEasing),
+                    label = "arrowRotation"
+                )
 
-                Box(modifier = Modifier.fillMaxWidth()) {
+                val green = Color(0xFF13EC5B)
 
-                    Button(
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(width = 1.5.dp, color = green, shape = RoundedCornerShape(16.dp))
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.White)
+                ) {
+                    // ── Header row ──────────────────────────────────────────
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .onGloballyPositioned { coordinates ->
-                                buttonWidth = with(density) {
-                                    coordinates.size.width.toDp()
-                                }
-                            },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.white),
-                            contentColor = colorResource(R.color.blue_900)
-                        ),
-                        onClick = { expanded = true }
+                            .clickable { expanded = !expanded }
+                            .padding(horizontal = 16.dp, vertical = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Your existing Button content
+                        Text(
+                            text = selectedText.ifBlank { "Select ${inputField.label.lowercase()}" },
+                            color = if (selectedText.isBlank()) Color(0xFF9E9E9E) else Color(0xFF1A1A2E),
+                            fontSize = 16.sp
+                        )
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = null,
+                            tint = green,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .rotate(arrowRotation)
+                        )
                     }
 
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                        modifier = Modifier
-                            .width(buttonWidth)
-                            .background(Color.Transparent)
-                    ) {
-                        inputField.options.forEachIndexed { index, option ->
-
-                            val isLastItem = index == inputField.options.lastIndex
-
-                            DropdownMenuItem(
-                                text = { Text(option) },
-                                onClick = {
-                                    selectedText = option
-                                    inputField.selected = option
-                                    expanded = false
-                                },
+                    // ── Expanded list ────────────────────────────────────────
+                    if (expanded) {
+                        HorizontalDivider(color = green.copy(alpha = 0.4f), thickness = 1.dp)
+                        inputField.options.forEach { option ->
+                            val isSelected = option == selectedText
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clip(
-                                        if (isLastItem)
-                                            RoundedCornerShape(
-                                                bottomStart = 12.dp,
-                                                bottomEnd = 12.dp
-                                            )
-                                        else RoundedCornerShape(0.dp)
-                                    )
-                                    .background(colorResource(R.color.white))
-                            )
+                                    .background(if (isSelected) green.copy(alpha = 0.15f) else Color.White)
+                                    .clickable {
+                                        selectedText = option
+                                        inputField.selected = option
+                                        expanded = false
+                                    }
+                                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = option,
+                                    fontSize = 16.sp,
+                                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                                    color = Color(0xFF1A1A2E)
+                                )
+                            }
                         }
                     }
                 }
-
             }
 
             is InputField.DateField -> {
