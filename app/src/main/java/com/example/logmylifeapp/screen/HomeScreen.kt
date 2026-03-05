@@ -29,10 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.screen.components.AchievementProgressItem
 import com.example.logmylifeapp.screen.components.DailyAchievementItem
@@ -42,12 +40,12 @@ import java.time.LocalDate
 
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel,
     navigateToAddProgress: () -> Unit,
     navigateToAddQuestion: () -> Unit,
     navigateToDailyLifeData: () -> Unit
 ) {
     val colors = LocalAppColors.current
-    val viewModel: HomeViewModel = viewModel()
     val today = LocalDate.now()
     val currentDayOfWeek = today.dayOfWeek
     val achievementProgresses = viewModel.getAllAchievementProgresses.collectAsState(initial = listOf())
@@ -249,8 +247,3 @@ fun HomeScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen({}, {}, {})
-}

@@ -12,13 +12,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(private val achievementProgressRepository: AchievementProgressRepository = Graph.achievementProgressRepository) :
     ViewModel() {
 
-    lateinit var getAllAchievementProgresses: Flow<List<AchievementProgress>>
-
-    init {
-        viewModelScope.launch {
-            getAllAchievementProgresses = achievementProgressRepository.getAchievementProgresses()
-        }
-    }
+    val getAllAchievementProgresses: Flow<List<AchievementProgress>> =
+        achievementProgressRepository.getAchievementProgresses()
 
     fun addAchievementProgress(achievementProgress: AchievementProgress) {
         viewModelScope.launch(Dispatchers.IO) {

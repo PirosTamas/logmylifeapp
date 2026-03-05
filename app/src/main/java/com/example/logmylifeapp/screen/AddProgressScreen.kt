@@ -29,10 +29,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.ui.theme.LocalAppColors
 import com.example.logmylifeapp.viewmodel.HomeViewModel
@@ -40,12 +38,13 @@ import com.example.logmylifeapp.model.AchievementCategory
 import com.example.logmylifeapp.model.AchievementProgress
 import com.example.logmylifeapp.screen.components.FormControl
 import com.example.logmylifeapp.screen.components.InputField
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @Composable
-fun AddProgressScreen(navigateToHome: () -> Unit) {
-    val homeViewModel: HomeViewModel = viewModel()
+fun AddProgressScreen(
+    viewModel: HomeViewModel,
+    navigateToHome: () -> Unit
+) {
     val colors = LocalAppColors.current
     val context = LocalContext.current
     val fields = listOf(
@@ -146,7 +145,7 @@ fun AddProgressScreen(navigateToHome: () -> Unit) {
                                     startDate = startDate
                                 )
 
-                                homeViewModel.addAchievementProgress(newProgress)
+                                viewModel.addAchievementProgress(newProgress)
 
                                 navigateToHome()
                             } else {
@@ -156,8 +155,6 @@ fun AddProgressScreen(navigateToHome: () -> Unit) {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-
-                            navigateToHome()
 
                         }) {
                         Row(
@@ -187,9 +184,4 @@ fun AddProgressScreen(navigateToHome: () -> Unit) {
 
 }
 
-@Composable
-@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
-fun AddProgressScreenPreview() {
-    AddProgressScreen({})
-}
 
