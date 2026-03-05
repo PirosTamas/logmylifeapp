@@ -171,10 +171,20 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
 
                 val green = colors.primary
 
+                val borderColor = if (expanded) green else colors.inputBorder
+                val borderWidth = if (expanded) 1.5.dp else 1.dp
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(width = 1.5.dp, color = green, shape = RoundedCornerShape(16.dp))
+                        .shadow(
+                            elevation = 2.dp,
+                            shape = RoundedCornerShape(16.dp),
+                            clip = false,
+                            spotColor = Color(0x0D000000),
+                            ambientColor = Color.Transparent
+                        )
+                        .border(width = borderWidth, color = borderColor, shape = RoundedCornerShape(16.dp))
                         .clip(RoundedCornerShape(16.dp))
                         .background(colors.surface)
                 ) {
@@ -194,7 +204,7 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                         Icon(
                             imageVector = Icons.Default.ArrowDropDown,
                             contentDescription = null,
-                            tint = green,
+                            tint = if (expanded) green else colors.onSurfaceVariant,
                             modifier = Modifier
                                 .size(24.dp)
                                 .rotate(arrowRotation)
