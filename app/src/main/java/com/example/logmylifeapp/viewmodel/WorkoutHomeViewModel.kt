@@ -15,22 +15,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class WorkoutHomeViewModel(private val workoutPlanRepository: WorkoutPlanRepository = Graph.workoutPlanRepository,
-    workoutSessionRepository: WorkoutSessionRepository = Graph.workoutSessionRepository
+class WorkoutHomeViewModel(
+    private val workoutPlanRepository: WorkoutPlanRepository = Graph.workoutPlanRepository,
+    private val workoutSessionRepository: WorkoutSessionRepository = Graph.workoutSessionRepository
 ) : ViewModel() {
-
-    lateinit var workoutPlansForToday: Flow<List<WorkoutPlan>>
-
-
-    init {
-        viewModelScope.launch {
-            workoutPlansForToday = workoutPlanRepository.getWorkoutPlanForToday();
-        }
-    }
+    
+    val workoutPlansForToday: Flow<List<WorkoutPlan>> = workoutPlanRepository.getWorkoutPlanForToday()
 
     suspend fun addWorkoutSession(planId: Int): Long {
         return workoutSessionRepository.addWorkoutSession(planId)
     }
-
-
 }
