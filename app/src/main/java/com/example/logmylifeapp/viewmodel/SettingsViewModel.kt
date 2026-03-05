@@ -36,6 +36,12 @@ class SettingsViewModel @Inject constructor(
         initialValue = true
     )
 
+    val isDarkMode = settingsRepository.isDarkMode.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = false
+    )
+
     fun setName(name: String) {
         viewModelScope.launch { settingsRepository.setName(name) }
     }
@@ -46,5 +52,9 @@ class SettingsViewModel @Inject constructor(
 
     fun setWaterReminderEnabled(enabled: Boolean) {
         viewModelScope.launch { settingsRepository.setWaterReminderEnabled(enabled) }
+    }
+
+    fun setDarkMode(enabled: Boolean) {
+        viewModelScope.launch { settingsRepository.setDarkMode(enabled) }
     }
 }

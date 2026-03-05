@@ -32,7 +32,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.enums.WorkoutExerciseType
+import com.example.logmylifeapp.ui.theme.LocalAppColors
 import com.example.logmylifeapp.model.WorkoutExercise
 import com.example.logmylifeapp.screen.components.AddWorkoutPlanExercise
 import com.example.logmylifeapp.screen.components.FormControl
@@ -50,6 +50,7 @@ import java.time.LocalDate
 
 @Composable
 fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () -> Unit, navigateToSelectExercise: (WorkoutExerciseType) -> Unit) {
+    val colors = LocalAppColors.current
     val context = LocalContext.current
     val warmups by viewModel.warmups.collectAsState()
 //    val warmups = listOf(
@@ -84,9 +85,9 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = colorResource(R.color.green_900),
+        containerColor = colors.background,
         topBar = {
-            val borderColor = colorResource(R.color.green_200).copy(alpha = 0.1f)
+            val borderColor = colors.primary.copy(alpha = 0.1f)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -119,7 +120,7 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
                     fontSize = 18.sp,
                     lineHeight = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    color = colorResource(R.color.off_white)
+                    color = colors.onBackground
                 )
             }
         },
@@ -180,8 +181,8 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
                             .fillMaxWidth()
                             .height(64.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.green_200),
-                            contentColor = colorResource(R.color.green_900)
+                            containerColor = colors.primary,
+                            contentColor = colors.background
                         ),
                         shape = RoundedCornerShape(12.dp),
                         onClick = {

@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,6 +48,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.Screen
+import com.example.logmylifeapp.ui.theme.LocalAppColors
 import com.example.logmylifeapp.dto.WorkoutSummaryDTO
 import com.example.logmylifeapp.dto.WorkoutSummaryExerciseDTO
 import com.example.logmylifeapp.dto.WorkoutSummarySetDTO
@@ -120,6 +120,7 @@ fun WorkoutSummaryScreen(
 //    )
 
 
+    val colors = LocalAppColors.current
     val coroutineScope = rememberCoroutineScope()
 
     val workoutSummary = workoutSummaryNullable
@@ -132,9 +133,9 @@ fun WorkoutSummaryScreen(
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            containerColor = colorResource(R.color.green_900),
+            containerColor = colors.background,
             topBar = {
-                val borderColor = colorResource(R.color.green_200).copy(alpha = 0.1f)
+                val borderColor = colors.primary.copy(alpha = 0.1f)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -167,7 +168,7 @@ fun WorkoutSummaryScreen(
                         fontSize = 18.sp,
                         lineHeight = 28.sp,
                         fontWeight = FontWeight.Bold,
-                        color = colorResource(R.color.off_white)
+                        color = colors.onBackground
                     )
                 }
             },
@@ -193,7 +194,7 @@ fun WorkoutSummaryScreen(
                                 modifier = Modifier
                                     .size(75.dp)
                                     .clip(shape = CircleShape)
-                                    .background(color = colorResource(R.color.green_200).copy(0.2f))
+                                    .background(color = colors.primary.copy(0.2f))
                             )
                             {
                                 Icon(
@@ -202,7 +203,7 @@ fun WorkoutSummaryScreen(
                                     modifier = Modifier
                                         .size(41.dp)
                                         .align(Alignment.Center),
-                                    tint = colorResource(id = R.color.green_200)
+                                    tint = colors.primary
                                 )
 
                             }
@@ -212,21 +213,21 @@ fun WorkoutSummaryScreen(
                                 lineHeight = 20.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 letterSpacing = 1.4.sp,
-                                color = colorResource(R.color.green_200)
+                                color = colors.primary
                             )
                             Text(
                                 text = "Workout finished!",
                                 fontSize = 32.sp,
                                 lineHeight = 45.sp,
                                 fontWeight = FontWeight.ExtraBold,
-                                color = colorResource(R.color.off_white)
+                                color = colors.onBackground
                             )
                             Text(
                                 text = "You crushed your goals today. 45 minutes of pure intensity!",
                                 fontSize = 16.sp,
                                 lineHeight = 24.sp,
                                 fontWeight = FontWeight.Light,
-                                color = colorResource(R.color.grey_300),
+                                color = colors.onSurfaceVariant,
                                 textAlign = TextAlign.Center
                             )
                             Row(
@@ -239,13 +240,13 @@ fun WorkoutSummaryScreen(
                                         .width(102.dp)
                                         .height(70.dp)
                                         .background(
-                                            color = colorResource(R.color.blue_900).copy(0.5f),
+                                            color = colors.surface.copy(0.5f),
                                             shape = RoundedCornerShape(24.dp)
                                         )
                                         .clip(RoundedCornerShape(24.dp))
                                         .border(
                                             width = 1.dp,
-                                            color = colorResource(R.color.blue_800),
+                                            color = colors.surfaceVariant,
                                             shape = RoundedCornerShape(24.dp)
                                         )
                                         .shadow(elevation = 1.dp)
@@ -258,7 +259,7 @@ fun WorkoutSummaryScreen(
                                         fontSize = 10.sp,
                                         lineHeight = 15.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = colorResource(R.color.blue_200)
+                                        color = colors.onSurfaceVariant
                                     )
 
                                     Text(
@@ -266,7 +267,7 @@ fun WorkoutSummaryScreen(
                                         fontSize = 18.sp,
                                         lineHeight = 28.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = colorResource(R.color.off_white)
+                                        color = colors.onBackground
                                     )
 
 
@@ -276,13 +277,13 @@ fun WorkoutSummaryScreen(
                                         .width(102.dp)
                                         .height(70.dp)
                                         .background(
-                                            color = colorResource(R.color.blue_900).copy(0.5f),
+                                            color = colors.surface.copy(0.5f),
                                             shape = RoundedCornerShape(24.dp)
                                         )
                                         .clip(RoundedCornerShape(24.dp))
                                         .border(
                                             width = 1.dp,
-                                            color = colorResource(R.color.blue_800),
+                                            color = colors.surfaceVariant,
                                             shape = RoundedCornerShape(24.dp)
                                         )
                                         .shadow(elevation = 1.dp)
@@ -295,7 +296,7 @@ fun WorkoutSummaryScreen(
                                         fontSize = 10.sp,
                                         lineHeight = 15.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = colorResource(R.color.blue_200)
+                                        color = colors.onSurfaceVariant
                                     )
 
                                     Text(
@@ -303,7 +304,7 @@ fun WorkoutSummaryScreen(
                                         fontSize = 18.sp,
                                         lineHeight = 28.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = colorResource(R.color.off_white)
+                                        color = colors.onBackground
                                     )
 
 
@@ -313,13 +314,13 @@ fun WorkoutSummaryScreen(
                                         .width(102.dp)
                                         .height(70.dp)
                                         .background(
-                                            color = colorResource(R.color.blue_900).copy(0.5f),
+                                            color = colors.surface.copy(0.5f),
                                             shape = RoundedCornerShape(24.dp)
                                         )
                                         .clip(RoundedCornerShape(24.dp))
                                         .border(
                                             width = 1.dp,
-                                            color = colorResource(R.color.blue_800),
+                                            color = colors.surfaceVariant,
                                             shape = RoundedCornerShape(24.dp)
                                         )
                                         .shadow(elevation = 1.dp)
@@ -332,7 +333,7 @@ fun WorkoutSummaryScreen(
                                         fontSize = 10.sp,
                                         lineHeight = 15.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = colorResource(R.color.blue_200)
+                                        color = colors.onSurfaceVariant
                                     )
 
                                     Text(
@@ -340,7 +341,7 @@ fun WorkoutSummaryScreen(
                                         fontSize = 18.sp,
                                         lineHeight = 28.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = colorResource(R.color.off_white)
+                                        color = colors.onBackground
                                     )
 
 
@@ -357,7 +358,7 @@ fun WorkoutSummaryScreen(
                                 fontSize = 20.sp,
                                 lineHeight = 28.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = colorResource(R.color.off_white)
+                                color = colors.onBackground
                             )
                             workoutSummary.exercises.forEach {
                                 WorkoutSummaryElement(it)
@@ -375,8 +376,8 @@ fun WorkoutSummaryScreen(
                                 .fillMaxWidth()
                                 .height(64.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.green_200),
-                                contentColor = colorResource(R.color.green_900)
+                                containerColor = colors.primary,
+                                contentColor = colors.background
                             ),
                             shape = RoundedCornerShape(12.dp),
                             onClick = {

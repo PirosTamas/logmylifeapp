@@ -39,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.model.DailyLifeDataAnswer
+import com.example.logmylifeapp.ui.theme.LocalAppColors
 import com.example.logmylifeapp.model.DailyLifeDataQuestion
 import com.example.logmylifeapp.screen.components.CustomRadioButton
 import com.example.logmylifeapp.viewmodel.DailyLifeDataViewModel
@@ -130,9 +130,11 @@ fun DailyLifeDataScreen(modifier: Modifier = Modifier, navigateToHome: () -> Uni
 
     val progress: Float = (index) / questionSize.toFloat()
 
+    val colors = LocalAppColors.current
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = colorResource(R.color.off_white_200),
+        containerColor = colors.background,
         topBar = {
             Box(
                 modifier = Modifier
@@ -146,8 +148,8 @@ fun DailyLifeDataScreen(modifier: Modifier = Modifier, navigateToHome: () -> Uni
                     },
                     modifier = Modifier.align(Alignment.CenterStart),
                     colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = colorResource(R.color.off_white),
-                        contentColor = colorResource(R.color.blue_900)
+                        containerColor = colors.surface,
+                        contentColor = colors.onSurface
                     )
                 ) {
                     Icon(
@@ -161,7 +163,7 @@ fun DailyLifeDataScreen(modifier: Modifier = Modifier, navigateToHome: () -> Uni
                     fontSize = 12.sp,
                     lineHeight = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = colorResource(R.color.grey_300)
+                    color = colors.onSurfaceVariant
                 )
             }
         },
@@ -187,14 +189,14 @@ fun DailyLifeDataScreen(modifier: Modifier = Modifier, navigateToHome: () -> Uni
                             fontSize = 12.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight.Medium,
-                            color = colorResource(R.color.grey_700)
+                            color = colors.onSurfaceVariant
                         )
                         Text(
                             text = "${(progress * 100).toInt()}%",
                             fontSize = 12.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = colorResource(R.color.green_200)
+                            color = colors.primary
                         )
                     }
 
@@ -221,8 +223,8 @@ fun DailyLifeDataScreen(modifier: Modifier = Modifier, navigateToHome: () -> Uni
 
                             LinearProgressIndicator(
                                 progress = { progress },
-                                color = colorResource(R.color.green_200),
-                                trackColor = colorResource(R.color.green_900),
+                                color = colors.primary,
+                                trackColor = colors.surfaceVariant,
                                 gapSize = 0.dp,
                                 drawStopIndicator = {},
                                 modifier = Modifier.height(6.dp).fillMaxWidth()
@@ -264,8 +266,8 @@ fun DailyLifeDataScreen(modifier: Modifier = Modifier, navigateToHome: () -> Uni
                                 .fillMaxWidth()
                                 .height(64.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.green_200),
-                                contentColor = colorResource(R.color.green_900)
+                                containerColor = colors.primary,
+                                contentColor = colors.onPrimary
                             ),
                             shape = RoundedCornerShape(12.dp),
                             onClick = {

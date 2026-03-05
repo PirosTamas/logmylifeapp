@@ -17,6 +17,7 @@ class SettingsRepository @Inject constructor(
     val name: Flow<String> = dataStore.data.map { it[UserSettingsKeys.NAME] ?: UserSettingsDefaults.NAME }
     val weightUnit: Flow<String> = dataStore.data.map { it[UserSettingsKeys.WEIGHT_UNIT] ?: UserSettingsDefaults.WEIGHT_UNIT }
     val waterReminderEnabled: Flow<Boolean> = dataStore.data.map { it[UserSettingsKeys.WATER_REMINDER] ?: UserSettingsDefaults.WATER_REMINDER }
+    val isDarkMode: Flow<Boolean> = dataStore.data.map { it[UserSettingsKeys.DARK_MODE] ?: UserSettingsDefaults.DARK_MODE }
 
     suspend fun setName(name: String) {
         dataStore.edit { it[UserSettingsKeys.NAME] = name }
@@ -28,5 +29,9 @@ class SettingsRepository @Inject constructor(
 
     suspend fun setWaterReminderEnabled(enabled: Boolean) {
         dataStore.edit { it[UserSettingsKeys.WATER_REMINDER] = enabled }
+    }
+
+    suspend fun setDarkMode(enabled: Boolean) {
+        dataStore.edit { it[UserSettingsKeys.DARK_MODE] = enabled }
     }
 }

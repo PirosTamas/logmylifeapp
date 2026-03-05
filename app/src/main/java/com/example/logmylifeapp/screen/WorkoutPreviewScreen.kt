@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,6 +46,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.Screen
+import com.example.logmylifeapp.ui.theme.LocalAppColors
 import com.example.logmylifeapp.model.WorkoutExercise
 import com.example.logmylifeapp.model.WorkoutExerciseLog
 import com.example.logmylifeapp.model.WorkoutExerciseSetLog
@@ -67,6 +67,7 @@ fun WorkoutPreviewScreen(
 ) {
     val currentExerciseNullable by
     viewModel.workoutExercise.collectAsState(initial = null)
+    val colors = LocalAppColors.current
     val coroutineScope = rememberCoroutineScope()
 
     val workoutExercise = currentExerciseNullable
@@ -78,7 +79,7 @@ fun WorkoutPreviewScreen(
 
         Scaffold(
             modifier = modifier.fillMaxSize(),
-            containerColor = colorResource(R.color.white),
+            containerColor = colors.surface,
             topBar = {
                 Box(
                     modifier = Modifier
@@ -92,8 +93,8 @@ fun WorkoutPreviewScreen(
                             .align(Alignment.CenterStart)
                             .size(40.dp),
                         colors = IconButtonDefaults.iconButtonColors(
-                            contentColor = colorResource(R.color.blue_900),
-                            containerColor = colorResource(R.color.off_white)
+                            contentColor = colors.onBackground,
+                            containerColor = colors.surfaceVariant
                         )
                     ) {
                         Icon(
@@ -108,7 +109,7 @@ fun WorkoutPreviewScreen(
                         lineHeight = 16.sp,
                         fontWeight = FontWeight.Medium,
                         letterSpacing = 1.1.sp,
-                        color = colorResource(R.color.grey_300)
+                        color = colors.onSurfaceVariant
                     )
 
 
@@ -145,7 +146,7 @@ fun WorkoutPreviewScreen(
                                 fontSize = 37.5.sp,
                                 lineHeight = 30.sp,
                                 fontWeight = FontWeight.ExtraBold,
-                                color = colorResource(R.color.blue_900)
+                                color = colors.onBackground
                             )
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -155,11 +156,11 @@ fun WorkoutPreviewScreen(
                                     modifier = Modifier
                                         .weight(1f)
                                         .background(
-                                            color = colorResource(R.color.grey_100),
+                                            color = colors.surfaceVariant,
                                             shape = RoundedCornerShape(32.dp)
                                         )
                                         .border(
-                                            color = colorResource(R.color.off_white),
+                                            color = colors.surfaceVariant,
                                             shape = RoundedCornerShape(32.dp),
                                             width = 1.dp
                                         )
@@ -170,7 +171,7 @@ fun WorkoutPreviewScreen(
                                         modifier = Modifier
                                             .size(32.dp)
                                             .clip(shape = CircleShape)
-                                            .background(color = Color.White)
+                                            .background(color = colors.surface)
                                     )
                                     {
                                         Icon(
@@ -179,7 +180,7 @@ fun WorkoutPreviewScreen(
                                             modifier = Modifier
                                                 .size(16.dp)
                                                 .align(Alignment.Center),
-                                            tint = colorResource(id = R.color.green_200)
+                                            tint = colors.primary
                                         )
 
                                     }
@@ -192,14 +193,14 @@ fun WorkoutPreviewScreen(
                                             fontSize = 9.sp,
                                             lineHeight = 9.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = colorResource(R.color.grey_300)
+                                            color = colors.onSurfaceVariant
                                         )
                                         Text(
                                             text = workoutExercise.equipmentNeeded.joinToString(", "),
                                             fontSize = 14.sp,
                                             lineHeight = 20.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = colorResource(R.color.blue_900)
+                                            color = colors.onBackground
                                         )
                                     }
                                 }
@@ -207,11 +208,11 @@ fun WorkoutPreviewScreen(
                                     modifier = Modifier
                                         .weight(1f)
                                         .background(
-                                            color = colorResource(R.color.grey_100),
+                                            color = colors.surfaceVariant,
                                             shape = RoundedCornerShape(32.dp)
                                         )
                                         .border(
-                                            color = colorResource(R.color.off_white),
+                                            color = colors.surfaceVariant,
                                             shape = RoundedCornerShape(32.dp),
                                             width = 1.dp
                                         )
@@ -222,7 +223,7 @@ fun WorkoutPreviewScreen(
                                         modifier = Modifier
                                             .size(32.dp)
                                             .clip(shape = CircleShape)
-                                            .background(color = Color.White)
+                                            .background(color = colors.surface)
                                     )
                                     {
                                         Icon(
@@ -231,7 +232,7 @@ fun WorkoutPreviewScreen(
                                             modifier = Modifier
                                                 .size(16.dp)
                                                 .align(Alignment.Center),
-                                            tint = colorResource(id = R.color.green_200)
+                                            tint = colors.primary
                                         )
 
                                     }
@@ -244,14 +245,14 @@ fun WorkoutPreviewScreen(
                                             fontSize = 9.sp,
                                             lineHeight = 9.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = colorResource(R.color.grey_300)
+                                            color = colors.onSurfaceVariant
                                         )
                                         Text(
                                             text = "${workoutExercise.predictedTimeInMinutes} minutes",
                                             fontSize = 14.sp,
                                             lineHeight = 20.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = colorResource(R.color.blue_900)
+                                            color = colors.onBackground
                                         )
                                     }
                                 }
@@ -267,14 +268,14 @@ fun WorkoutPreviewScreen(
                                     lineHeight = 15.sp,
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 2.sp,
-                                    color = colorResource(R.color.grey_300)
+                                    color = colors.onSurfaceVariant
                                 )
                                 Text(
                                     text = workoutExercise.description,
                                     fontSize = 14.sp,
                                     lineHeight = 22.sp,
                                     fontWeight = FontWeight.Normal,
-                                    color = colorResource(R.color.grey_950)
+                                    color = colors.onSurfaceVariant
                                 )
 
                             }
@@ -290,8 +291,8 @@ fun WorkoutPreviewScreen(
                                 .fillMaxWidth()
                                 .height(64.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.green_200),
-                                contentColor = colorResource(R.color.green_900)
+                                containerColor = colors.primary,
+                                contentColor = colors.onPrimary
                             ),
                             shape = RoundedCornerShape(12.dp),
                             onClick = {

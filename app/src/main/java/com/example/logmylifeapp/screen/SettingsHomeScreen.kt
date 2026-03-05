@@ -37,13 +37,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.logmylifeapp.R
+import com.example.logmylifeapp.ui.theme.LocalAppColors
 import com.example.logmylifeapp.viewmodel.SettingsViewModel
 
 // hiltViewModel() is the Hilt-aware replacement for viewModel().
@@ -52,9 +52,11 @@ import com.example.logmylifeapp.viewmodel.SettingsViewModel
 fun SettingsHomeScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val colors = LocalAppColors.current
     val name by viewModel.name.collectAsState()
     val weightUnit by viewModel.weightUnit.collectAsState()
     val waterReminderEnabled by viewModel.waterReminderEnabled.collectAsState()
+    val isDarkMode by viewModel.isDarkMode.collectAsState()
 
     var showNameDialog by remember { mutableStateOf(false) }
     var nameInput by remember { mutableStateOf("") }
@@ -90,7 +92,7 @@ fun SettingsHomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(R.color.off_white_200))
+            .background(color = colors.background)
             .padding(start = 24.dp, top = 56.dp, end = 24.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -111,21 +113,21 @@ fun SettingsHomeScreen(
                     .clip(CircleShape)
                     .border(
                         width = 1.dp,
-                        color = colorResource(R.color.green_200).copy(alpha = 0.3f),
+                        color = colors.primary.copy(alpha = 0.3f),
                         shape = CircleShape
                     )
             )
             Column {
                 Text(
                     text = "Settings".uppercase(),
-                    color = colorResource(R.color.grey_700),
+                    color = colors.onSurfaceVariant,
                     fontSize = 12.sp,
                     lineHeight = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
                     text = if (name.isBlank()) "My Profile" else name,
-                    color = colorResource(R.color.blue_900),
+                    color = colors.onBackground,
                     fontSize = 18.sp,
                     lineHeight = 28.sp,
                     fontWeight = FontWeight.Bold
@@ -148,7 +150,7 @@ fun SettingsHomeScreen(
                     ) {
                         Text(
                             text = if (name.isBlank()) "Not set" else name,
-                            color = colorResource(R.color.grey_700),
+                            color = colors.onSurfaceVariant,
                             fontSize = 14.sp
                         )
                         IconButton(
@@ -161,8 +163,8 @@ fun SettingsHomeScreen(
                                 .shadow(elevation = 1.dp, CircleShape)
                                 .clip(CircleShape),
                             colors = IconButtonDefaults.iconButtonColors(
-                                containerColor = colorResource(R.color.green_200),
-                                contentColor = colorResource(R.color.blue_900)
+                                containerColor = colors.primary,
+                                contentColor = colors.onPrimary
                             )
                         ) {
                             Icon(Icons.Default.Edit, contentDescription = "Edit name", modifier = Modifier.size(16.dp))
@@ -194,6 +196,20 @@ fun SettingsHomeScreen(
                 }
             }
 
+            // Appearance section
+            SettingsSection(title = "Appearance") {
+                SettingsRow(label = "Dark mode") {
+                    Switch(
+                        checked = isDarkMode,
+                        onCheckedChange = { viewModel.setDarkMode(it) },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = colors.onPrimary,
+                            checkedTrackColor = colors.primary
+                        )
+                    )
+                }
+            }
+
             // Notifications section
             SettingsSection(title = "Notifications") {
                 SettingsRow(label = "Water reminder") {
@@ -201,8 +217,8 @@ fun SettingsHomeScreen(
                         checked = waterReminderEnabled,
                         onCheckedChange = { viewModel.setWaterReminderEnabled(it) },
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = colorResource(R.color.blue_900),
-                            checkedTrackColor = colorResource(R.color.green_200)
+                            checkedThumbColor = colors.onPrimary,
+                            checkedTrackColor = colors.primary
                         )
                     )
                 }
@@ -218,16 +234,14 @@ private fun SettingsSection(
     title: String,
     content: @Composable () -> Unit
 ) {
+    val colors = LocalAppColors.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                color = colorResource(R.color.off_white_200),
-                shape = RoundedCornerShape(16.dp)
-            )
+            .background(color = colors.surface, shape = RoundedCornerShape(16.dp))
             .border(
                 width = 1.dp,
-                color = colorResource(R.color.grey_700).copy(alpha = 0.15f),
+                color = colors.surfaceVariant,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(16.dp),
@@ -235,7 +249,7 @@ private fun SettingsSection(
     ) {
         Text(
             text = title.uppercase(),
-            color = colorResource(R.color.grey_700),
+            color = colors.onSurfaceVariant,
             fontSize = 11.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp
@@ -249,6 +263,7 @@ private fun SettingsRow(
     label: String,
     control: @Composable () -> Unit
 ) {
+    val colors = LocalAppColors.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -256,7 +271,7 @@ private fun SettingsRow(
     ) {
         Text(
             text = label,
-            color = colorResource(R.color.blue_900),
+            color = colors.onSurface,
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium
         )

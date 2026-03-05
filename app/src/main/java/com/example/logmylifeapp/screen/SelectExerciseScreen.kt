@@ -42,12 +42,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.logmylifeapp.R
+import com.example.logmylifeapp.ui.theme.LocalAppColors
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -100,11 +100,13 @@ fun SelectExerciseScreen(viewModel: AddWorkoutPlanViewModel, navigateToAddWorkou
 //        ),
 //    )
 
+    val colors = LocalAppColors.current
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = colorResource(R.color.green_900),
+        containerColor = colors.background,
         topBar = {
-            val borderColor = colorResource(R.color.green_200).copy(alpha = 0.1f)
+            val borderColor = colors.primary.copy(alpha = 0.1f)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,7 +137,7 @@ fun SelectExerciseScreen(viewModel: AddWorkoutPlanViewModel, navigateToAddWorkou
                     fontSize = 18.sp,
                     lineHeight = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    color = colorResource(R.color.off_white)
+                    color = colors.onBackground
                 )
             }
         },
@@ -196,20 +198,21 @@ fun SearchBar(
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalAppColors.current
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
         placeholder = {
             Text(
                 text = "Search...",
-                color = colorResource(R.color.grey_900)
+                color = colors.onSurfaceVariant
             )
         },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Search",
-                tint = colorResource(R.color.grey_300)
+                tint = colors.onSurfaceVariant
             )
         },
         trailingIcon = {
@@ -218,7 +221,7 @@ fun SearchBar(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Clear",
-                        tint = Color(0xFF13EC5B)
+                        tint = colors.primary
                     )
                 }
             }
@@ -227,20 +230,20 @@ fun SearchBar(
         textStyle = LocalTextStyle.current.copy(
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            color = colorResource(R.color.off_white)
+            color = colors.onBackground
         ),
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
         shape = RoundedCornerShape(16.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color(0x0D13EC5B),
-            unfocusedContainerColor = Color(0x0D13EC5B),
-            focusedBorderColor = Color(0x3313EC5B),
-            unfocusedBorderColor = Color(0x3313EC5B),
-            cursorColor = Color(0xFF13EC5B),
-            focusedLeadingIconColor = Color(0xFF13EC5B),
-            unfocusedLeadingIconColor = Color(0xFF13EC5B)
+            focusedContainerColor = colors.inputBackground,
+            unfocusedContainerColor = colors.inputBackground,
+            focusedBorderColor = colors.inputBorder,
+            unfocusedBorderColor = colors.inputBorder,
+            cursorColor = colors.primary,
+            focusedLeadingIconColor = colors.primary,
+            unfocusedLeadingIconColor = colors.primary
         ),
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Search
@@ -259,6 +262,7 @@ fun ConfirmLayout(
     modifier: Modifier = Modifier,
     onConfirm: () -> Unit
 ) {
+    val colors = LocalAppColors.current
 
     Box(
         modifier = modifier
@@ -269,9 +273,7 @@ fun ConfirmLayout(
             modifier = Modifier
                 .matchParentSize()
                 .clip(RoundedCornerShape(16.dp))
-                .background(
-                    colorResource(R.color.green_200).copy(alpha = 0.4f)
-                )
+                .background(colors.primary.copy(alpha = 0.4f))
         )
 
         Row(
@@ -286,12 +288,12 @@ fun ConfirmLayout(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(colorResource(R.color.green_200).copy(alpha = 0.2f)),
+                    .background(colors.primary.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = selectedExerciseIdsLength.toString(),
-                    color = colorResource(R.color.green_200),
+                    color = colors.primary,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -299,35 +301,29 @@ fun ConfirmLayout(
             Column(verticalArrangement = Arrangement.Center) {
                 Text(
                     text = "Exercises Selected",
-                    color = colorResource(R.color.off_white),
+                    color = colors.onBackground,
                     fontSize = 14.sp,
                     lineHeight = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = "Tap save to add to plan".uppercase(),
-                    color = Color.White.copy(alpha = 0.6f),
+                    color = colors.onSurfaceVariant,
                     fontSize = 10.sp,
                     lineHeight = 15.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
             Button(
-                onClick = {
-                    onConfirm()
-                },
+                onClick = { onConfirm() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.green_200),
-                    contentColor = colorResource(id = R.color.green_900)
+                    containerColor = colors.primary,
+                    contentColor = colors.onPrimary
                 ),
-                contentPadding = PaddingValues(
-                    vertical = 8.dp,
-                    horizontal = 24.dp
-                )
+                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 24.dp)
             ) {
                 Text(
                     text = "Confirm",
-                    color = colorResource(R.color.green_900),
                     fontSize = 10.sp,
                     lineHeight = 15.sp,
                     fontWeight = FontWeight.Bold
@@ -348,13 +344,14 @@ fun SelectExerciseElement(
     selectedExerciseIds: Set<Int>,
     onClick: (id: Int) -> Unit
 ) {
+    val colors = LocalAppColors.current
     Box(
         modifier = Modifier
             .width(164.dp)
             .height(202.dp)
             .border(
                 width = if (active) 0.5.dp else 0.dp,
-                color = colorResource(id = R.color.green_200).copy(alpha = 0.2f),
+                color = colors.primary.copy(alpha = 0.2f),
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable { onClick(id) }
@@ -399,13 +396,13 @@ fun SelectExerciseElement(
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
                     .clip(CircleShape)
-                    .background(colorResource(id = R.color.green_200)),
+                    .background(colors.primary),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = "Selected",
-                    tint = colorResource(R.color.green_900),
+                    tint = colors.onPrimary,
                     modifier = Modifier.size(16.dp)
                 )
             }

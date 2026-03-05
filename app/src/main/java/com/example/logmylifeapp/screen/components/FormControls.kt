@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -46,13 +45,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.logmylifeapp.R
+import com.example.logmylifeapp.ui.theme.LocalAppColors
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
@@ -64,9 +62,10 @@ import kotlin.text.ifEmpty
 
 @Composable
 fun labelText(text: String) {
+    val colors = LocalAppColors.current
     Text(
         text = text.uppercase(),
-        color = colorResource(R.color.grey_300),
+        color = colors.onSurfaceVariant,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 20.sp,
         fontSize = 14.sp
@@ -75,6 +74,7 @@ fun labelText(text: String) {
 
 @Composable
 fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
+    val colors = LocalAppColors.current
     Column(
         modifier = modifier
             .padding(bottom = 16.dp),
@@ -95,24 +95,24 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                     placeholder = {
                         Text(
                             text = inputField.placeholder,
-                            color = colorResource(R.color.grey_900)
+                            color = colors.onSurfaceVariant
                         )
                     },
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
-                        color = colorResource(R.color.off_white)
+                        color = colors.onBackground
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(24.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color(0x0D13EC5B), // 5% opacity
-                        unfocusedContainerColor = Color(0x0D13EC5B),
-                        focusedBorderColor = Color(0x3313EC5B),   // 20% opacity
-                        unfocusedBorderColor = Color(0x3313EC5B),
-                        cursorColor = Color(0xFF13EC5B)
+                        focusedContainerColor = colors.inputBackground,
+                        unfocusedContainerColor = colors.inputBackground,
+                        focusedBorderColor = colors.inputBorder,
+                        unfocusedBorderColor = colors.inputBorder,
+                        cursorColor = colors.primary
                     ),
 //                    contentPadding = PaddingValues(
 //                        horizontal = 16.dp,
@@ -133,24 +133,24 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                     placeholder = {
                         Text(
                             text = inputField.placeholder,
-                            color = colorResource(R.color.grey_900)
+                            color = colors.onSurfaceVariant
                         )
                     },
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
-                        color = colorResource(R.color.off_white)
+                        color = colors.onBackground
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(24.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color(0x0D13EC5B), // 5% opacity
-                        unfocusedContainerColor = Color(0x0D13EC5B),
-                        focusedBorderColor = Color(0x3313EC5B),   // 20% opacity
-                        unfocusedBorderColor = Color(0x3313EC5B),
-                        cursorColor = Color(0xFF13EC5B)
+                        focusedContainerColor = colors.inputBackground,
+                        unfocusedContainerColor = colors.inputBackground,
+                        focusedBorderColor = colors.inputBorder,
+                        unfocusedBorderColor = colors.inputBorder,
+                        cursorColor = colors.primary
                     ),
                 )
             }
@@ -167,14 +167,14 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                     label = "arrowRotation"
                 )
 
-                val green = Color(0xFF13EC5B)
+                val green = colors.primary
 
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(width = 1.5.dp, color = green, shape = RoundedCornerShape(16.dp))
                         .clip(RoundedCornerShape(16.dp))
-                        .background(Color.White)
+                        .background(colors.surface)
                 ) {
                     // ── Header row ──────────────────────────────────────────
                     Row(
@@ -187,7 +187,7 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                     ) {
                         Text(
                             text = selectedText.ifBlank { "Select ${inputField.label.lowercase()}" },
-                            color = if (selectedText.isBlank()) Color(0xFF9E9E9E) else Color(0xFF1A1A2E),
+                            color = if (selectedText.isBlank()) colors.onSurfaceVariant else colors.onSurface,
                             fontSize = 16.sp
                         )
                         Icon(
@@ -208,7 +208,7 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(if (isSelected) green.copy(alpha = 0.15f) else Color.White)
+                                    .background(if (isSelected) green.copy(alpha = 0.15f) else colors.surface)
                                     .clickable {
                                         selectedText = option
                                         inputField.selected = option
@@ -221,7 +221,7 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                                     text = option,
                                     fontSize = 16.sp,
                                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                                    color = Color(0xFF1A1A2E)
+                                    color = colors.onSurface
                                 )
                             }
                         }
@@ -243,14 +243,14 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                             Icon(
                                 imageVector = Icons.Default.DateRange,
                                 contentDescription = "Select date",
-                                tint = colorResource(R.color.green_200)
+                                tint = colors.primary
                             )
                         }
                     },
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
-                        color = colorResource(R.color.off_white)
+                        color = colors.onBackground
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -387,10 +387,11 @@ fun DayCircleChip(
     selected: Boolean,
     onClick: () -> Unit
 ) {
-    val green = Color(0xFF13EC5B)
+    val colors = LocalAppColors.current
+    val green = colors.primary
     val borderColor = green.copy(alpha = if (selected) 1f else 0.2f)
     val backgroundColor = if (selected) green.copy(alpha = 0.2f) else Color.Transparent
-    val textColor = if (selected) green else Color.Gray
+    val textColor = if (selected) green else colors.onSurfaceVariant
 
     Box(
         modifier = Modifier

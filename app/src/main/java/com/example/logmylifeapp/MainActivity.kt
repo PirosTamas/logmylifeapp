@@ -7,20 +7,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.logmylifeapp.screen.AppNavigationBar
-import com.example.logmylifeapp.screen.DailyLifeDataScreen
 import com.example.logmylifeapp.ui.theme.LogMyLifeAppTheme
+import com.example.logmylifeapp.viewmodel.SettingsViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -29,12 +32,17 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    //    @OptIn(ExperimentalPermissionsApi::class)
-    override fun onCreate(savedInstanceState: Bundle?) {
+    // Hilt injects SettingsViewModel automatically — no factory needed
+    private val settingsViewModel: SettingsViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            // Collect the dark mode preference — when it changes, recomposition
+            // triggers LogMyLifeAppTheme to swap the entire color scheme instantly
+            val isDark by settingsViewModel.isDarkMode.collectAsState()
+
             val navController = rememberNavController()
             val postNotificationPermission =
                 rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
@@ -43,7 +51,8 @@ class MainActivity : ComponentActivity() {
                     postNotificationPermission.launchPermissionRequest()
                 }
             }
-            LogMyLifeAppTheme {
+
+            LogMyLifeAppTheme(darkTheme = isDark) {
                 val navBackStackEntry = navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry.value?.destination?.route
 
@@ -70,7 +79,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-
     }
 }
