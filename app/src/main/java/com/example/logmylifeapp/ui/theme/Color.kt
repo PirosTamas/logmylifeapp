@@ -3,65 +3,71 @@ package com.example.logmylifeapp.ui.theme
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-// ── Raw color palette ────────────────────────────────────────────────────────
-val Green200  = Color(0xFF13EC5B)
-val Green600  = Color(0xFF0EBF49)
-val Green900  = Color(0xFF102216)
-val Blue800   = Color(0xFF1E293B)
-val Blue900   = Color(0xFF0F172A)
-val OffWhite  = Color(0xFFF1F5F9)
-val OffWhite200 = Color(0xFFF6F8F6)
-val Grey100   = Color(0xFFF2F4F3)
-val Grey300   = Color(0xFF94A3B8)
-val Grey700   = Color(0xFF64748B)
-val Orange500 = Color(0xFFF97316)
-val White     = Color(0xFFFFFFFF)
+@Suppress("unused")
+object Slate {
+    val _50  = Color(0xFFF8FAFC)
+    val _100 = Color(0xFFF1F5F9)
+    val _200 = Color(0xFFE2E8F0)
+    val _300 = Color(0xFFCBD5E1)
+    val _400 = Color(0xFF94A3B8)
+    val _500 = Color(0xFF64748B)
+    val _600 = Color(0xFF475569)
+    val _700 = Color(0xFF334155)
+    val _800 = Color(0xFF1E293B)
+    val _900 = Color(0xFF0F172A)
+    val _950 = Color(0xFF020617)
+}
 
-// ── Semantic color scheme ────────────────────────────────────────────────────
-// Screens read colors from AppColors instead of hardcoding colorResource().
-// The correct set is provided by LogMyLifeAppTheme via CompositionLocalProvider.
+object Green {
+    val _400 = Color(0xFF13EC5B)
+    val _600 = Color(0xFF0EBF49)
+    val _950 = Color(0xFF102216)
+}
+
+object Orange {
+    val _500 = Color(0xFFF97316)
+}
+
 data class AppColors(
-    val background: Color,        // main screen background
-    val surface: Color,           // card / container background
-    val surfaceVariant: Color,    // subtle surface (chips, progress track, picker buttons)
-    val onBackground: Color,      // primary text on background
-    val onSurface: Color,         // primary text on cards
-    val onSurfaceVariant: Color,  // secondary / muted text
-    val primary: Color,           // accent (green)
-    val onPrimary: Color,         // text / icon ON the green accent
-    val inputBackground: Color,   // form field fill
-    val inputBorder: Color,       // form field border
+    val background: Color,
+    val surface: Color,
+    val surfaceVariant: Color,
+    val onBackground: Color,
+    val onSurface: Color,
+    val onSurfaceVariant: Color,
+    val primary: Color,
+    val onPrimary: Color,
+    val inputBackground: Color,
+    val inputBorder: Color,
     val isDark: Boolean
 )
 
 val LightAppColors = AppColors(
-    background       = OffWhite200,
-    surface          = White,
-    surfaceVariant   = Grey100,
-    onBackground     = Blue900,
-    onSurface        = Blue900,
-    onSurfaceVariant = Grey700,
-    primary          = Green200,
-    onPrimary        = Green900,
-    inputBackground  = Color(0x0D13EC5B),
-    inputBorder      = Color(0x3313EC5B),
+    background       = Slate._50,
+    surface          = Color.White,
+    surfaceVariant   = Slate._100,
+    onBackground     = Slate._900,
+    onSurface        = Slate._900,
+    onSurfaceVariant = Slate._500,
+    primary          = Green._400,
+    onPrimary        = Green._950,
+    inputBackground  = Color.White,
+    inputBorder      = Slate._200,
     isDark           = false
 )
 
 val DarkAppColors = AppColors(
-    background       = Green900,
-    surface          = Blue900,
-    surfaceVariant   = Blue800,
-    onBackground     = OffWhite,
-    onSurface        = OffWhite,
-    onSurfaceVariant = Grey300,
-    primary          = Green200,
-    onPrimary        = Green900,
+    background       = Green._950,
+    surface          = Slate._900,
+    surfaceVariant   = Slate._800,
+    onBackground     = Slate._100,
+    onSurface        = Slate._100,
+    onSurfaceVariant = Slate._400,
+    primary          = Green._400,
+    onPrimary        = Green._950,
     inputBackground  = Color(0x1A13EC5B),
     inputBorder      = Color(0x3313EC5B),
     isDark           = true
 )
 
-// staticCompositionLocalOf: provides AppColors to every composable in the tree.
-// Access it anywhere with: val colors = LocalAppColors.current
 val LocalAppColors = staticCompositionLocalOf { LightAppColors }

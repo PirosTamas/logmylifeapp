@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.model.AchievementCategory
 import com.example.logmylifeapp.model.AchievementProgress
-import com.example.logmylifeapp.ui.theme.Green600
+import com.example.logmylifeapp.ui.theme.Green
 import com.example.logmylifeapp.ui.theme.LocalAppColors
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -62,7 +62,7 @@ fun AchievementProgressItem(
                         painter = painterResource(R.drawable.outline_celebration_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp).align(Alignment.Center),
-                        tint = Green600  // stays green regardless of theme
+                        tint = Green._600
                     )
                 }
                 Text(text = achievement.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, color = colors.onSurface)

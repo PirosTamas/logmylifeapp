@@ -45,7 +45,7 @@ import java.time.LocalDate
 
 @Composable
 fun AddProgressScreen(navigateToHome: () -> Unit) {
-//    val homeViewModel: HomeViewModel = viewModel()
+    val homeViewModel: HomeViewModel = viewModel()
     val colors = LocalAppColors.current
     val context = LocalContext.current
     val fields = listOf(
@@ -146,7 +146,7 @@ fun AddProgressScreen(navigateToHome: () -> Unit) {
                                     startDate = startDate
                                 )
 
-//                        homeViewModel.addAchievementProgress(newProgress)
+                                homeViewModel.addAchievementProgress(newProgress)
 
                                 navigateToHome()
                             } else {
@@ -170,7 +170,7 @@ fun AddProgressScreen(navigateToHome: () -> Unit) {
                                 modifier = Modifier.size(20.dp),
                             )
                             Text(
-                                text = "Back to home",
+                                text = "Save",
                                 fontSize = 18.sp,
                                 lineHeight = 28.sp,
                                 fontWeight = FontWeight.Bold,

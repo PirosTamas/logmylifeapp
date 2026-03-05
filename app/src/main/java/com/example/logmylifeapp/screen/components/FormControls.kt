@@ -19,15 +19,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -46,7 +42,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,7 +53,6 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
-import kotlin.text.ifEmpty
 
 @Composable
 fun labelText(text: String) {
@@ -105,19 +99,22 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .height(56.dp)
+                        .shadow(
+                            elevation = 2.dp,
+                            shape = RoundedCornerShape(24.dp),
+                            clip = false,
+                            spotColor = Color(0x0D000000),
+                            ambientColor = Color.Transparent
+                        ),
                     shape = RoundedCornerShape(24.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = colors.inputBackground,
-                        unfocusedContainerColor = colors.inputBackground,
+                        focusedContainerColor = colors.surface,
+                        unfocusedContainerColor = colors.surface,
                         focusedBorderColor = colors.inputBorder,
                         unfocusedBorderColor = colors.inputBorder,
                         cursorColor = colors.primary
                     ),
-//                    contentPadding = PaddingValues(
-//                        horizontal = 16.dp,
-//                        vertical = 15.dp
-//                    )
                 )
             }
 
@@ -143,11 +140,18 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .height(56.dp)
+                        .shadow(
+                            elevation = 2.dp,
+                            shape = RoundedCornerShape(24.dp),
+                            clip = false,
+                            spotColor = Color(0x0D000000),
+                            ambientColor = Color.Transparent
+                        ),
                     shape = RoundedCornerShape(24.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = colors.inputBackground,
-                        unfocusedContainerColor = colors.inputBackground,
+                        focusedContainerColor = colors.surface,
+                        unfocusedContainerColor = colors.surface,
                         focusedBorderColor = colors.inputBorder,
                         unfocusedBorderColor = colors.inputBorder,
                         cursorColor = colors.primary
@@ -159,8 +163,6 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                 labelText(text = inputField.label)
                 var expanded by remember { mutableStateOf(false) }
                 var selectedText by remember { mutableStateOf(inputField.selected ?: "") }
-
-                // Chevron rotates from 0° (down) to 180° (up) when expanded
                 val arrowRotation by animateFloatAsState(
                     targetValue = if (expanded) 180f else 0f,
                     animationSpec = tween(durationMillis = 200, easing = LinearOutSlowInEasing),
@@ -176,7 +178,6 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                         .clip(RoundedCornerShape(16.dp))
                         .background(colors.surface)
                 ) {
-                    // ── Header row ──────────────────────────────────────────
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -199,8 +200,6 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                                 .rotate(arrowRotation)
                         )
                     }
-
-                    // ── Expanded list ────────────────────────────────────────
                     if (expanded) {
                         HorizontalDivider(color = green.copy(alpha = 0.4f), thickness = 1.dp)
                         inputField.options.forEach { option ->
@@ -234,36 +233,45 @@ fun FormControl(inputField: InputField, modifier: Modifier = Modifier) {
                 var selectedDate by remember { mutableStateOf(inputField.date) }
 
                 labelText(text = inputField.label)
-                OutlinedTextField(
-                    value = selectedDate?.format(DateTimeFormatter.ofPattern("yyyy. MM.dd.")) ?: "",
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = {
-                        IconButton(onClick = { showDatePicker = !showDatePicker }) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = selectedDate?.format(DateTimeFormatter.ofPattern("yyyy. MM.dd.")) ?: "",
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = {
                             Icon(
                                 imageVector = Icons.Default.DateRange,
-                                contentDescription = "Select date",
+                                contentDescription = null,
                                 tint = colors.primary
                             )
-                        }
-                    },
-                    textStyle = LocalTextStyle.current.copy(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = colors.onBackground
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color(0x0D13EC5B), // 5% opacity
-                        unfocusedContainerColor = Color(0x0D13EC5B),
-                        focusedBorderColor = Color(0x3313EC5B),   // 20% opacity
-                        unfocusedBorderColor = Color(0x3313EC5B),
-                        cursorColor = Color(0xFF13EC5B)
+                        },
+                        textStyle = LocalTextStyle.current.copy(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = colors.onBackground
+                        ),
+                        placeholder = {
+                            Text(text = "Select date", color = colors.onSurfaceVariant)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(24.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = colors.inputBackground,
+                            unfocusedContainerColor = colors.inputBackground,
+                            focusedBorderColor = colors.inputBorder,
+                            unfocusedBorderColor = colors.inputBorder,
+                            cursorColor = colors.primary
+                        )
                     )
-                )
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clip(RoundedCornerShape(24.dp))
+                            .clickable { showDatePicker = true }
+                    )
+                }
                 if (showDatePicker) {
                     DatePickerModal(
                         onDateSelected = { millis ->
@@ -358,25 +366,12 @@ fun WeekDayPicker(
 
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
         days.forEach { day ->
-            var isSelected = day in selectedDays
-
-//            if(day == DayOfWeek.WEDNESDAY){
-//                isSelected = true
-//            }
-
-//            FilterChip(
-//                selected = isSelected,
-//                onClick = { onDayToggle(day) },
-//                label = {
-//                    Text(day.getDisplayName(TextStyle.NARROW, Locale.getDefault()))
-//                }
-//            )
+            val isSelected = day in selectedDays
             DayCircleChip(
                 day = day,
                 selected = isSelected,
                 onClick = { onDayToggle(day) }
             )
-
         }
     }
 }
@@ -395,7 +390,7 @@ fun DayCircleChip(
 
     Box(
         modifier = Modifier
-            .size(44.dp) // makes it circular
+            .size(44.dp)
             .shadow(
                 elevation = if (selected) 15.dp else 0.dp,
                 shape = CircleShape,
@@ -406,8 +401,8 @@ fun DayCircleChip(
                 width = 2.dp,
                 color = borderColor,
                 shape = CircleShape
-            ),
-//            .clickable(onClick = onClick),
+            )
+            .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(

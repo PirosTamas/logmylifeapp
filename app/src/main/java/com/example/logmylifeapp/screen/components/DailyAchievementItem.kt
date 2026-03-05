@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.model.AchievementProgress
 import com.example.logmylifeapp.ui.theme.LocalAppColors
-import com.example.logmylifeapp.ui.theme.Orange500
+import com.example.logmylifeapp.ui.theme.Orange
 import com.example.logmylifeapp.viewmodel.HomeViewModel
 
 @Composable
@@ -57,7 +57,7 @@ fun DailyAchievementItem(
                 modifier = Modifier
                     .size(44.dp)
                     .clip(shape = RoundedCornerShape(16.dp))
-                    .background(color = Orange500.copy(0.1f))
+                    .background(color = Orange._500.copy(0.1f))
             ) {
                 Icon(
                     painter = painterResource(R.drawable.outline_celebration_24),
@@ -65,7 +65,7 @@ fun DailyAchievementItem(
                     modifier = Modifier
                         .size(18.dp)
                         .align(Alignment.Center),
-                    tint = Orange500
+                    tint = Orange._500
                 )
             }
 

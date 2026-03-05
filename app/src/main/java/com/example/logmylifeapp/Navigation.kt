@@ -19,6 +19,7 @@ import com.example.logmylifeapp.enums.WorkoutExerciseType
 import com.example.logmylifeapp.model.WorkoutExerciseLog
 import com.example.logmylifeapp.model.WorkoutExerciseSetLog
 import com.example.logmylifeapp.screen.AddDailyLifeDataQuestionScreen
+import com.example.logmylifeapp.screen.PredefinedAnswersScreen
 import com.example.logmylifeapp.screen.AddProgressScreen
 import com.example.logmylifeapp.screen.AddWorkoutPlanScreen
 import com.example.logmylifeapp.screen.DailyLifeDataScreen
@@ -31,6 +32,7 @@ import com.example.logmylifeapp.screen.WorkoutPreviewScreen
 import com.example.logmylifeapp.screen.WorkoutSetScreen
 import com.example.logmylifeapp.screen.WorkoutSummaryScreen
 import com.example.logmylifeapp.screen.YearInPixelsScreen
+import com.example.logmylifeapp.viewmodel.AddDailyLifeQuestionViewModel
 import com.example.logmylifeapp.viewmodel.AddWorkoutPlanViewModel
 import com.example.logmylifeapp.viewmodel.WorkoutSessionViewModel
 import com.example.logmylifeapp.viewmodel.WorkoutSessionViewModelFactory
@@ -66,10 +68,37 @@ fun Navigation(
                 }
                 )
             }
-            composable(route = Screen.AddDailyLifeDataQuestionScreen.route) {
-                AddDailyLifeDataQuestionScreen(navigateToHome = {
-                    navController.popBackStack()
-                })
+
+            navigation(
+                route = "add_daily_question_graph",
+                startDestination = Screen.AddDailyLifeDataQuestionScreen.route
+            ) {
+                composable(route = Screen.AddDailyLifeDataQuestionScreen.route) { backStackEntry ->
+                    val parentEntry = remember(backStackEntry) {
+                        navController.getBackStackEntry("add_daily_question_graph")
+                    }
+                    val viewModel: AddDailyLifeQuestionViewModel = viewModel(parentEntry)
+
+                    AddDailyLifeDataQuestionScreen(
+                        viewModel = viewModel,
+                        navigateToHome = { navController.popBackStack() },
+                        navigateToPredefinedAnswers = {
+                            navController.navigate(Screen.PredefinedAnswersScreen.route)
+                        }
+                    )
+                }
+
+                composable(route = Screen.PredefinedAnswersScreen.route) { backStackEntry ->
+                    val parentEntry = remember(backStackEntry) {
+                        navController.getBackStackEntry("add_daily_question_graph")
+                    }
+                    val viewModel: AddDailyLifeQuestionViewModel = viewModel(parentEntry)
+
+                    PredefinedAnswersScreen(
+                        viewModel = viewModel,
+                        navigateBack = { navController.popBackStack() }
+                    )
+                }
             }
             composable(route = Screen.DailyLifeDataScreen.route) {
                 DailyLifeDataScreen(navigateToHome = {

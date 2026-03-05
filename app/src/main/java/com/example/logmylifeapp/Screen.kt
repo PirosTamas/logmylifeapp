@@ -29,4 +29,5 @@ sealed class Screen(val route: String) {
             return "select_exercise/${type.name}"
         }
     }
+    object PredefinedAnswersScreen : Screen("predefined_answers_screen")
 }

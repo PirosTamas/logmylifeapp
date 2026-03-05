@@ -6,29 +6,28 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 
-// Material3 color schemes built from our own palette.
-// Material components (DatePicker, AlertDialog, Switch, etc.) use these.
 private val AppDarkColorScheme = darkColorScheme(
-    primary = Green200,
-    onPrimary = Green900,
-    background = Green900,
-    surface = Blue900,
-    onBackground = OffWhite,
-    onSurface = OffWhite,
-    surfaceVariant = Blue800,
-    onSurfaceVariant = Grey300,
+    primary          = Green._400,
+    onPrimary        = Green._950,
+    background       = Green._950,
+    surface          = Slate._900,
+    onBackground     = Slate._100,
+    onSurface        = Slate._100,
+    surfaceVariant   = Slate._800,
+    onSurfaceVariant = Slate._400,
 )
 
 private val AppLightColorScheme = lightColorScheme(
-    primary = Green200,
-    onPrimary = Green900,
-    background = OffWhite200,
-    surface = White,
-    onBackground = Blue900,
-    onSurface = Blue900,
-    surfaceVariant = Grey100,
-    onSurfaceVariant = Grey700,
+    primary          = Green._400,
+    onPrimary        = Green._950,
+    background       = Slate._50,
+    surface          = Color.White,
+    onBackground     = Slate._900,
+    onSurface        = Slate._900,
+    surfaceVariant   = Slate._100,
+    onSurfaceVariant = Slate._500,
 )
 
 @Composable
