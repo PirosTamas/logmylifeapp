@@ -19,9 +19,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -31,9 +31,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.logmylifeapp.R
 import com.example.logmylifeapp.ui.theme.LocalAppColors
-import com.example.logmylifeapp.viewmodel.HomeViewModel
+import com.example.logmylifeapp.viewmodel.ProgressViewModel
 import com.example.logmylifeapp.model.AchievementCategory
 import com.example.logmylifeapp.model.AchievementProgress
 import com.example.logmylifeapp.screen.components.FormControl
@@ -42,20 +41,33 @@ import java.time.LocalDate
 
 @Composable
 fun AddProgressScreen(
-    viewModel: HomeViewModel,
+    viewModel: ProgressViewModel,
     navigateToHome: () -> Unit
 ) {
     val colors = LocalAppColors.current
     val context = LocalContext.current
-    val fields = listOf(
-        InputField.TextField(label = "Name"),
-        InputField.DropdownField(
-            label = "Category",
-            options = AchievementCategory.entries.map { it.name }),
-        InputField.MultiSelectDays(label = "Scheduled Days"),
-        InputField.NumberField(label = "Number of Sessions"),
-        InputField.DateField(label = "Start Date")
-    )
+    val editing = viewModel.editingAchievement
+    val isEditing = editing != null
+
+    val fields = remember {
+        listOf(
+            InputField.TextField(label = "Name", value = editing?.name ?: ""),
+            InputField.DropdownField(
+                label = "Category",
+                options = AchievementCategory.entries.map { it.name },
+                selected = editing?.category?.name
+            ),
+            InputField.MultiSelectDays(
+                label = "Scheduled Days",
+                selectedDays = editing?.scheduledDays ?: emptySet()
+            ),
+            InputField.NumberField(
+                label = "Number of Sessions",
+                value = editing?.numberOfSessions
+            ),
+            InputField.DateField(label = "Start Date", date = editing?.startDate)
+        )
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -74,10 +86,10 @@ fun AddProgressScreen(
                             strokeWidth = 1.dp.toPx()
                         )
                     }
-            )
-            {
+            ) {
                 IconButton(
                     onClick = {
+                        viewModel.editingAchievement = null
                         navigateToHome()
                     },
                     modifier = Modifier.align(Alignment.CenterStart)
@@ -89,7 +101,7 @@ fun AddProgressScreen(
                     )
                 }
                 Text(
-                    text = "Add New Progress",
+                    text = if (isEditing) "Edit Progress" else "Add New Progress",
                     modifier = Modifier.align(Alignment.Center),
                     fontSize = 18.sp,
                     lineHeight = 28.sp,
@@ -105,7 +117,6 @@ fun AddProgressScreen(
                     .padding(paddingValues)
                     .padding(16.dp)
             ) {
-
                 Column(modifier = Modifier.weight(1f)) {
                     fields.forEach { field ->
                         FormControl(field)
@@ -128,25 +139,35 @@ fun AddProgressScreen(
                         onClick = {
                             val name = (fields[0] as InputField.TextField).value
                             val category = (fields[1] as InputField.DropdownField).selected
-                            val scheduledDays =
-                                (fields[2] as InputField.MultiSelectDays).selectedDays
+                            val scheduledDays = (fields[2] as InputField.MultiSelectDays).selectedDays
                             val numberOfSessions = (fields[3] as InputField.NumberField).value
-                            val startDate =
-                                (fields[4] as InputField.DateField).date ?: LocalDate.now()
+                            val startDate = (fields[4] as InputField.DateField).date ?: LocalDate.now()
 
                             if (name.isNotBlank() && category != null && numberOfSessions != null) {
-                                val newProgress = AchievementProgress(
-                                    id = 0,
-                                    name = name,
-                                    category = AchievementCategory.valueOf(category),
-                                    scheduledDays = scheduledDays,
-                                    currentSession = 0,
-                                    numberOfSessions = numberOfSessions,
-                                    startDate = startDate
-                                )
-
-                                viewModel.addAchievementProgress(newProgress)
-
+                                if (isEditing) {
+                                    viewModel.updateAchievementProgress(
+                                        editing!!.copy(
+                                            name = name,
+                                            category = AchievementCategory.valueOf(category),
+                                            scheduledDays = scheduledDays,
+                                            numberOfSessions = numberOfSessions,
+                                            startDate = startDate
+                                        )
+                                    )
+                                } else {
+                                    viewModel.addAchievementProgress(
+                                        AchievementProgress(
+                                            id = 0,
+                                            name = name,
+                                            category = AchievementCategory.valueOf(category),
+                                            scheduledDays = scheduledDays,
+                                            currentSession = 0,
+                                            numberOfSessions = numberOfSessions,
+                                            startDate = startDate
+                                        )
+                                    )
+                                }
+                                viewModel.editingAchievement = null
                                 navigateToHome()
                             } else {
                                 Toast.makeText(
@@ -155,8 +176,8 @@ fun AddProgressScreen(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-
-                        }) {
+                        }
+                    ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -172,16 +193,10 @@ fun AddProgressScreen(
                                 lineHeight = 28.sp,
                                 fontWeight = FontWeight.Bold,
                             )
-
                         }
-
                     }
                 }
             }
         }
     )
-
-
 }
-
-

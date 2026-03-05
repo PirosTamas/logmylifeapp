@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,7 +36,8 @@ import java.time.LocalDate
 @Composable
 fun AchievementProgressItem(
     achievement: AchievementProgress,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onEdit: (() -> Unit)? = null
 ) {
     val colors = LocalAppColors.current
     val progress = achievement.currentSession.toFloat() / achievement.numberOfSessions.toFloat()
@@ -68,12 +72,24 @@ fun AchievementProgressItem(
                 Text(text = achievement.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, color = colors.onSurface)
             }
             val percentage = (achievement.currentSession.toFloat() / achievement.numberOfSessions) * 100
-            Text(
-                text = "${achievement.currentSession} / ${achievement.numberOfSessions} (${percentage.toInt()}%)",
-                style = MaterialTheme.typography.labelMedium,
-                modifier = Modifier.padding(top = 4.dp),
-                color = colors.primary
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "${achievement.currentSession} / ${achievement.numberOfSessions} (${percentage.toInt()}%)",
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.padding(top = 4.dp),
+                    color = colors.primary
+                )
+//                if (onEdit != null) {
+//                    IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
+//                        Icon(
+//                            imageVector = Icons.Default.Edit,
+//                            contentDescription = "Edit",
+//                            tint = colors.onSurfaceVariant,
+//                            modifier = Modifier.size(16.dp)
+//                        )
+//                    }
+//                }
+            }
         }
         LinearProgressIndicator(
             progress = { progress },

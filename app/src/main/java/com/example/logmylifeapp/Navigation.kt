@@ -23,7 +23,7 @@ import com.example.logmylifeapp.screen.PredefinedAnswersScreen
 import com.example.logmylifeapp.screen.AddProgressScreen
 import com.example.logmylifeapp.screen.AddWorkoutPlanScreen
 import com.example.logmylifeapp.screen.DailyLifeDataScreen
-import com.example.logmylifeapp.screen.HomeScreen
+import com.example.logmylifeapp.screen.ProgressHomeScreen
 import com.example.logmylifeapp.screen.SelectExerciseScreen
 import com.example.logmylifeapp.screen.SettingsHomeScreen
 import com.example.logmylifeapp.screen.WorkoutFailureScreen
@@ -34,7 +34,7 @@ import com.example.logmylifeapp.screen.WorkoutSummaryScreen
 import com.example.logmylifeapp.screen.YearInPixelsScreen
 import com.example.logmylifeapp.viewmodel.AddDailyLifeQuestionViewModel
 import com.example.logmylifeapp.viewmodel.AddWorkoutPlanViewModel
-import com.example.logmylifeapp.viewmodel.HomeViewModel
+import com.example.logmylifeapp.viewmodel.ProgressViewModel
 import com.example.logmylifeapp.viewmodel.WorkoutSessionViewModel
 import com.example.logmylifeapp.viewmodel.WorkoutSessionViewModelFactory
 
@@ -49,17 +49,17 @@ fun Navigation(
     ) {
         navigation(
             route = "progress",
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.ProgressHomeScreen.route,
 
             ) {
-            composable(route = Screen.HomeScreen.route) { backStackEntry ->
+            composable(route = Screen.ProgressHomeScreen.route) { backStackEntry ->
                 val parentEntry = remember(backStackEntry) {
                     navController.getBackStackEntry("progress")
                 }
-                val homeViewModel: HomeViewModel = viewModel(parentEntry)
+                val progressViewModel: ProgressViewModel = viewModel(parentEntry)
 
-                HomeScreen(
-                    viewModel = homeViewModel,
+                ProgressHomeScreen(
+                    viewModel = progressViewModel,
                     navigateToAddProgress = {
                         navController.navigate(Screen.AddProgressScreen.route)
                     },
@@ -76,10 +76,10 @@ fun Navigation(
                 val parentEntry = remember(backStackEntry) {
                     navController.getBackStackEntry("progress")
                 }
-                val homeViewModel: HomeViewModel = viewModel(parentEntry)
+                val progressViewModel: ProgressViewModel = viewModel(parentEntry)
 
                 AddProgressScreen(
-                    viewModel = homeViewModel,
+                    viewModel = progressViewModel,
                     navigateToHome = { navController.popBackStack() }
                 )
             }
@@ -126,7 +126,7 @@ fun Navigation(
 
         composable(route = Screen.YearInPixelsScreen.route) {
             YearInPixelsScreen(navigateToHome = {
-                navController.navigate(Screen.HomeScreen.route)
+                navController.navigate(Screen.ProgressHomeScreen.route)
             })
         }
 

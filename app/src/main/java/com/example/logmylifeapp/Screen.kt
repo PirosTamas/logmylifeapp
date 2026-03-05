@@ -4,7 +4,7 @@ import com.example.logmylifeapp.enums.WorkoutExerciseType
 import com.example.logmylifeapp.model.WorkoutExerciseLog
 
 sealed class Screen(val route: String) {
-    object HomeScreen: Screen("home_screen")
+    object ProgressHomeScreen: Screen("home_screen")
     object AddProgressScreen: Screen("add_progress_screen")
     object AddDailyLifeDataQuestionScreen: Screen("add_daily_life_data_question_screen")
     object DailyLifeDataScreen: Screen("daily_life_data_screen")

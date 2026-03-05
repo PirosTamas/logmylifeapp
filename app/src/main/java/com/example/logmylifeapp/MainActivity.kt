@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry = navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry.value?.destination?.route
 
-                val showBottomBar = currentRoute == Screen.HomeScreen.route ||
+                val showBottomBar = currentRoute == Screen.ProgressHomeScreen.route ||
                         currentRoute == Screen.WorkoutHomeScreen.route ||
                         currentRoute == Screen.YearInPixelsScreen.route ||
                         currentRoute == Screen.SettingsHomeScreen.route

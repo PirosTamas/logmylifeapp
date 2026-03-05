@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,12 +34,12 @@ import com.example.logmylifeapp.R
 import com.example.logmylifeapp.screen.components.AchievementProgressItem
 import com.example.logmylifeapp.screen.components.DailyAchievementItem
 import com.example.logmylifeapp.ui.theme.LocalAppColors
-import com.example.logmylifeapp.viewmodel.HomeViewModel
+import com.example.logmylifeapp.viewmodel.ProgressViewModel
 import java.time.LocalDate
 
 @Composable
-fun HomeScreen(
-    viewModel: HomeViewModel,
+fun ProgressHomeScreen(
+    viewModel: ProgressViewModel,
     navigateToAddProgress: () -> Unit,
     navigateToAddQuestion: () -> Unit,
     navigateToDailyLifeData: () -> Unit
@@ -115,7 +114,10 @@ fun HomeScreen(
                             )
                         }
                         Button(
-                            onClick = { navigateToAddProgress() },
+                            onClick = {
+                                viewModel.editingAchievement = null
+                                navigateToAddProgress()
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = colors.surface,
                                 contentColor = colors.primary
@@ -132,7 +134,15 @@ fun HomeScreen(
                         }
                     }
                 } else {
-                    progresses.forEach { AchievementProgressItem(achievement = it) }
+                    progresses.forEach { progress ->
+                        AchievementProgressItem(
+                            achievement = progress,
+                            onEdit = {
+                                viewModel.editingAchievement = progress
+                                navigateToAddProgress()
+                            }
+                        )
+                    }
                 }
             }
 
@@ -193,7 +203,10 @@ fun HomeScreen(
                             )
                         }
                         Button(
-                            onClick = { navigateToAddProgress() },
+                            onClick = {
+                                viewModel.editingAchievement = null
+                                navigateToAddProgress()
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = colors.surface,
                                 contentColor = colors.primary
@@ -227,7 +240,10 @@ fun HomeScreen(
             Icon(painter = painterResource(id = R.drawable.outline_maps_ugc_24), contentDescription = "Add DailyLifeDataQuestion")
         }
         FloatingActionButton(
-            onClick = { navigateToAddProgress() },
+            onClick = {
+                viewModel.editingAchievement = null
+                navigateToAddProgress()
+            },
             modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 60.dp, end = 16.dp),
             containerColor = colors.primary,
             contentColor = colors.onPrimary,

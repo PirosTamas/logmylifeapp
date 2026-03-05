@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.logmylifeapp.Screen
-import com.example.logmylifeapp.viewmodel.HomeViewModel
 import com.example.logmylifeapp.model.AchievementCategory
 import com.example.logmylifeapp.model.AchievementProgress
 import com.example.logmylifeapp.model.WorkoutExerciseLog

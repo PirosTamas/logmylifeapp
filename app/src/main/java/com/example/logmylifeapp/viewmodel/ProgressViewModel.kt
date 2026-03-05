@@ -1,5 +1,8 @@
 package com.example.logmylifeapp.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.logmylifeapp.Graph
@@ -9,8 +12,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val achievementProgressRepository: AchievementProgressRepository = Graph.achievementProgressRepository) :
+class ProgressViewModel(private val achievementProgressRepository: AchievementProgressRepository = Graph.achievementProgressRepository) :
     ViewModel() {
+
+    var editingAchievement: AchievementProgress? by mutableStateOf(null)
 
     val getAllAchievementProgresses: Flow<List<AchievementProgress>> =
         achievementProgressRepository.getAchievementProgresses()
@@ -29,6 +34,5 @@ class HomeViewModel(private val achievementProgressRepository: AchievementProgre
 
     fun getAchievementProgress(id: Int): Flow<AchievementProgress> {
         return achievementProgressRepository.getAchievementProgressById(id)
-
     }
 }

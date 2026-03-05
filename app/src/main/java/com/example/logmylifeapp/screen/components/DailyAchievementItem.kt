@@ -29,13 +29,13 @@ import com.example.logmylifeapp.R
 import com.example.logmylifeapp.model.AchievementProgress
 import com.example.logmylifeapp.ui.theme.LocalAppColors
 import com.example.logmylifeapp.ui.theme.Orange
-import com.example.logmylifeapp.viewmodel.HomeViewModel
+import com.example.logmylifeapp.viewmodel.ProgressViewModel
 
 @Composable
 fun DailyAchievementItem(
     achievement: AchievementProgress,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
+    viewModel: ProgressViewModel
 ) {
     val colors = LocalAppColors.current
 
@@ -94,14 +94,19 @@ fun DailyAchievementItem(
         }
         Checkbox(
             checked = achievement.dayChecked,
-            onCheckedChange = {
-                if (!achievement.dayChecked) {
-                    viewModel.updateAchievementProgress(
-                        achievementProgress = achievement.copy(
-                            dayChecked = true
-                        )
+            onCheckedChange = { isChecked ->
+                val updated = if (isChecked) {
+                    achievement.copy(
+                        dayChecked = true,
+                        currentSession = (achievement.currentSession + 1).coerceAtMost(achievement.numberOfSessions)
+                    )
+                } else {
+                    achievement.copy(
+                        dayChecked = false,
+                        currentSession = (achievement.currentSession - 1).coerceAtLeast(0)
                     )
                 }
+                viewModel.updateAchievementProgress(updated)
             },
             colors = CheckboxDefaults.colors(
                 checkedColor = colors.primary,

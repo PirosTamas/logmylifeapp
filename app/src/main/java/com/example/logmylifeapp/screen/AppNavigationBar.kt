@@ -24,7 +24,7 @@ fun AppNavigationBar(navController: NavController){
     val currentRoute = backStackEntry?.destination?.route
 
     val selectedIndex = when (currentRoute){
-        Screen.HomeScreen.route -> 0
+        Screen.ProgressHomeScreen.route -> 0
         Screen.WorkoutHomeScreen.route -> 1
         Screen.YearInPixelsScreen.route -> 2
         Screen.SettingsHomeScreen.route -> 3
@@ -38,7 +38,7 @@ fun AppNavigationBar(navController: NavController){
             shape = SegmentedButtonDefaults.itemShape(index = 0, count = 4),
             selected = selectedIndex == 0,
             onClick = {
-                navController.navigate(Screen.HomeScreen.route) { launchSingleTop = true }
+                navController.navigate(Screen.ProgressHomeScreen.route) { launchSingleTop = true }
             },
             label = { Icon(painterResource(R.drawable.outline_analytics_24), null) }
         )
