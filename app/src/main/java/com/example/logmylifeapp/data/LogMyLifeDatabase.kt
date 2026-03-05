@@ -14,6 +14,8 @@ import com.example.logmylifeapp.dao.WorkoutExerciseLogDao
 import com.example.logmylifeapp.dao.WorkoutExerciseSetLogDao
 import com.example.logmylifeapp.dao.WorkoutPlanDao
 import com.example.logmylifeapp.dao.WorkoutPlanExerciseCrossRefDao
+import com.example.logmylifeapp.dao.WorkoutPlanStretchCrossRefDao
+import com.example.logmylifeapp.dao.WorkoutPlanWarmupCrossRefDao
 import com.example.logmylifeapp.dao.WorkoutSessionDao
 import com.example.logmylifeapp.dao.WorkoutSummaryDao
 import com.example.logmylifeapp.model.AchievementProgress
@@ -22,11 +24,25 @@ import com.example.logmylifeapp.model.WorkoutExerciseLog
 import com.example.logmylifeapp.model.WorkoutExerciseSetLog
 import com.example.logmylifeapp.model.WorkoutPlan
 import com.example.logmylifeapp.model.WorkoutPlanExerciseCrossRef
+import com.example.logmylifeapp.model.WorkoutPlanStretchCrossRef
+import com.example.logmylifeapp.model.WorkoutPlanWarmupCrossRef
 import com.example.logmylifeapp.model.WorkoutSession
 
 @Database(
-    entities = [AchievementProgress::class, DailyLifeDataQuestion::class, DailyLifeDataAnswer::class, WorkoutPlan::class, WorkoutExercise::class, WorkoutPlanExerciseCrossRef::class, WorkoutSession::class, WorkoutExerciseLog::class, WorkoutExerciseSetLog::class],
-    version = 1,
+    entities = [
+        AchievementProgress::class,
+        DailyLifeDataQuestion::class,
+        DailyLifeDataAnswer::class,
+        WorkoutPlan::class,
+        WorkoutExercise::class,
+        WorkoutPlanExerciseCrossRef::class,
+        WorkoutPlanWarmupCrossRef::class,
+        WorkoutPlanStretchCrossRef::class,
+        WorkoutSession::class,
+        WorkoutExerciseLog::class,
+        WorkoutExerciseSetLog::class
+    ],
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -37,11 +53,11 @@ abstract class LogMyLifeDatabase : RoomDatabase() {
     abstract fun workoutPlanDao(): WorkoutPlanDao
     abstract fun workoutExerciseDao(): WorkoutExerciseDao
     abstract fun workoutPlanExerciseCrossRefDao(): WorkoutPlanExerciseCrossRefDao
+    abstract fun workoutPlanWarmupCrossRefDao(): WorkoutPlanWarmupCrossRefDao
+    abstract fun workoutPlanStretchCrossRefDao(): WorkoutPlanStretchCrossRefDao
     abstract fun workoutSessionDao(): WorkoutSessionDao
     abstract fun workoutExerciseLogDao(): WorkoutExerciseLogDao
     abstract fun workoutExerciseSetLogDao(): WorkoutExerciseSetLogDao
-    abstract  fun currentWorkoutExerciseDao(): CurrentWorkoutExerciseDao
-    abstract  fun workoutSummaryDao(): WorkoutSummaryDao
-
-
+    abstract fun currentWorkoutExerciseDao(): CurrentWorkoutExerciseDao
+    abstract fun workoutSummaryDao(): WorkoutSummaryDao
 }

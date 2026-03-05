@@ -46,15 +46,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.logmylifeapp.R
 import com.example.logmylifeapp.Screen
+import com.example.logmylifeapp.model.ExercisePhase
 import com.example.logmylifeapp.ui.theme.LocalAppColors
-import com.example.logmylifeapp.model.WorkoutExercise
-import com.example.logmylifeapp.model.WorkoutExerciseLog
-import com.example.logmylifeapp.model.WorkoutExerciseSetLog
-import com.example.logmylifeapp.screen.components.WorkoutPlanElement
-import com.example.logmylifeapp.viewmodel.DailyLifeDataViewModel
-import com.example.logmylifeapp.viewmodel.WorkoutHomeViewModel
-import com.example.logmylifeapp.viewmodel.WorkoutPreviewViewModel
-import com.example.logmylifeapp.viewmodel.WorkoutPreviewViewModelFactory
 import com.example.logmylifeapp.viewmodel.WorkoutSessionViewModel
 import kotlinx.coroutines.launch
 
@@ -64,16 +57,16 @@ fun WorkoutPreviewScreen(
     modifier: Modifier = Modifier,
     navigateToHome: () -> Unit,
     navigateToSet: () -> Unit,
+    navigateToSummary: () -> Unit,
 ) {
-    val currentExerciseNullable by
-    viewModel.workoutExercise.collectAsState(initial = null)
+    val currentExerciseNullable by viewModel.workoutExercise.collectAsState(initial = null)
+    val phase by viewModel.phase.collectAsState()
     val colors = LocalAppColors.current
-    val coroutineScope = rememberCoroutineScope()
 
     val workoutExercise = currentExerciseNullable
 
     if (workoutExercise == null) {
-        Text("valami szar", fontSize = 32.sp)
+        // Loading state — exercise not yet fetched from the database
         return
     } else {
 
@@ -296,8 +289,10 @@ fun WorkoutPreviewScreen(
                             ),
                             shape = RoundedCornerShape(12.dp),
                             onClick = {
-                                coroutineScope.launch {
+                                if (phase == ExercisePhase.MAIN) {
                                     navigateToSet()
+                                } else {
+                                    viewModel.onWarmupOrStretchDone(navigateToSummary)
                                 }
                             }) {
                             Row(
@@ -310,12 +305,11 @@ fun WorkoutPreviewScreen(
                                     modifier = Modifier.size(20.dp),
                                 )
                                 Text(
-                                    text = "Start workout".uppercase(),
+                                    text = if (phase == ExercisePhase.MAIN) "Start workout".uppercase() else "Done".uppercase(),
                                     fontSize = 18.sp,
                                     lineHeight = 28.sp,
                                     fontWeight = FontWeight.Bold,
                                 )
-
                             }
 
                         }

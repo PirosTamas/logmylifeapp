@@ -9,6 +9,8 @@ import com.example.logmylifeapp.data.LogMyLifeDatabase
 import com.example.logmylifeapp.model.WorkoutExerciseLog
 import com.example.logmylifeapp.model.WorkoutExerciseSetLog
 import com.example.logmylifeapp.model.WorkoutPlanExerciseCrossRef
+import com.example.logmylifeapp.model.WorkoutPlanStretchCrossRef
+import com.example.logmylifeapp.model.WorkoutPlanWarmupCrossRef
 import com.example.logmylifeapp.repository.CurrentWorkoutExerciseRepository
 import com.example.logmylifeapp.repository.DailyLifeDataAnswerRepository
 import com.example.logmylifeapp.repository.DailyLifeDataQuestionRepository
@@ -16,6 +18,8 @@ import com.example.logmylifeapp.repository.WorkoutExerciseRepository
 import com.example.logmylifeapp.repository.WorkoutExerciseSetLogRepository
 import com.example.logmylifeapp.repository.WorkoutPlanExerciseCrossRefRepository
 import com.example.logmylifeapp.repository.WorkoutPlanRepository
+import com.example.logmylifeapp.repository.WorkoutPlanStretchCrossRefRepository
+import com.example.logmylifeapp.repository.WorkoutPlanWarmupCrossRefRepository
 import com.example.logmylifeapp.repository.WorkoutSessionRepository
 import com.example.logmylifeapp.repository.WorkoutExerciseLogRepository
 import com.example.logmylifeapp.repository.WorkoutSummaryRepository
@@ -63,6 +67,14 @@ object Graph {
         WorkoutPlanExerciseCrossRefRepository(dao = database.workoutPlanExerciseCrossRefDao())
     }
 
+    val workoutPlanWarmupCrossRefRepository by lazy {
+        WorkoutPlanWarmupCrossRefRepository(dao = database.workoutPlanWarmupCrossRefDao())
+    }
+
+    val workoutPlanStretchCrossRefRepository by lazy {
+        WorkoutPlanStretchCrossRefRepository(dao = database.workoutPlanStretchCrossRefDao())
+    }
+
     val workoutSummaryRepository by lazy {
         WorkoutSummaryRepository(dao = database.workoutSummaryDao())
     }
@@ -81,6 +93,8 @@ object Graph {
                         val workoutPlanDao = database.workoutPlanDao()
                         val workoutExerciseDao = database.workoutExerciseDao()
                         val crossRefDao = database.workoutPlanExerciseCrossRefDao()
+                        val warmupCrossRefDao = database.workoutPlanWarmupCrossRefDao()
+                        val stretchCrossRefDao = database.workoutPlanStretchCrossRefDao()
                         val workoutSessionDao = database.workoutSessionDao()
                         val workoutExerciseLogDao = database.workoutExerciseLogDao()
                         val workoutExerciseSetLogDao = database.workoutExerciseSetLogDao()
@@ -94,11 +108,13 @@ object Graph {
 
                         val initialWorkoutIds =
                             workoutPlanDao.addWorkoutPlans(DummyData.workoutPlans())
-                        val initialWorkoutPlanId = initialQuestionIds.first().toInt()
-                        val exerciseIds = workoutExerciseDao.addWorkoutExercises(
-                            DummyData.workoutExercises(
-                            )
-                        );
+
+                        val initialWorkoutPlanId = initialWorkoutIds.first().toInt()
+
+                        val exerciseIds = workoutExerciseDao.addWorkoutExercises(DummyData.workoutExercises())
+                        val warmupExerciseIds = workoutExerciseDao.addWorkoutExercises(DummyData.warmupExercises())
+                        val stretchExerciseIds = workoutExerciseDao.addWorkoutExercises(DummyData.stretchExercises())
+
 
                         exerciseIds.forEachIndexed { index, exerciseId ->
                             crossRefDao.addWorkoutPlanExerciseCrossRef(
@@ -106,6 +122,27 @@ object Graph {
                                     planId = initialWorkoutPlanId,
                                     exerciseId = exerciseId.toInt(),
                                     orderInWorkout = index
+                                )
+                            )
+                        }
+
+                        warmupExerciseIds.forEachIndexed { index, exerciseId ->
+                            warmupCrossRefDao.addWorkoutPlanWarmupCrossRef(
+                                WorkoutPlanWarmupCrossRef(
+                                    planId = initialWorkoutPlanId,
+                                    exerciseId = exerciseId.toInt(),
+                                    orderInWarmup = index
+                                )
+                            )
+                        }
+
+                        // Seed stretch cross-refs
+                        stretchExerciseIds.forEachIndexed { index, exerciseId ->
+                            stretchCrossRefDao.addWorkoutPlanStretchCrossRef(
+                                WorkoutPlanStretchCrossRef(
+                                    planId = initialWorkoutPlanId,
+                                    exerciseId = exerciseId.toInt(),
+                                    orderInStretch = index
                                 )
                             )
                         }

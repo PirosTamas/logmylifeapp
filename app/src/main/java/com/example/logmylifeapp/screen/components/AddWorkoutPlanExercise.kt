@@ -45,7 +45,12 @@ import com.example.logmylifeapp.model.WorkoutExercise
 import com.example.logmylifeapp.ui.theme.LocalAppColors
 
 @Composable
-fun AddWorkoutPlanExercise(addMoreClick: () -> Unit, exercises: List<WorkoutExercise>, emptyListMessage: String) {
+fun AddWorkoutPlanExercise(
+    label: String,
+    addMoreClick: () -> Unit,
+    exercises: List<WorkoutExercise>,
+    emptyListMessage: String
+) {
     val colors = LocalAppColors.current
     val green = colors.primary
 
@@ -66,7 +71,7 @@ fun AddWorkoutPlanExercise(addMoreClick: () -> Unit, exercises: List<WorkoutExer
                     tint = colors.primary
                 )
                 Text(
-                    text = "Warmup",
+                    text = label,
                     color = colors.onBackground,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
@@ -204,6 +209,6 @@ fun AddWorkoutPlanExercisePreview() {
         color = Color(0xFF102216),
         modifier = Modifier.fillMaxWidth()
     ) {
-        AddWorkoutPlanExercise(exercises = listOf(), addMoreClick = {}, emptyListMessage = "No stretches added yet")
+        AddWorkoutPlanExercise(label = "Stretch", exercises = listOf(), addMoreClick = {}, emptyListMessage = "No stretches added yet")
     }
 }

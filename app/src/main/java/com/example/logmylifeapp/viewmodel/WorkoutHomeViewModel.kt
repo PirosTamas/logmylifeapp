@@ -19,7 +19,7 @@ class WorkoutHomeViewModel(
     private val workoutPlanRepository: WorkoutPlanRepository = Graph.workoutPlanRepository,
     private val workoutSessionRepository: WorkoutSessionRepository = Graph.workoutSessionRepository
 ) : ViewModel() {
-    
+
     val workoutPlansForToday: Flow<List<WorkoutPlan>> = workoutPlanRepository.getWorkoutPlanForToday()
 
     suspend fun addWorkoutSession(planId: Int): Long {

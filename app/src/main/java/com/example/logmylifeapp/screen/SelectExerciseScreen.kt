@@ -65,12 +65,23 @@ import com.example.logmylifeapp.viewmodel.AddWorkoutPlanViewModel
 @Composable
 fun SelectExerciseScreen(viewModel: AddWorkoutPlanViewModel, navigateToAddWorkoutPlan: () -> Unit, workoutExerciseType: WorkoutExerciseType) {
     val exercises by viewModel.workoutExercises.collectAsState()
+    val warmups by viewModel.warmups.collectAsState()
+    val mainExercises by viewModel.mainExercises.collectAsState()
+    val stretches by viewModel.stretches.collectAsState()
     var query by remember { mutableStateOf("") }
 
-    val filteredExercises by remember(query, exercises) {
+    val alreadyAddedIds = remember(warmups, mainExercises, stretches, workoutExerciseType) {
+        when (workoutExerciseType) {
+            WorkoutExerciseType.WARMUP -> warmups.map { it.id }.toSet()
+            WorkoutExerciseType.MAIN -> mainExercises.map { it.id }.toSet()
+            WorkoutExerciseType.STRETCH -> stretches.map { it.id }.toSet()
+        }
+    }
+
+    val filteredExercises by remember(query, exercises, alreadyAddedIds) {
         derivedStateOf {
             exercises.filter {
-                it.name.contains(query, ignoreCase = true)
+                it.name.contains(query, ignoreCase = true) && it.id !in alreadyAddedIds
             }
         }
     }

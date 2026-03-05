@@ -21,66 +21,41 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import android.widget.Toast
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.logmylifeapp.R
 import com.example.logmylifeapp.enums.WorkoutExerciseType
 import com.example.logmylifeapp.ui.theme.LocalAppColors
-import com.example.logmylifeapp.model.WorkoutExercise
 import com.example.logmylifeapp.screen.components.AddWorkoutPlanExercise
 import com.example.logmylifeapp.screen.components.FormControl
-import com.example.logmylifeapp.screen.components.InputField
 import com.example.logmylifeapp.viewmodel.AddWorkoutPlanViewModel
-import java.time.DayOfWeek
-import java.time.LocalDate
 
 @Composable
 fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () -> Unit, navigateToSelectExercise: (WorkoutExerciseType) -> Unit) {
     val colors = LocalAppColors.current
     val context = LocalContext.current
     val warmups by viewModel.warmups.collectAsState()
-//    val warmups = listOf(
-//        WorkoutExercise(
-//            name = "Squats",
-//            description = "Leg exercise",
-//            equipmentNeeded = setOf("None"),
-//            predictedTimeInMinutes = 10,
-//            illustrationResId = R.drawable.warmup2,
-//            illustrationUri = null,
-//            numberOfSets = 3,
-//            restTimeBetweenSets = 30
-//        ),
-//        WorkoutExercise(
-//            name = "Push-ups",
-//            description = "Upper body exercise",
-//            equipmentNeeded = setOf("None"),
-//            predictedTimeInMinutes = 5,
-//            illustrationResId = R.drawable.warmup1,
-//            illustrationUri = null,
-//            numberOfSets = 3,
-//            restTimeBetweenSets = 30
-//        )
-//    )
+    val mainExercises by viewModel.mainExercises.collectAsState()
+    val stretches by viewModel.stretches.collectAsState()
 
+    // Fields come from the ViewModel so their values survive navigating to SelectExerciseScreen and back
     val fields = listOf(
-        InputField.TextField(label = "Name", placeholder = "e.g. Hypertrophy Split"),
-        InputField.NumberField(label = "Sessions", placeholder = "3"),
-        InputField.DateField(label = "Start Date"),
-        InputField.MultiSelectDays(label = "Scheduled Days"),
+        viewModel.planName,
+        viewModel.planSessions,
+        viewModel.planStartDate,
+        viewModel.planScheduledDays,
     )
 
     Scaffold(
@@ -136,6 +111,8 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
 
                     FormControl(
@@ -143,33 +120,39 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
                         modifier = Modifier.fillMaxWidth()
                     )
 
-
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-
-
-                        FormControl(
-                            inputField = fields[1],
-                            modifier = Modifier.weight(1f)
-                        )
-
-
-                        FormControl(
-                            inputField = fields[2],
-                            modifier = Modifier.weight(1f)
-                        )
+                        FormControl(inputField = fields[1], modifier = Modifier.weight(1f))
+                        FormControl(inputField = fields[2], modifier = Modifier.weight(1f))
                     }
-
 
                     FormControl(
                         inputField = fields[3],
                         modifier = Modifier.fillMaxWidth()
                     )
-                    AddWorkoutPlanExercise(exercises = warmups, addMoreClick = {
-                        navigateToSelectExercise(WorkoutExerciseType.WARMUP)
-                    }, emptyListMessage = "No workout added yet")
+
+                    AddWorkoutPlanExercise(
+                        label = "Warmup",
+                        exercises = warmups,
+                        addMoreClick = { navigateToSelectExercise(WorkoutExerciseType.WARMUP) },
+                        emptyListMessage = "No warmups added yet"
+                    )
+
+                    AddWorkoutPlanExercise(
+                        label = "Exercises",
+                        exercises = mainExercises,
+                        addMoreClick = { navigateToSelectExercise(WorkoutExerciseType.MAIN) },
+                        emptyListMessage = "No exercises added yet"
+                    )
+
+                    AddWorkoutPlanExercise(
+                        label = "Stretches",
+                        exercises = stretches,
+                        addMoreClick = { navigateToSelectExercise(WorkoutExerciseType.STRETCH) },
+                        emptyListMessage = "No stretches added yet"
+                    )
                 }
                 Box(
                     modifier = Modifier
@@ -186,32 +169,12 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
                         ),
                         shape = RoundedCornerShape(12.dp),
                         onClick = {
-                            val name = (fields[0] as InputField.TextField).value
-                            val scheduledDays =
-                                (fields[1] as InputField.MultiSelectDays).selectedDays
-                            val numberOfSessions = (fields[2] as InputField.NumberField).value
-                            val startDate =
-                                (fields[3] as InputField.DateField).date ?: LocalDate.now()
-
-
-//            if (name.isNotBlank() && numberOfSessions != null) {
-//                val newWorkoutPlan = WorkoutPlan(
-//                    id = 0,
-//                    name = name,
-//                    numberOfSessions = numberOfSessions,
-//                    scheduledDays = scheduledDays,
-//                    startDate = startDate,
-//
-//                )
-//
-//                viewModel.addWorkoutPlan(newWorkoutPlan)
-//
-//                navigateToHome()
-//            } else {
-//                Toast.makeText(context, "Please fill all required fields", Toast.LENGTH_SHORT).show()
-//            }
-
-                            navigateToHome()
+                            if (viewModel.planName.value.isNotBlank()) {
+                                viewModel.addWorkoutPlanWithExercises()
+                                navigateToHome()
+                            } else {
+                                Toast.makeText(context, "Please enter a plan name", Toast.LENGTH_SHORT).show()
+                            }
                         }) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(

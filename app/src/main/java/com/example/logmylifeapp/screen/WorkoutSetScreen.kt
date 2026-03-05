@@ -74,6 +74,7 @@ fun WorkoutSetScreen(
     val exerciseNullable by viewModel.workoutExercise.collectAsState(initial = null)
 
 
+    val planName by viewModel.planName.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
     val workout = currentWorkoutNullable
@@ -84,16 +85,9 @@ fun WorkoutSetScreen(
     val colors = LocalAppColors.current
 
     if (setIndex == null || exerciseIndex == null || workout == null || exercise == null) {
-        Text("valami szar", fontSize = 32.sp)
+        // Loading state — data not yet available from the database
         return
     } else {
-////        Text(text = workout.numberOfSets.toString())
-////        Column(modifier = Modifier.padding(top = 55.dp)) {
-////            Text(fontSize = 33.sp, text = "SessionId: ${viewModel.sessionId}")
-////            Text(fontSize = 33.sp, text = "SetIndex: $setIndex")
-////            Text(fontSize = 33.sp, text = "ExerciseIndex: $exerciseIndex")
-////            Text(fontSize = 33.sp, text = "Workout: $exerciseIndex")
-////        }
 
         var completedWeight by remember(workout) {
             mutableIntStateOf(workout.weight.toInt())
@@ -102,9 +96,6 @@ fun WorkoutSetScreen(
         var completedReps by remember(workout) {
             mutableIntStateOf(workout.targetReps)
         }
-//        val setIndex = 0
-//        val workout =
-//            CurrentWorkoutExerciseDTO("Barbell squats", 10, 10, 50f, 0, 3, 30, LocalDate.now())
         Scaffold(
             modifier = modifier.fillMaxSize(),
             containerColor = colors.background,
@@ -135,14 +126,14 @@ fun WorkoutSetScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Select " + workout.exerciseName,
+                            text = workout.exerciseName,
                             fontSize = 18.sp,
                             lineHeight = 28.sp,
                             fontWeight = FontWeight.Bold,
                             color = colors.onBackground
                         )
                         Text(
-                            text = "Legs day".uppercase(),
+                            text = planName.uppercase(),
                             fontSize = 12.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight.Medium,

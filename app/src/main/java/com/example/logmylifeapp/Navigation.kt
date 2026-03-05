@@ -147,7 +147,7 @@ fun Navigation(
             }
 
             navigation(
-                route = "if /{sessionId}",
+                route = "current_workout/{sessionId}",
                 startDestination = Screen.WorkoutPreviewScreen.route,
                 arguments = listOf(
                     navArgument("sessionId") { type = NavType.LongType }
@@ -180,6 +180,9 @@ fun Navigation(
                                 launchSingleTop = true
                             }
                         },
+                        navigateToSummary = {
+                            navController.navigate(Screen.WorkoutSummaryScreen.createRoute(sessionId))
+                        }
                     )
                 }
 

@@ -94,6 +94,52 @@ object DummyData {
         )
     )
 
+    fun warmupExercises() = listOf(
+        WorkoutExercise(
+            name = "Jumping Jacks",
+            description = "Full body warmup to raise heart rate before training",
+            equipmentNeeded = setOf("None"),
+            predictedTimeInMinutes = 3,
+            illustrationResId = R.drawable.warmup1,
+            illustrationUri = null,
+            numberOfSets = 1,
+            restTimeBetweenSets = 0
+        ),
+        WorkoutExercise(
+            name = "Arm Circles",
+            description = "Shoulder mobility warmup",
+            equipmentNeeded = setOf("None"),
+            predictedTimeInMinutes = 2,
+            illustrationResId = R.drawable.warmup2,
+            illustrationUri = null,
+            numberOfSets = 1,
+            restTimeBetweenSets = 0
+        )
+    )
+
+    fun stretchExercises() = listOf(
+        WorkoutExercise(
+            name = "Hamstring Stretch",
+            description = "Hold each side for 30 seconds to improve flexibility",
+            equipmentNeeded = setOf("None"),
+            predictedTimeInMinutes = 2,
+            illustrationResId = R.drawable.warmup1,
+            illustrationUri = null,
+            numberOfSets = 1,
+            restTimeBetweenSets = 0
+        ),
+        WorkoutExercise(
+            name = "Chest Opener",
+            description = "Interlace fingers behind back and open chest",
+            equipmentNeeded = setOf("None"),
+            predictedTimeInMinutes = 2,
+            illustrationResId = R.drawable.warmup2,
+            illustrationUri = null,
+            numberOfSets = 1,
+            restTimeBetweenSets = 0
+        )
+    )
+
 
     fun workoutSessions(planId: Int) = listOf(
         WorkoutSession(

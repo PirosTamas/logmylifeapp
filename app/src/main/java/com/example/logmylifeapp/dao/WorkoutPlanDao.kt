@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.logmylifeapp.model.DailyLifeDataAnswer
 import com.example.logmylifeapp.model.DailyLifeDataQuestion
@@ -17,6 +18,9 @@ import java.time.LocalDate
 interface WorkoutPlanDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addWorkoutPlan(question: WorkoutPlan)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWorkoutPlanGetId(plan: WorkoutPlan): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addWorkoutPlans(answers: List<WorkoutPlan>): List<Long>
@@ -38,6 +42,7 @@ interface WorkoutPlanDao {
         """)
     fun getWorkoutPlanForDay(dayOfWeek: String): Flow<List<WorkoutPlan>>
 
+    @Transaction
     @Query("SELECT * FROM workout_plan WHERE id = :planId")
     fun getWorkoutPlanWithExercises(planId: Int): Flow<WorkoutPlanWithExercises>
 

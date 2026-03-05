@@ -16,6 +16,9 @@ class WorkoutPlanRepository(
         dao.addWorkoutPlan(workoutPlan)
     }
 
+    suspend fun insertWorkoutPlanGetId(workoutPlan: WorkoutPlan): Long =
+        dao.insertWorkoutPlanGetId(workoutPlan)
+
     suspend fun addWorkoutPlans(workoutPlans: List<WorkoutPlan>) {
         dao.addWorkoutPlans(workoutPlans)
     }
