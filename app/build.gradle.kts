@@ -82,4 +82,7 @@ dependencies {
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    // Drag-and-drop for LazyRow / LazyColumn
+    implementation("sh.calvin.reorderable:reorderable:2.4.3")
 }

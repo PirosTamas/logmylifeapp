@@ -50,7 +50,6 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
     val mainExercises by viewModel.mainExercises.collectAsState()
     val stretches by viewModel.stretches.collectAsState()
 
-    // Fields come from the ViewModel so their values survive navigating to SelectExerciseScreen and back
     val fields = listOf(
         viewModel.planName,
         viewModel.planSessions,
@@ -137,21 +136,27 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
                         label = "Warmup",
                         exercises = warmups,
                         addMoreClick = { navigateToSelectExercise(WorkoutExerciseType.WARMUP) },
-                        emptyListMessage = "No warmups added yet"
+                        emptyListMessage = "No warmups added yet",
+                        onRemove = { viewModel.removeExercise(WorkoutExerciseType.WARMUP, it) },
+                        onReorder = { viewModel.reorderExercises(WorkoutExerciseType.WARMUP, it) }
                     )
 
                     AddWorkoutPlanExercise(
                         label = "Exercises",
                         exercises = mainExercises,
                         addMoreClick = { navigateToSelectExercise(WorkoutExerciseType.MAIN) },
-                        emptyListMessage = "No exercises added yet"
+                        emptyListMessage = "No exercises added yet",
+                        onRemove = { viewModel.removeExercise(WorkoutExerciseType.MAIN, it) },
+                        onReorder = { viewModel.reorderExercises(WorkoutExerciseType.MAIN, it) }
                     )
 
                     AddWorkoutPlanExercise(
                         label = "Stretches",
                         exercises = stretches,
                         addMoreClick = { navigateToSelectExercise(WorkoutExerciseType.STRETCH) },
-                        emptyListMessage = "No stretches added yet"
+                        emptyListMessage = "No stretches added yet",
+                        onRemove = { viewModel.removeExercise(WorkoutExerciseType.STRETCH, it) },
+                        onReorder = { viewModel.reorderExercises(WorkoutExerciseType.STRETCH, it) }
                     )
                 }
                 Box(
@@ -199,11 +204,5 @@ fun AddWorkoutPlanScreen(viewModel: AddWorkoutPlanViewModel, navigateToHome: () 
     )
 
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun AddWorkoutPlanPreview() {
-//    AddWorkoutPlanScreen(navigateToHome = {}, navigateToSelectExercise = {})
-//}
 
 

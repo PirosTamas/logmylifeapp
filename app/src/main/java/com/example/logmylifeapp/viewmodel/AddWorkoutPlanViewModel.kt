@@ -95,6 +95,22 @@ class AddWorkoutPlanViewModel(
         }
     }
 
+    fun removeExercise(type: WorkoutExerciseType, exercise: WorkoutExercise) {
+        when (type) {
+            WorkoutExerciseType.WARMUP -> _warmups.value = _warmups.value - exercise
+            WorkoutExerciseType.MAIN -> _mainExercises.value = _mainExercises.value - exercise
+            WorkoutExerciseType.STRETCH -> _stretches.value = _stretches.value - exercise
+        }
+    }
+
+    fun reorderExercises(type: WorkoutExerciseType, newOrder: List<WorkoutExercise>) {
+        when (type) {
+            WorkoutExerciseType.WARMUP -> _warmups.value = newOrder
+            WorkoutExerciseType.MAIN -> _mainExercises.value = newOrder
+            WorkoutExerciseType.STRETCH -> _stretches.value = newOrder
+        }
+    }
+
     fun toggleExerciseSelection(id: Int) {
         val current = _selectedExerciseIds.value.toMutableSet()
         if (current.contains(id)) current.remove(id) else current.add(id)
