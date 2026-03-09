@@ -1,0 +1,14 @@
+package com.example.logmylifeapp.dto
+
+import kotlinx.datetime.LocalDate
+
+data class CurrentWorkoutExerciseDTO (
+    val exerciseName: String,
+    val targetReps: Int,
+    val completedReps: Int,
+    val weight: Float,
+    val order: Int,
+    val numberOfSets: Int,
+    val restTimeBetweenSets: Int,
+    val date: LocalDate
+)

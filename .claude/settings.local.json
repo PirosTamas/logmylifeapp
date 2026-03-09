@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(__NEW_LINE_10b19ac949cfafc6__ mkdir:*)",
+      "Bash(./gradlew assembleDebug:*)",
+      "Read(//c/Program Files/Java/**)",
+      "Read(//c/Program Files/**)"
     ]
   }
 }

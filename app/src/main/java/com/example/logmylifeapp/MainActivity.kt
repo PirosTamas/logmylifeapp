@@ -1,8 +1,5 @@
-@file:OptIn(ExperimentalPermissionsApi::class)
-
 package com.example.logmylifeapp
 
-import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,33 +20,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.logmylifeapp.screen.AppNavigationBar
 import com.example.logmylifeapp.ui.theme.LogMyLifeAppTheme
 import com.example.logmylifeapp.viewmodel.SettingsViewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    // Hilt injects SettingsViewModel automatically — no factory needed
     private val settingsViewModel: SettingsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            // Collect the dark mode preference — when it changes, recomposition
-            // triggers LogMyLifeAppTheme to swap the entire color scheme instantly
             val isDark by settingsViewModel.isDarkMode.collectAsState()
 
             val navController = rememberNavController()
-            val postNotificationPermission =
-                rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
-            LaunchedEffect(key1 = true) {
-                if (!postNotificationPermission.status.isGranted) {
-                    postNotificationPermission.launchPermissionRequest()
-                }
-            }
 
             LogMyLifeAppTheme(darkTheme = isDark) {
                 val navBackStackEntry = navController.currentBackStackEntryAsState()
@@ -74,7 +55,8 @@ class MainActivity : ComponentActivity() {
                                 AppNavigationBar(navController)
                             }
                         }
-                    }) { innerPadding ->
+                    }
+                ) { innerPadding ->
                     Navigation(paddingValues = innerPadding, navController = navController)
                 }
             }
