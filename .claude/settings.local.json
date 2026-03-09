@@ -5,7 +5,9 @@
       "Bash(__NEW_LINE_10b19ac949cfafc6__ mkdir:*)",
       "Bash(./gradlew assembleDebug:*)",
       "Read(//c/Program Files/Java/**)",
-      "Read(//c/Program Files/**)"
+      "Read(//c/Program Files/**)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

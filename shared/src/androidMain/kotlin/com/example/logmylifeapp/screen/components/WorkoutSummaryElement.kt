@@ -54,12 +54,21 @@ fun WorkoutSummaryElement(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Image(
-                modifier = Modifier.width(56.dp).aspectRatio(1f).clip(RoundedCornerShape(16.dp)).shadow(2.dp),
-                painter = painterResource(summary.illustrationResId),
-                contentDescription = summary.name,
-                contentScale = ContentScale.Fit
-            )
+            if (summary.illustrationResId != null) {
+                Image(
+                    modifier = Modifier.width(56.dp).aspectRatio(1f).clip(RoundedCornerShape(16.dp)).shadow(2.dp),
+                    painter = painterResource(summary.illustrationResId),
+                    contentDescription = summary.name,
+                    contentScale = ContentScale.Fit
+                )
+            } else {
+                Box(
+                    modifier = Modifier.width(56.dp).aspectRatio(1f).clip(RoundedCornerShape(16.dp)).background(colors.surfaceVariant),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(painter = painterResource(R.drawable.baseline_fitness_center_24), contentDescription = null, tint = colors.onSurfaceVariant, modifier = Modifier.size(32.dp))
+                }
+            }
             Column(modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 Text(text = summary.name, fontSize = 18.sp, lineHeight = 28.sp, fontWeight = FontWeight.SemiBold, color = colors.onSurface)
                 Text(text = "${summary.sets.size} sets", fontSize = 12.sp, lineHeight = 16.sp, fontWeight = FontWeight.SemiBold, color = colors.onSurfaceVariant)

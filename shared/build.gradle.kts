@@ -7,10 +7,8 @@ plugins {
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
         }
     }
 
@@ -23,7 +21,7 @@ kotlin {
             implementation(libs.androidx.datastore.preferences.core)
         }
         androidMain.dependencies {
-            implementation(platform("androidx.compose:compose-bom:2024.09.00"))
+            implementation(project.dependencies.platform(libs.androidx.compose.bom))
             implementation(libs.androidx.compose.ui)
             implementation(libs.androidx.compose.ui.graphics)
             implementation(libs.androidx.compose.ui.tooling.preview)

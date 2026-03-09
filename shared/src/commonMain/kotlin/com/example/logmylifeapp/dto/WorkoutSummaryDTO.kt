@@ -3,7 +3,7 @@ package com.example.logmylifeapp.dto
 data class WorkoutSessionFlatRow(
     val planName: String,
     val name: String,
-    val illustrationResId: Int,
+    val illustrationResId: Int?,
     val order: Int,
     val targetReps: Int,
     val completedReps: Int,
@@ -17,7 +17,7 @@ data class WorkoutSummaryDTO(
 
 data class WorkoutSummaryExerciseDTO(
     val name: String,
-    val illustrationResId: Int,
+    val illustrationResId: Int?,
     val sets: List<WorkoutSummarySetDTO>
 )
 
