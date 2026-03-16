@@ -7,7 +7,11 @@
       "Read(//c/Program Files/Java/**)",
       "Read(//c/Program Files/**)",
       "WebSearch",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(./gradlew :shared:generateCommonMainLogMyLifeDatabaseInterface:*)",
+      "Bash(mkdir:*)"
     ]
   }
 }

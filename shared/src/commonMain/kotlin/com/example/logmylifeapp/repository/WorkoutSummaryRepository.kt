@@ -1,24 +1,27 @@
 package com.example.logmylifeapp.repository
 
-import com.example.logmylifeapp.dao.WorkoutSummaryDao
+import com.example.logmylifeapp.data.LogMyLifeDatabase
 import com.example.logmylifeapp.dto.WorkoutSummaryDTO
 import com.example.logmylifeapp.dto.WorkoutSummaryExerciseDTO
 import com.example.logmylifeapp.dto.WorkoutSummarySetDTO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class WorkoutSummaryRepository(
-    private val dao: WorkoutSummaryDao,
-) {
+class WorkoutSummaryRepository(private val db: LogMyLifeDatabase) {
 
-    suspend fun getWorkoutSummaryBySessionId(sessionId: Long): WorkoutSummaryDTO {
-        val flatRows = dao.getWorkoutSessionFlatRowBySessionId(sessionId = sessionId)
-        val planName = flatRows.firstOrNull()?.planName ?: ""
+    suspend fun getWorkoutSummaryBySessionId(sessionId: Long): WorkoutSummaryDTO = withContext(Dispatchers.Default) {
+        val rows = db.workoutExerciseSetLogQueries
+            .getWorkoutSessionSummary(sessionId.toInt())
+            .executeAsList()
 
-        val exercises = flatRows.groupBy { it.name }
-            .map { (exerciseName, rows) ->
+        val planName = rows.firstOrNull()?.planName ?: ""
+
+        val exercises = rows.groupBy { it.name }
+            .map { (exerciseName, rowGroup) ->
                 WorkoutSummaryExerciseDTO(
                     name = exerciseName,
-                    illustrationResId = rows.first().illustrationResId,
-                    sets = rows.map {
+                    illustrationResId = rowGroup.first().illustrationResId,
+                    sets = rowGroup.map {
                         WorkoutSummarySetDTO(
                             order = it.order,
                             targetReps = it.targetReps,
@@ -28,11 +31,7 @@ class WorkoutSummaryRepository(
                     }
                 )
             }
-        return WorkoutSummaryDTO(
-            planName = planName,
-            exercises = exercises
-        )
+
+        WorkoutSummaryDTO(planName = planName, exercises = exercises)
     }
-
-
 }

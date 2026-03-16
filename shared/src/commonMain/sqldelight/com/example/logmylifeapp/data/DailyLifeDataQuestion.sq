@@ -1,0 +1,41 @@
+CREATE TABLE daily_life_data_question (
+    id INTEGER AS kotlin.Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    question TEXT NOT NULL,
+    scheduledDays TEXT NOT NULL,
+    startDate TEXT NOT NULL,
+    predefinedAnswers TEXT NOT NULL,
+    customAnswerAllowed INTEGER AS kotlin.Boolean NOT NULL
+);
+
+getAllQuestions:
+SELECT * FROM daily_life_data_question;
+
+getQuestionById:
+SELECT * FROM daily_life_data_question WHERE id = :id;
+
+addQuestion:
+INSERT OR IGNORE INTO daily_life_data_question (question, scheduledDays, startDate, predefinedAnswers, customAnswerAllowed)
+VALUES (:question, :scheduledDays, :startDate, :predefinedAnswers, :customAnswerAllowed);
+
+insertQuestion:
+INSERT OR REPLACE INTO daily_life_data_question (question, scheduledDays, startDate, predefinedAnswers, customAnswerAllowed)
+VALUES (:question, :scheduledDays, :startDate, :predefinedAnswers, :customAnswerAllowed);
+
+updateQuestion:
+UPDATE daily_life_data_question
+SET question = :question, scheduledDays = :scheduledDays, startDate = :startDate, predefinedAnswers = :predefinedAnswers, customAnswerAllowed = :customAnswerAllowed
+WHERE id = :id;
+
+deleteQuestion:
+DELETE FROM daily_life_data_question WHERE id = :id;
+
+getQuestionsForDay:
+SELECT * FROM daily_life_data_question
+WHERE scheduledDays LIKE '%' || :dayOfWeek || '%'
+AND id NOT IN (
+    SELECT questionId FROM daily_life_data_answer
+    WHERE createdAt = :day
+);
+
+lastInsertRowId:
+SELECT last_insert_rowid();

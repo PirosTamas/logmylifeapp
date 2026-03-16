@@ -67,7 +67,7 @@ class AddWorkoutPlanViewModel(
     }
 
     fun addWorkoutPlanWithExercises() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             val plan = WorkoutPlan(
                 name = planName.value,
                 scheduledDays = planScheduledDays.selectedDays,

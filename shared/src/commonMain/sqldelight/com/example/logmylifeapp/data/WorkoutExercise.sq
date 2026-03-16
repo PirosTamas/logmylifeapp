@@ -1,0 +1,72 @@
+CREATE TABLE workout_exercise (
+    id INTEGER AS kotlin.Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    equipmentNeeded TEXT NOT NULL,
+    predictedTimeInMinutes INTEGER AS kotlin.Int NOT NULL,
+    illustrationResId INTEGER AS kotlin.Int,
+    illustrationUri TEXT,
+    numberOfSets INTEGER AS kotlin.Int NOT NULL,
+    restTimeBetweenSets INTEGER AS kotlin.Int NOT NULL
+);
+
+getAllWorkoutExercises:
+SELECT * FROM workout_exercise;
+
+getWorkoutExerciseById:
+SELECT * FROM workout_exercise WHERE id = :id;
+
+addWorkoutExercise:
+INSERT OR IGNORE INTO workout_exercise (name, description, equipmentNeeded, predictedTimeInMinutes, illustrationResId, illustrationUri, numberOfSets, restTimeBetweenSets)
+VALUES (:name, :description, :equipmentNeeded, :predictedTimeInMinutes, :illustrationResId, :illustrationUri, :numberOfSets, :restTimeBetweenSets);
+
+insertWorkoutExercise:
+INSERT OR REPLACE INTO workout_exercise (name, description, equipmentNeeded, predictedTimeInMinutes, illustrationResId, illustrationUri, numberOfSets, restTimeBetweenSets)
+VALUES (:name, :description, :equipmentNeeded, :predictedTimeInMinutes, :illustrationResId, :illustrationUri, :numberOfSets, :restTimeBetweenSets);
+
+updateWorkoutExercise:
+UPDATE workout_exercise
+SET name = :name, description = :description, equipmentNeeded = :equipmentNeeded, predictedTimeInMinutes = :predictedTimeInMinutes, illustrationResId = :illustrationResId, illustrationUri = :illustrationUri, numberOfSets = :numberOfSets, restTimeBetweenSets = :restTimeBetweenSets
+WHERE id = :id;
+
+deleteWorkoutExercise:
+DELETE FROM workout_exercise WHERE id = :id;
+
+getExerciseBySessionIdAndOrder:
+SELECT we.* FROM workout_session ws
+JOIN workout_plan_exercise_cross_ref wpe ON ws.planId = wpe.planId
+JOIN workout_exercise we ON wpe.exerciseId = we.id
+WHERE ws.id = :sessionId AND wpe.orderInWorkout = :orderInWorkout;
+
+getMainExercisesForPlan:
+SELECT we.* FROM workout_exercise we
+JOIN workout_plan_exercise_cross_ref wpe ON we.id = wpe.exerciseId
+WHERE wpe.planId = :planId
+ORDER BY wpe.orderInWorkout;
+
+getWarmupsForPlan:
+SELECT we.* FROM workout_exercise we
+JOIN workout_plan_warmup_cross_ref wpw ON we.id = wpw.exerciseId
+WHERE wpw.planId = :planId
+ORDER BY wpw.orderInWarmup;
+
+getStretchesForPlan:
+SELECT we.* FROM workout_exercise we
+JOIN workout_plan_stretch_cross_ref wps ON we.id = wps.exerciseId
+WHERE wps.planId = :planId
+ORDER BY wps.orderInStretch;
+
+getWarmupBySessionIdAndOrder:
+SELECT we.* FROM workout_session ws
+JOIN workout_plan_warmup_cross_ref wpc ON ws.planId = wpc.planId
+JOIN workout_exercise we ON wpc.exerciseId = we.id
+WHERE ws.id = :sessionId AND wpc.orderInWarmup = :order;
+
+getStretchBySessionIdAndOrder:
+SELECT we.* FROM workout_session ws
+JOIN workout_plan_stretch_cross_ref wpc ON ws.planId = wpc.planId
+JOIN workout_exercise we ON wpc.exerciseId = we.id
+WHERE ws.id = :sessionId AND wpc.orderInStretch = :order;
+
+lastInsertRowId:
+SELECT last_insert_rowid();

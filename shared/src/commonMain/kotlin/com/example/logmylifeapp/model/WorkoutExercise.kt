@@ -1,11 +1,6 @@
 package com.example.logmylifeapp.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "workout_exercise")
 data class WorkoutExercise(
-    @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
     val description: String,

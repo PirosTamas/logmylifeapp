@@ -1,0 +1,32 @@
+CREATE TABLE daily_life_data_answer (
+    id INTEGER AS kotlin.Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    questionId INTEGER AS kotlin.Int NOT NULL,
+    answer TEXT NOT NULL,
+    createdAt TEXT NOT NULL,
+    FOREIGN KEY (questionId) REFERENCES daily_life_data_question(id) ON DELETE CASCADE
+);
+
+getAllAnswers:
+SELECT * FROM daily_life_data_answer;
+
+getAnswersForQuestion:
+SELECT * FROM daily_life_data_answer WHERE questionId = :questionId;
+
+addAnswer:
+INSERT OR IGNORE INTO daily_life_data_answer (questionId, answer, createdAt)
+VALUES (:questionId, :answer, :createdAt);
+
+addAnswers:
+INSERT OR REPLACE INTO daily_life_data_answer (questionId, answer, createdAt)
+VALUES (:questionId, :answer, :createdAt);
+
+updateAnswer:
+UPDATE daily_life_data_answer
+SET questionId = :questionId, answer = :answer, createdAt = :createdAt
+WHERE id = :id;
+
+deleteAnswer:
+DELETE FROM daily_life_data_answer WHERE id = :id;
+
+lastInsertRowId:
+SELECT last_insert_rowid();

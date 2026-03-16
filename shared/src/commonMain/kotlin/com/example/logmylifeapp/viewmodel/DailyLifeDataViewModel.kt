@@ -46,7 +46,7 @@ class DailyLifeDataViewModel(
 
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             val list = dailyLifeDataQuestionRepository.getUnansweredQuestionsForToday()
             _questions.value = list
         }
@@ -76,7 +76,7 @@ class DailyLifeDataViewModel(
     }
 
     fun finish() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             dailyLifeDataAnswerRepository.addAnswers(_answers.value.map { answer ->
                 DailyLifeDataAnswer(
                     questionId = answer.key,

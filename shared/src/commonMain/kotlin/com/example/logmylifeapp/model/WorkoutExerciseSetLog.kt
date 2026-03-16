@@ -1,20 +1,6 @@
 package com.example.logmylifeapp.model
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-
-@Entity(
-    tableName = "workout_exercise_set_log",
-    foreignKeys = [ForeignKey(
-        entity = WorkoutExerciseLog::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("exerciseLogId"),
-        onDelete = ForeignKey.CASCADE
-    )],
-)
 data class WorkoutExerciseSetLog(
-    @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val exerciseLogId: Int,
     val order: Int,

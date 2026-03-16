@@ -1,0 +1,28 @@
+CREATE TABLE achievement_progress (
+    id INTEGER AS kotlin.Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    scheduledDays TEXT NOT NULL,
+    currentSession INTEGER AS kotlin.Int NOT NULL,
+    numberOfSessions INTEGER AS kotlin.Int NOT NULL,
+    dayChecked INTEGER AS kotlin.Boolean NOT NULL,
+    startDate TEXT NOT NULL
+);
+
+getAllAchievementProgresses:
+SELECT * FROM achievement_progress;
+
+getAchievementProgressById:
+SELECT * FROM achievement_progress WHERE id = :id;
+
+addAchievementProgress:
+INSERT OR IGNORE INTO achievement_progress (name, category, scheduledDays, currentSession, numberOfSessions, dayChecked, startDate)
+VALUES (:name, :category, :scheduledDays, :currentSession, :numberOfSessions, :dayChecked, :startDate);
+
+updateAchievementProgress:
+UPDATE achievement_progress
+SET name = :name, category = :category, scheduledDays = :scheduledDays, currentSession = :currentSession, numberOfSessions = :numberOfSessions, dayChecked = :dayChecked, startDate = :startDate
+WHERE id = :id;
+
+deleteAchievementProgress:
+DELETE FROM achievement_progress WHERE id = :id;

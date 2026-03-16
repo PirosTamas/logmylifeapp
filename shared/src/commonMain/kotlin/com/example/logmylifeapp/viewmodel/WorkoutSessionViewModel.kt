@@ -218,7 +218,7 @@ class WorkoutSessionViewModel(
     }
 
     fun addWorkoutExerciseSetLog(workoutExerciseSetLog: WorkoutExerciseSetLog) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             workoutExerciseSetLogRepository.addWorkoutExerciseSetLog(workoutExerciseSetLog)
         }
     }

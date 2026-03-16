@@ -1,0 +1,22 @@
+CREATE TABLE workout_plan_warmup_cross_ref (
+    planId INTEGER AS kotlin.Int NOT NULL,
+    exerciseId INTEGER AS kotlin.Int NOT NULL,
+    orderInWarmup INTEGER AS kotlin.Int NOT NULL,
+    PRIMARY KEY (planId, exerciseId)
+);
+
+addWorkoutPlanWarmupCrossRef:
+INSERT OR IGNORE INTO workout_plan_warmup_cross_ref (planId, exerciseId, orderInWarmup)
+VALUES (:planId, :exerciseId, :orderInWarmup);
+
+insertWorkoutPlanWarmupCrossRef:
+INSERT OR REPLACE INTO workout_plan_warmup_cross_ref (planId, exerciseId, orderInWarmup)
+VALUES (:planId, :exerciseId, :orderInWarmup);
+
+deleteWorkoutPlanWarmupCrossRef:
+DELETE FROM workout_plan_warmup_cross_ref
+WHERE planId = :planId AND exerciseId = :exerciseId;
+
+getWarmupCountForSession:
+SELECT COUNT(*) FROM workout_plan_warmup_cross_ref
+WHERE planId = (SELECT planId FROM workout_session WHERE id = :sessionId);

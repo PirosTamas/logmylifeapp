@@ -1,0 +1,69 @@
+CREATE TABLE workout_exercise_set_log (
+    id INTEGER AS kotlin.Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    exerciseLogId INTEGER AS kotlin.Int NOT NULL,
+    `order` INTEGER AS kotlin.Int NOT NULL,
+    targetReps INTEGER AS kotlin.Int NOT NULL,
+    completedReps INTEGER AS kotlin.Int NOT NULL,
+    weight REAL AS kotlin.Float,
+    success INTEGER AS kotlin.Boolean NOT NULL,
+    description TEXT NOT NULL,
+    FOREIGN KEY (exerciseLogId) REFERENCES workout_exercise_log(id) ON DELETE CASCADE
+);
+
+addWorkoutExerciseSetLog:
+INSERT OR IGNORE INTO workout_exercise_set_log (exerciseLogId, `order`, targetReps, completedReps, weight, success, description)
+VALUES (:exerciseLogId, :order, :targetReps, :completedReps, :weight, :success, :description);
+
+insertWorkoutExerciseSetLog:
+INSERT OR REPLACE INTO workout_exercise_set_log (exerciseLogId, `order`, targetReps, completedReps, weight, success, description)
+VALUES (:exerciseLogId, :order, :targetReps, :completedReps, :weight, :success, :description);
+
+updateWorkoutExerciseSetLog:
+UPDATE workout_exercise_set_log
+SET exerciseLogId = :exerciseLogId, `order` = :order, targetReps = :targetReps, completedReps = :completedReps, weight = :weight, success = :success, description = :description
+WHERE id = :id;
+
+deleteWorkoutExerciseSetLog:
+DELETE FROM workout_exercise_set_log WHERE id = :id;
+
+getCurrentSetIndexBySessionIdAndExerciseIndex:
+SELECT COUNT(*) FROM workout_exercise_set_log wesl
+WHERE wesl.exerciseLogId = (
+    SELECT id FROM workout_exercise_log
+    WHERE sessionId = :sessionId
+    AND exerciseId = (
+        SELECT exerciseId FROM workout_plan_exercise_cross_ref
+        WHERE orderInWorkout = :exerciseIndex
+        AND planId = (SELECT planId FROM workout_session WHERE id = :sessionId)
+    )
+);
+
+getWorkoutExerciseBySessionIdAndExerciseIdAndSetIndex:
+SELECT we.name AS exerciseName, wesl.targetReps, wesl.completedReps, wesl.weight, wesl.`order`, we.numberOfSets, we.restTimeBetweenSets, ws.date
+FROM workout_exercise we
+JOIN workout_plan_exercise_cross_ref wpe ON we.id = wpe.exerciseId
+JOIN workout_plan wp ON wpe.planId = wp.id
+JOIN workout_session ws ON wp.id = ws.planId
+JOIN workout_exercise_log wel ON ws.id = wel.sessionId AND we.id = wel.exerciseId
+JOIN workout_exercise_set_log wesl ON wel.id = wesl.exerciseLogId
+WHERE ws.id = (
+    SELECT id FROM workout_session
+    WHERE planId = (SELECT ws2.planId FROM workout_session ws2 WHERE ws2.id = :sessionId)
+    AND completed = 1
+    ORDER BY date DESC
+    LIMIT 1
+)
+AND we.id = :exerciseId
+AND wesl.`order` = :setIndex;
+
+getWorkoutSessionSummary:
+SELECT wp.name AS planName, we.name, we.illustrationResId, wesl.`order`, wesl.targetReps, wesl.completedReps, wesl.weight
+FROM workout_exercise_set_log wesl
+JOIN workout_exercise_log wel ON wesl.exerciseLogId = wel.id
+JOIN workout_session ws ON wel.sessionId = ws.id
+JOIN workout_plan wp ON ws.planId = wp.id
+JOIN workout_exercise we ON wel.exerciseId = we.id
+WHERE ws.id = :sessionId;
+
+lastInsertRowId:
+SELECT last_insert_rowid();

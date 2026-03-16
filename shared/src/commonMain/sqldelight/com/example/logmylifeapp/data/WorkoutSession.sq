@@ -1,0 +1,35 @@
+CREATE TABLE workout_session (
+    id INTEGER AS kotlin.Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    planId INTEGER AS kotlin.Int NOT NULL,
+    date TEXT NOT NULL,
+    completed INTEGER AS kotlin.Boolean NOT NULL,
+    FOREIGN KEY (planId) REFERENCES workout_plan(id) ON DELETE CASCADE
+);
+
+getAllWorkoutSessions:
+SELECT * FROM workout_session;
+
+getWorkoutSessionById:
+SELECT * FROM workout_session WHERE id = :id;
+
+addWorkoutSession:
+INSERT OR IGNORE INTO workout_session (planId, date, completed)
+VALUES (:planId, :date, :completed);
+
+insertWorkoutSession:
+INSERT OR REPLACE INTO workout_session (planId, date, completed)
+VALUES (:planId, :date, :completed);
+
+updateWorkoutSession:
+UPDATE workout_session
+SET planId = :planId, date = :date, completed = :completed
+WHERE id = :id;
+
+deleteWorkoutSession:
+DELETE FROM workout_session WHERE id = :id;
+
+setSessionCompleted:
+UPDATE workout_session SET completed = 1 WHERE id = :sessionId;
+
+lastInsertRowId:
+SELECT last_insert_rowid();

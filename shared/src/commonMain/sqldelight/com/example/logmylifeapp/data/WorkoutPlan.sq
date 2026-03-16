@@ -1,0 +1,41 @@
+CREATE TABLE workout_plan (
+    id INTEGER AS kotlin.Int NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    scheduledDays TEXT NOT NULL,
+    currentSession INTEGER AS kotlin.Int NOT NULL,
+    numberOfSessions INTEGER AS kotlin.Int NOT NULL,
+    startDate TEXT NOT NULL
+);
+
+getAllWorkoutPlans:
+SELECT * FROM workout_plan;
+
+getWorkoutPlanById:
+SELECT * FROM workout_plan WHERE id = :id;
+
+getWorkoutPlanForDay:
+SELECT * FROM workout_plan WHERE scheduledDays LIKE '%' || :dayOfWeek || '%';
+
+addWorkoutPlan:
+INSERT OR IGNORE INTO workout_plan (name, scheduledDays, currentSession, numberOfSessions, startDate)
+VALUES (:name, :scheduledDays, :currentSession, :numberOfSessions, :startDate);
+
+insertWorkoutPlanGetId:
+INSERT OR REPLACE INTO workout_plan (name, scheduledDays, currentSession, numberOfSessions, startDate)
+VALUES (:name, :scheduledDays, :currentSession, :numberOfSessions, :startDate);
+
+updateWorkoutPlan:
+UPDATE workout_plan
+SET name = :name, scheduledDays = :scheduledDays, currentSession = :currentSession, numberOfSessions = :numberOfSessions, startDate = :startDate
+WHERE id = :id;
+
+deleteWorkoutPlan:
+DELETE FROM workout_plan WHERE id = :id;
+
+getWorkoutPlanBySessionId:
+SELECT wp.* FROM workout_plan wp
+JOIN workout_session ws ON wp.id = ws.planId
+WHERE ws.id = :sessionId;
+
+lastInsertRowId:
+SELECT last_insert_rowid();
