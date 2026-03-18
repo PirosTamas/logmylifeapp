@@ -1,7 +1,10 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.skie)
     id("com.google.devtools.ksp")
 }
 
@@ -9,6 +12,14 @@ kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
+    }
+
+    val xcf = XCFramework()
+    listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { target ->
+        target.binaries.framework {
+            baseName = "shared"
+            xcf.add(this)
         }
     }
 
@@ -34,6 +45,9 @@ kotlin {
             implementation("com.google.accompanist:accompanist-permissions:0.37.3")
             implementation("sh.calvin.reorderable:reorderable:2.4.3")
         }
+        iosMain.dependencies {
+            implementation(libs.androidx.sqlite.bundled)
+        }
     }
 }
 
@@ -57,4 +71,7 @@ android {
 
 dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }
