@@ -46,7 +46,7 @@
 Open `gradle/libs.versions.toml` and add to the `[versions]` section:
 
 ```toml
-skie = "0.9.0"
+skie = "1.8.20"
 sqlite = "2.5.0"
 ```
 

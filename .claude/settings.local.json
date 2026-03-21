@@ -7,7 +7,11 @@
       "Read(//c/Program Files/Java/**)",
       "Read(//c/Program Files/**)",
       "WebSearch",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:skie.touchlab.co)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:slack-chats.kotlinlang.org)",
+      "WebFetch(domain:mvnrepository.com)"
     ]
   }
 }
