@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import shared
 
 @MainActor
@@ -8,14 +9,36 @@ final class SettingsObservable: ObservableObject {
     @Published var waterReminderEnabled: Bool = true
     @Published var isDarkMode: Bool = false
 
-    private let vm = SettingsViewModel()
+    private let vm: SettingsViewModel
     private var tasks: [Task<Void, Never>] = []
 
     init() {
-        tasks.append(Task { [weak self] in for await v in vm.name { await MainActor.run { self?.name = v } } })
-        tasks.append(Task { [weak self] in for await v in vm.weightUnit { await MainActor.run { self?.weightUnit = v } } })
-        tasks.append(Task { [weak self] in for await v in vm.waterReminderEnabled { await MainActor.run { self?.waterReminderEnabled = v } } })
-        tasks.append(Task { [weak self] in for await v in vm.isDarkMode { await MainActor.run { self?.isDarkMode = v } } })
+        self.vm = getSettingsViewModel()
+        
+        tasks.append(Task { [weak self] in 
+            guard let self = self else { return }
+            for await v in self.vm.name { 
+                await MainActor.run { self.name = v } 
+            } 
+        })
+        tasks.append(Task { [weak self] in 
+            guard let self = self else { return }
+            for await v in self.vm.weightUnit { 
+                await MainActor.run { self.weightUnit = v } 
+            } 
+        })
+        tasks.append(Task { [weak self] in 
+            guard let self = self else { return }
+            for await v in self.vm.waterReminderEnabled { 
+                await MainActor.run { self.waterReminderEnabled = v.boolValue } 
+            } 
+        })
+        tasks.append(Task { [weak self] in 
+            guard let self = self else { return }
+            for await v in self.vm.isDarkMode { 
+                await MainActor.run { self.isDarkMode = v.boolValue } 
+            } 
+        })
     }
 
     deinit {
