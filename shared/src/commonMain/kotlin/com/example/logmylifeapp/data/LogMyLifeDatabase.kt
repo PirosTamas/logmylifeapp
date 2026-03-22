@@ -1,7 +1,9 @@
 package com.example.logmylifeapp.data
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import com.example.logmylifeapp.dao.AchievementProgressDao
 import com.example.logmylifeapp.dao.CurrentWorkoutExerciseDao
@@ -46,6 +48,7 @@ import com.example.logmylifeapp.model.WorkoutSession
     exportSchema = false
 )
 @TypeConverters(Converters::class)
+@ConstructedBy(LogMyLifeDatabaseConstructor::class) 
 abstract class LogMyLifeDatabase : RoomDatabase() {
     abstract fun achievementProgressDao(): AchievementProgressDao
     abstract fun dailyLifeDataQuestionDao(): DailyLifeDataQuestionDao
@@ -61,3 +64,6 @@ abstract class LogMyLifeDatabase : RoomDatabase() {
     abstract fun currentWorkoutExerciseDao(): CurrentWorkoutExerciseDao
     abstract fun workoutSummaryDao(): WorkoutSummaryDao
 }
+@Suppress("NO_ACTUAL_FOR_EXPECT")
+expect object LogMyLifeDatabaseConstructor : RoomDatabaseConstructor<LogMyLifeDatabase>
+

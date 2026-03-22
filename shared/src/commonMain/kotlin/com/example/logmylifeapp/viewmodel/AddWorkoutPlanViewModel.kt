@@ -18,7 +18,6 @@ import com.example.logmylifeapp.screen.components.InputField
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -67,7 +66,7 @@ class AddWorkoutPlanViewModel(
     }
 
     fun addWorkoutPlanWithExercises() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val plan = WorkoutPlan(
                 name = planName.value,
                 scheduledDays = planScheduledDays.selectedDays,

@@ -17,7 +17,6 @@ import com.example.logmylifeapp.repository.WorkoutPlanRepository
 import com.example.logmylifeapp.repository.WorkoutPlanStretchCrossRefRepository
 import com.example.logmylifeapp.repository.WorkoutPlanWarmupCrossRefRepository
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -218,7 +217,7 @@ class WorkoutSessionViewModel(
     }
 
     fun addWorkoutExerciseSetLog(workoutExerciseSetLog: WorkoutExerciseSetLog) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             workoutExerciseSetLogRepository.addWorkoutExerciseSetLog(workoutExerciseSetLog)
         }
     }

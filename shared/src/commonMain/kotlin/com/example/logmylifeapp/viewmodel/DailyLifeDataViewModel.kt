@@ -7,7 +7,6 @@ import com.example.logmylifeapp.model.DailyLifeDataAnswer
 import com.example.logmylifeapp.model.DailyLifeDataQuestion
 import com.example.logmylifeapp.repository.DailyLifeDataAnswerRepository
 import com.example.logmylifeapp.repository.DailyLifeDataQuestionRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -46,7 +45,7 @@ class DailyLifeDataViewModel(
 
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val list = dailyLifeDataQuestionRepository.getUnansweredQuestionsForToday()
             _questions.value = list
         }
@@ -76,7 +75,7 @@ class DailyLifeDataViewModel(
     }
 
     fun finish() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             dailyLifeDataAnswerRepository.addAnswers(_answers.value.map { answer ->
                 DailyLifeDataAnswer(
                     questionId = answer.key,
