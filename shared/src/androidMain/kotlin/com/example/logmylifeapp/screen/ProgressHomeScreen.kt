@@ -117,7 +117,7 @@ fun ProgressHomeScreen(
                         }
                         Button(
                             onClick = {
-                                viewModel.editingAchievement = null
+                                viewModel.setEditingAchievement(null)
                                 navigateToAddProgress()
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -140,7 +140,7 @@ fun ProgressHomeScreen(
                         AchievementProgressItem(
                             achievement = progress,
                             onEdit = {
-                                viewModel.editingAchievement = progress
+                                viewModel.setEditingAchievement(progress)
                                 navigateToAddProgress()
                             }
                         )
@@ -206,7 +206,7 @@ fun ProgressHomeScreen(
                         }
                         Button(
                             onClick = {
-                                viewModel.editingAchievement = null
+                                viewModel.setEditingAchievement(null)
                                 navigateToAddProgress()
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -243,7 +243,7 @@ fun ProgressHomeScreen(
         }
         FloatingActionButton(
             onClick = {
-                viewModel.editingAchievement = null
+                viewModel.setEditingAchievement(null)
                 navigateToAddProgress()
             },
             modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 60.dp, end = 16.dp),

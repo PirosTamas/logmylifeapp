@@ -21,6 +21,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +50,7 @@ fun AddProgressScreen(
 ) {
     val colors = LocalAppColors.current
     val context = LocalContext.current
-    val editing = viewModel.editingAchievement
+    val editing by viewModel.editingAchievement.collectAsState()
     val isEditing = editing != null
 
     val fields = remember {
@@ -91,7 +93,7 @@ fun AddProgressScreen(
             ) {
                 IconButton(
                     onClick = {
-                        viewModel.editingAchievement = null
+                        viewModel.setEditingAchievement(null)
                         navigateToHome()
                     },
                     modifier = Modifier.align(Alignment.CenterStart)
@@ -170,7 +172,7 @@ fun AddProgressScreen(
                                         )
                                     )
                                 }
-                                viewModel.editingAchievement = null
+                                viewModel.setEditingAchievement(null)
                                 navigateToHome()
                             } else {
                                 Toast.makeText(
